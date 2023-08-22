@@ -1,22 +1,6 @@
 #include "wnd/wnd_func.h"
 #include "wnd/funcs/wnd_tps.h"
 
-/*
-  fix rendering for multiline text
-  customize scrollbar
-  add line count
-  add menu bar
-    - file
-    - macro
-    - theme
-*/
-
-/*
-  notes for text box edit functions
-    - https://learn.microsoft.com/en-us/windows/win32/controls/use-a-multiline-edit-control
-    - use em_ to get line count for drawing it
-*/
-
 s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
                     _In_opt_ HINSTANCE         ,
                     _In_     LPSTR             ,

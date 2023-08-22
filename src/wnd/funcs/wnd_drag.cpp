@@ -145,7 +145,7 @@ void wnd_drag_resize( HWND hwnd, POINT m_pos ) {
     nwnd_pos = {
       within_lcorner_range ?
         i_mon.rcWork.left : i_mon.rcWork.right - mon_sz.x / 2,
-      mon_sz.y / 2
+        mon_sz.y / 2 + monitor_offset.y
     };
     nwnd_sz = mon_sz / 2;
   }
