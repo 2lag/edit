@@ -29,7 +29,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
 
   switch( msg ) {
   case WM_CREATE: {
-    wnd_type_create( hwnd );
+    wnd_type_create( hwnd, pwnd_sz );
     SetFocus( txt_box );
   } break;
   case WM_CTLCOLOREDIT: {

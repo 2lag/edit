@@ -1,4 +1,5 @@
 #include "wnd_type.h"
+#include "wnd_type_scroll.h"
 
 HWND txt_box;
 
@@ -21,14 +22,16 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
   return DefSubclassProc( hwnd, msg, wp, lp );
 }
 
-void wnd_type_create( HWND hwnd ) {
+void wnd_type_create( HWND hwnd, POINT pwnd_sz ) {
   txt_box = CreateWindowExW( 0L,
     L"EDIT", 0,
     WS_CHILD | WS_VISIBLE | ES_MULTILINE |
-    WS_VSCROLL | ES_WANTRETURN | ES_NOHIDESEL,
+    ES_WANTRETURN | ES_NOHIDESEL,
     0, 0, 0, 0, hwnd, 0,
     (HINSTANCE)GetWindowLongPtrW( hwnd, GWLP_HINSTANCE ), 0
   );
+
+  wnd_scroll_create( hwnd, pwnd_sz );
 
   SetWindowSubclass( txt_box, editproc, 0,
     (DWORD_PTR)GetWindowLongPtr( txt_box, GWLP_WNDPROC )
