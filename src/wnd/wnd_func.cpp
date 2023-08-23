@@ -10,12 +10,12 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   ScreenToClient( hwnd, &m_pos );
 
   RECT drag { 0, 6, wnd_sz.right - 75, 25 },
-     cls { wnd_sz.right - 25, 5,
-           wnd_sz.right - 05, 25
-  }, max { wnd_sz.right - 50, 5,
-           wnd_sz.right - 25, 25
-  }, min { wnd_sz.right - 75, 5,
-           wnd_sz.right - 50, 25
+       cls { wnd_sz.right - 25, 05,
+             wnd_sz.right - 05, 25
+  },   max { wnd_sz.right - 50, 05,
+             wnd_sz.right - 25, 25
+  },   min { wnd_sz.right - 75, 5,
+             wnd_sz.right - 50, 25
   };
 
   wnd_tps_draw( hwnd, wnd_sz );

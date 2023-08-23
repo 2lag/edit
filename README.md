@@ -1,6 +1,6 @@
 todo :
-- fix rendering for offscreen text
-- customize scrollbar
+- customize editproc if possible
+- customize scrollbars
 - add line count
 - add menu bar
 - - file

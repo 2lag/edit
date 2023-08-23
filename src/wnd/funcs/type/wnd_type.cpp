@@ -1,28 +1,29 @@
 #include "wnd_type.h"
 
 LRESULT CALLBACK editproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData) {
+  RECT rect{};
+  GetClientRect( hwnd, &rect );
+
   switch( uMsg ) {
-  case WM_PAINT: {
-    PAINTSTRUCT ps;
-    HDC hdc = BeginPaint( hwnd, &ps );
-    HBRUSH brush = CreateSolidBrush( COL_D_GRY );
+  case WM_ERASEBKGND: {
+    HDC hdc = (HDC)wParam;
     RECT rect;
     GetClientRect( hwnd, &rect );
+    HBRUSH brush = CreateSolidBrush( COL_D_GRY );
     FillRect( hdc, &rect, brush );
     DeleteObject( brush );
-    EndPaint( hwnd, &ps );
-    return CallWindowProc( (WNDPROC)dwRefData, hwnd, uMsg, wParam, lParam );
+    return 1;
   } break;
-  default:
-    return CallWindowProc( (WNDPROC)dwRefData, hwnd, uMsg, wParam, lParam );
   }
+
+  return CallWindowProc( (WNDPROC)dwRefData, hwnd, uMsg, wParam, lParam );
 }
 
 void wnd_type_create( HWND hwnd, HWND &txt_box ) {
   txt_box = CreateWindowExW( 0L,
     L"EDIT", 0,
-    WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_LEFT |
-    ES_MULTILINE | ES_AUTOHSCROLL | ES_AUTOVSCROLL,
+    WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
+    ES_LEFT | ES_MULTILINE | ES_WANTRETURN | ES_AUTOVSCROLL,
     0, 0, 0, 0, hwnd, 0,
     (HINSTANCE)GetWindowLongPtrW( hwnd, GWLP_HINSTANCE ), 0
   );
