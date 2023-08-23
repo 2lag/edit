@@ -20,7 +20,6 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
 
   wnd_tps_draw( hwnd, wnd_sz );
 
-  static HWND txt_box;
 
 #ifdef _DEBUG
   AllocConsole();
@@ -30,7 +29,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
 
   switch( msg ) {
   case WM_CREATE: {
-    wnd_type_create( hwnd, txt_box );
+    wnd_type_create( hwnd );
     SetFocus( txt_box );
   } break;
   case WM_CTLCOLOREDIT: {

@@ -1,29 +1,36 @@
 #include "wnd_type.h"
+#include "wnd_scroll.h"
 
-LRESULT CALLBACK editproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData) {
-  RECT rect{};
-  GetClientRect( hwnd, &rect );
+HWND txt_box;
 
-  switch( uMsg ) {
+LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
+  RECT text_sz{};
+  GetClientRect( hwnd, &text_sz );
+
+  switch( msg ) {
+  case WM_CREATE: {
+    std::cout << "called" << std::endl; // figure out why this isn't being called
+    wnd_type_scroll( txt_box, text_sz );
+  } break;
   case WM_ERASEBKGND: {
-    HDC hdc = (HDC)wParam;
-    RECT rect;
-    GetClientRect( hwnd, &rect );
+    HDC hdc = (HDC)wp;
     HBRUSH brush = CreateSolidBrush( COL_D_GRY );
-    FillRect( hdc, &rect, brush );
+
+    FillRect( hdc, &text_sz, brush );
     DeleteObject( brush );
+
     return 1;
   } break;
   }
 
-  return CallWindowProc( (WNDPROC)dwRefData, hwnd, uMsg, wParam, lParam );
+  return DefSubclassProc( hwnd, msg, wp, lp );
 }
 
-void wnd_type_create( HWND hwnd, HWND &txt_box ) {
+void wnd_type_create( HWND hwnd ) {
   txt_box = CreateWindowExW( 0L,
     L"EDIT", 0,
-    WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
-    ES_LEFT | ES_MULTILINE | ES_WANTRETURN | ES_AUTOVSCROLL,
+    WS_CHILD | WS_VISIBLE | ES_MULTILINE |
+    ES_WANTRETURN | ES_NOHIDESEL,
     0, 0, 0, 0, hwnd, 0,
     (HINSTANCE)GetWindowLongPtrW( hwnd, GWLP_HINSTANCE ), 0
   );
@@ -36,12 +43,12 @@ void wnd_type_create( HWND hwnd, HWND &txt_box ) {
 void wnd_type_outline( HWND hwnd, POINT wnd_sz ) {
   HDC hdc = GetDC( hwnd );
   HBRUSH brush = CreateSolidBrush( COL_L_GRY );
-  RECT r {
+  RECT outline_sz {
     24, 49,
     wnd_sz.x,
     wnd_sz.y - 24
   };
-  FillRect( hdc, &r, brush );
+  FillRect( hdc, &outline_sz, brush );
 
   ReleaseDC( hwnd, hdc );
   DeleteObject( brush );
@@ -49,6 +56,7 @@ void wnd_type_outline( HWND hwnd, POINT wnd_sz ) {
 
 void wnd_type_customize( WPARAM wp ) {
   HDC hdc = (HDC)wp;
+
   SetBkColor( hdc, COL_D_GRY );
   SetTextColor( hdc, COL_L_GRY );
 }

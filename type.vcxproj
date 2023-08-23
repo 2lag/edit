@@ -172,6 +172,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\source.cpp" />
+    <ClCompile Include="src\wnd\funcs\type\wnd_scroll.cpp" />
     <ClCompile Include="src\wnd\funcs\wnd_drag.cpp" />
     <ClCompile Include="src\wnd\funcs\wnd_tps.cpp" />
     <ClCompile Include="src\wnd\funcs\wnd_resize.cpp" />
@@ -181,6 +182,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\typedef.h" />
+    <ClInclude Include="src\wnd\funcs\type\wnd_scroll.h" />
     <ClInclude Include="src\wnd\funcs\wnd_tps.h" />
     <ClInclude Include="src\wnd\funcs\wnd_includes.h" />
     <ClInclude Include="src\wnd\funcs\type\wnd_type.h" />
