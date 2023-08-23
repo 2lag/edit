@@ -1,7 +1,6 @@
 todo :
-- make scrollbar show up (wnd_type.cpp + wnd_scroll.cpp)
-- - customize scrollbars
-- - - [this link](https://learn.microsoft.com/en-us/windows/win32/controls/edit-controls-text-operations#scrolling-text-in-an-edit-control)
+- customize scrollbar ( wnd_type.cpp )
+- - - [this link](https://github.com/ysc3839/win32-darkmode/blob/cc26549b65b25d6f3168a80238792545bd401271/win32-darkmode/DarkMode.h#L152)
 - add line count (use em_)
 - add menu bar
 - - file

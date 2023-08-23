@@ -1,5 +1,4 @@
 #include "wnd_type.h"
-#include "wnd_scroll.h"
 
 HWND txt_box;
 
@@ -8,10 +7,6 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
   GetClientRect( hwnd, &text_sz );
 
   switch( msg ) {
-  case WM_CREATE: {
-    std::cout << "called" << std::endl; // figure out why this isn't being called
-    wnd_type_scroll( txt_box, text_sz );
-  } break;
   case WM_ERASEBKGND: {
     HDC hdc = (HDC)wp;
     HBRUSH brush = CreateSolidBrush( COL_D_GRY );
@@ -30,7 +25,7 @@ void wnd_type_create( HWND hwnd ) {
   txt_box = CreateWindowExW( 0L,
     L"EDIT", 0,
     WS_CHILD | WS_VISIBLE | ES_MULTILINE |
-    ES_WANTRETURN | ES_NOHIDESEL,
+    WS_VSCROLL | ES_WANTRETURN | ES_NOHIDESEL,
     0, 0, 0, 0, hwnd, 0,
     (HINSTANCE)GetWindowLongPtrW( hwnd, GWLP_HINSTANCE ), 0
   );
