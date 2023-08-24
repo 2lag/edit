@@ -9,6 +9,11 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
   GetClientRect( hwnd, &text_sz );
 
   switch( msg ) {
+  case WM_CTLCOLORSCROLLBAR: {
+    HDC hdc = (HDC)wp;
+
+    return (LRESULT)CreateSolidBrush( COL_D_GRY );
+  } break;
   case WM_ERASEBKGND: {
     HDC hdc = (HDC)wp;
     HBRUSH brush = CreateSolidBrush( COL_D_GRY );
@@ -27,7 +32,7 @@ void wnd_type_create( HWND hwnd, POINT pwnd_sz ) {
   txt_box = CreateWindowExW( 0L,
     L"EDIT", 0,
     WS_CHILD | WS_VISIBLE | ES_MULTILINE |
-    ES_WANTRETURN | ES_NOHIDESEL,
+    ES_WANTRETURN | ES_NOHIDESEL | ES_AUTOVSCROLL,
     0, 0, 0, 0, hwnd, 0,
     (HINSTANCE)GetWindowLongPtrW( hwnd, GWLP_HINSTANCE ), 0
   );
