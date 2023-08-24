@@ -1,6 +1,7 @@
 #include "wnd_type.h"
 #include "wnd_type_scroll.h"
 
+HWND vscroll;
 HWND txt_box;
 
 LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
