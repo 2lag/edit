@@ -4,6 +4,7 @@ todo :
 - - fix/finish scroll bar functionality
 - - - update pos&min/max when new line typed
 - - - fix buuuuugs
+- - - [read](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setscrollinfo)
 - add line count ( use em_ )
 - minimize variable scope all around
 - clean up everything in wnd_type(_scroll) & tps
