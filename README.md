@@ -2,7 +2,8 @@ todo :
 - finish customize scrollbar ( wnd_type.cpp )
 - - fix render bug when new line typed
 - - fix/finish scroll bar functionality
-- - - update when new line typed
+- - - update pos&min/max when new line typed
+- - - fix buuuuugs
 - add line count ( use em_ )
 - minimize variable scope all around
 - clean up everything in wnd_type(_scroll) & tps

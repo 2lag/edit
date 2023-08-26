@@ -81,8 +81,8 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     );
 
     MoveWindow( vscroll,
-      pwnd_sz.x - 40, -16,
-      15, pwnd_sz.y - 42,
+      pwnd_sz.x - 40, 0,
+      15, pwnd_sz.y - 75,
       TRUE
     );
   } break;

@@ -27,13 +27,13 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     HBRUSH brush = CreateSolidBrush( COL_D_GRY );
 
     FillRect( hdc, &text_sz, brush );
+    
     DeleteObject( brush );
-
     return 1;
   } break;
   case WM_VSCROLL: {
     s32 n_delta{};
-    si.nPage = text_sz.bottom / txt_sz.cy;
+
     switch( LOWORD( wp ) ) {
     case SB_LINEUP: {
       n_delta -= 1;
@@ -52,8 +52,7 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
       si.nPos = (s32)HIWORD( wp );
     } break;
 
-    si.nPos += n_delta;
-    si.nPos = max( 0, min( si.nMax, si.nPos ) );
+    si.nPos = max( 0, min( si.nMax, si.nPos + n_delta ) );
 
     // set max and page ? make sure
     // maybe invalidate rect after too? no clue i hate winapi
