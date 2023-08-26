@@ -1,8 +1,8 @@
 todo :
-- finish customize scrollbar ( wnd_type.cpp ) w/ wm_ctlcolorscrollbar ( if there is more to use )
+- finish customize scrollbar ( wnd_type.cpp )
 - - fix render bug when new line typed
-- - change position based on scroll pos
-- - also change scroll pos based on position
+- - fix/finish scroll bar functionality
+- - - update when new line typed
 - add line count ( use em_ )
 - minimize variable scope all around
 - clean up everything in wnd_type(_scroll) & tps

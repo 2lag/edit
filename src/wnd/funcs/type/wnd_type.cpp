@@ -1,12 +1,20 @@
 #include "wnd_type.h"
-#include "wnd_type_scroll.h"
 
 HWND vscroll;
 HWND txt_box;
 
+SCROLLINFO si;
+
 LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
   RECT text_sz{};
   GetClientRect( hwnd, &text_sz );
+
+  SIZE txt_sz{};
+  HDC hdc = GetDC( hwnd );
+  
+  GetTextExtentPoint32W( hdc, L"A", 1, &txt_sz );
+
+  ReleaseDC( hwnd, hdc );
 
   switch( msg ) {
   case WM_CTLCOLORSCROLLBAR: {
@@ -23,6 +31,37 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
 
     return 1;
   } break;
+  case WM_VSCROLL: {
+    s32 n_delta{};
+    si.nPage = text_sz.bottom / txt_sz.cy;
+    switch( LOWORD( wp ) ) {
+    case SB_LINEUP: {
+      n_delta -= 1;
+    } break;
+    case SB_LINEDOWN: {
+      n_delta = 1;
+    } break;
+    case SB_PAGEUP: {
+      n_delta = -(s32)si.nPage;
+    } break;
+    case SB_PAGEDOWN: {
+      n_delta = si.nPage;
+    } break;
+    case SB_THUMBPOSITION:
+    case SB_THUMBTRACK: {
+      si.nPos = (s32)HIWORD( wp );
+    } break;
+
+    si.nPos += n_delta;
+    si.nPos = max( 0, min( si.nMax, si.nPos ) );
+
+    // set max and page ? make sure
+    // maybe invalidate rect after too? no clue i hate winapi
+
+    SetScrollInfo( vscroll, SB_CTL, &si, TRUE );
+    ScrollWindowEx( hwnd, 0, -n_delta * txt_sz.cy, 0, 0, 0, 0, SW_ERASE | SW_INVALIDATE );
+    }
+  } break;
   }
 
   return DefSubclassProc( hwnd, msg, wp, lp );
@@ -37,11 +76,22 @@ void wnd_type_create( HWND hwnd, POINT pwnd_sz ) {
     (HINSTANCE)GetWindowLongPtrW( hwnd, GWLP_HINSTANCE ), 0
   );
 
-  wnd_scroll_create( hwnd, pwnd_sz );
-
-  SetWindowSubclass( txt_box, editproc, 0,
-    (DWORD_PTR)GetWindowLongPtr( txt_box, GWLP_WNDPROC )
+  vscroll = CreateWindowExW( 0L,
+    L"ScrollBar", 0,
+    WS_CHILD | WS_VISIBLE | SBS_VERT,
+    0, 0, 0, 0, txt_box, 0, 0, 0
   );
+
+  si.cbSize = sizeof( SCROLLINFO );
+  si.fMask = SIF_ALL;
+  si.nMin = 0;
+  si.nMax = 100;
+  si.nPage = 10;
+  si.nPos = 0;
+  si.nTrackPos = 0;
+  SetScrollInfo( vscroll, SB_CTL, &si, TRUE );
+
+  SetWindowSubclass( txt_box, editproc, 0, 0 );
 }
 
 void wnd_type_outline( HWND hwnd, POINT wnd_sz ) {
