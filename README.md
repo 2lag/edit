@@ -1,5 +1,5 @@
 todo :
-- finish customize scrollbar ( wnd_type.cpp )
+- finish scrollbar
 - - flicker when typing, scrolling more than 1 line
 - make tab key return 2 spaces
 - add line count ( use em_ )
@@ -9,3 +9,83 @@ todo :
 - - file
 - - macro
 - - theme
+
+
+### notes :
+Double Buffering: a technique where you paint your graphics off-screen first and then draw the entire prepared image on-screen.
+This can reduce flickering.
+Here's how you can implement it in your WM_PAINT case:
+```cpp
+case WM_PAINT: {
+    PAINTSTRUCT ps;
+    HDC hdc = BeginPaint(hwnd, &ps);
+
+    // Create an off-screen bitmap and DC for double buffering
+    HDC memDC = CreateCompatibleDC(hdc);
+    HBITMAP memBitmap = CreateCompatibleBitmap(hdc, pwnd_sz.x, pwnd_sz.y);
+    HBITMAP oldBitmap = (HBITMAP)SelectObject(memDC, memBitmap);
+
+    // Now, draw everything on the off-screen bitmap
+    // ...
+
+    // BitBlt the off-screen image to the screen
+    BitBlt(hdc, 0, 0, pwnd_sz.x, pwnd_sz.y, memDC, 0, 0, SRCCOPY);
+
+    // Clean up
+    SelectObject(memDC, oldBitmap);
+    DeleteObject(memBitmap);
+    DeleteDC(memDC);
+
+    EndPaint(hwnd, &ps);
+} break;
+```
+Scrollbar Customization: handle the WM_NCPAINT message for non-client area painting.
+Here's a simplified example of how you can customize the scrollbar in your wnd_type_scroll_draw function:
+```cpp
+void wnd_type_scroll_draw(HWND hwnd) {
+    // ... (previous code)
+
+    // Custom scrollbar colors
+    COLORREF scrollbarColor = RGB(255, 0, 0); // Red for example
+    COLORREF thumbColor = RGB(0, 0, 255);     // Blue for example
+
+    SetScrollInfo(hwnd, SB_VERT, &si, TRUE);
+
+    // Create a memory DC and select a compatible bitmap
+    HDC hdcMem = CreateCompatibleDC(hdc);
+    HBITMAP hBmp = CreateCompatibleBitmap(hdc, sbi.rcScrollBar.right - sbi.rcScrollBar.left, sbi.rcScrollBar.bottom - sbi.rcScrollBar.top);
+    SelectObject(hdcMem, hBmp);
+
+    // Custom drawing here, e.g., FillRect for the scrollbar background and thumb
+    FillRect(hdcMem, &sbi.rcScrollBar, CreateSolidBrush(scrollbarColor));
+    FillRect(hdcMem, &scroll_grab, CreateSolidBrush(thumbColor));
+
+    // Blit the memory DC to the screen
+    BitBlt(hdc, sbi.rcScrollBar.left, sbi.rcScrollBar.top, sbi.rcScrollBar.right - sbi.rcScrollBar.left, sbi.rcScrollBar.bottom - sbi.rcScrollBar.top, hdcMem, 0, 0, SRCCOPY);
+
+    // Clean up
+    DeleteObject(hBmp);
+    DeleteDC(hdcMem);
+
+    // ... (rest of the code)
+}
+```
+Optimizing Drawing: involves minimizing redundant operations and making your code more efficient.
+For example, you can reduce the number of times you call FillRect by checking if the region actually needs to be redrawn.
+Here's an example of how you might optimize your WM_PAINT case:
+```cpp
+case WM_PAINT: {
+    PAINTSTRUCT ps;
+    HDC hdc = BeginPaint(hwnd, &ps);
+
+    // Only redraw if necessary (e.g., when the window is resized)
+    if (IsRectEmpty(&ps.rcPaint)) {
+        EndPaint(hwnd, &ps);
+        break;
+    }
+
+    // Rest of your drawing code here
+
+    EndPaint(hwnd, &ps);
+} break;
+```

@@ -38,7 +38,7 @@ void wnd_type_create( HWND hwnd, POINT pwnd_sz ) {
   );
 
   SendMessageW( txt_box, SBM_ENABLE_ARROWS, ESB_DISABLE_BOTH, 0 );
-
+  
   SetWindowSubclass( txt_box, editproc, 0, 0 );
 }
 
@@ -52,8 +52,8 @@ void wnd_type_outline( HWND hwnd, POINT wnd_sz ) {
   };
   FillRect( hdc, &outline_sz, brush );
 
-  ReleaseDC( hwnd, hdc );
   DeleteObject( brush );
+  ReleaseDC( hwnd, hdc );
 }
 
 void wnd_type_customize( WPARAM wp ) {
@@ -65,27 +65,26 @@ void wnd_type_customize( WPARAM wp ) {
 
 void wnd_type_scroll_draw( HWND hwnd ) {
   static SCROLLBARINFO sbi;
-  sbi.cbSize = sizeof(SCROLLBARINFO);
-  GetScrollBarInfo(hwnd, OBJID_VSCROLL, &sbi);
+  sbi.cbSize = sizeof( SCROLLBARINFO );
+  GetScrollBarInfo( hwnd, OBJID_VSCROLL, &sbi );
 
-  ScreenToClient(hwnd, reinterpret_cast<POINT*>(&sbi.rcScrollBar.left));
-  ScreenToClient(hwnd, reinterpret_cast<POINT*>(&sbi.rcScrollBar.right));
+  ScreenToClient( hwnd, reinterpret_cast<POINT*>( &sbi.rcScrollBar.left ) );
+  ScreenToClient( hwnd, reinterpret_cast<POINT*>( &sbi.rcScrollBar.right ) );
 
   PAINTSTRUCT ps;
-  HDC hdc = BeginPaint(hwnd, &ps);
-  HBRUSH dbrush = CreateSolidBrush(COL_D_GRY),
-    lbrush = CreateSolidBrush(COL_L_GRY);
+  HDC hdc = BeginPaint( hwnd, &ps );
+  HBRUSH dbrush = CreateSolidBrush( COL_D_GRY ),
+         lbrush = CreateSolidBrush( COL_L_GRY );
 
   RECT scroll_grab{
     sbi.rcScrollBar.left, sbi.xyThumbTop - 17,
     sbi.rcScrollBar.right, sbi.xyThumbBottom + 18
   };
 
-  FillRect(hdc, &sbi.rcScrollBar, dbrush);
-  FillRect(hdc, &scroll_grab, lbrush);
+  FillRect( hdc, &sbi.rcScrollBar, dbrush );
+  FillRect( hdc, &scroll_grab, lbrush );
 
-  EndPaint(hwnd, &ps);
-  DeleteObject(dbrush);
-  DeleteObject(lbrush);
-  DeleteDC(hdc);
+  EndPaint( hwnd, &ps );
+  DeleteObject( dbrush );
+  DeleteObject( lbrush );
 }
