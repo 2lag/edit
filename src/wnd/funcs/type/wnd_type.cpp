@@ -16,31 +16,9 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     DeleteObject( brush );
     return 1;
   } break;
-  case WM_PAINT: {
-    static SCROLLBARINFO sbi;
-    sbi.cbSize = sizeof( SCROLLBARINFO );
-    GetScrollBarInfo( hwnd, OBJID_VSCROLL, &sbi );
-
-    ScreenToClient( hwnd, reinterpret_cast<POINT*>( &sbi.rcScrollBar.left ) );
-    ScreenToClient( hwnd, reinterpret_cast<POINT*>( &sbi.rcScrollBar.right ) );
-
-    PAINTSTRUCT ps;
-    HDC hdc = BeginPaint( hwnd, &ps );
-    HBRUSH dbrush = CreateSolidBrush( COL_D_GRY ),
-           lbrush = CreateSolidBrush( COL_L_GRY );
-
-    RECT scroll_grab{
-      sbi.rcScrollBar.left, sbi.xyThumbTop - 17,
-      sbi.rcScrollBar.right, sbi.xyThumbBottom + 18
-    };
-
-    FillRect( hdc, &sbi.rcScrollBar, dbrush );
-    FillRect( hdc, &scroll_grab, lbrush );
-
-    EndPaint( hwnd, &ps );
-    DeleteObject( dbrush );
-    DeleteObject( lbrush );
-    DeleteDC( hdc );
+  case WM_PAINT:
+  case WM_VSCROLL: {
+    wnd_type_scroll_draw( hwnd );
 
     InvalidateRect( hwnd, &text_sz, false );
   } break;
@@ -58,6 +36,8 @@ void wnd_type_create( HWND hwnd, POINT pwnd_sz ) {
     0, 0, 0, 0, hwnd, 0,
     (HINSTANCE)GetWindowLongPtrW( hwnd, GWLP_HINSTANCE ), 0
   );
+
+  SendMessageW( txt_box, SBM_ENABLE_ARROWS, ESB_DISABLE_BOTH, 0 );
 
   SetWindowSubclass( txt_box, editproc, 0, 0 );
 }
@@ -81,4 +61,31 @@ void wnd_type_customize( WPARAM wp ) {
 
   SetBkColor( hdc, COL_D_GRY );
   SetTextColor( hdc, COL_L_GRY );
+}
+
+void wnd_type_scroll_draw( HWND hwnd ) {
+  static SCROLLBARINFO sbi;
+  sbi.cbSize = sizeof(SCROLLBARINFO);
+  GetScrollBarInfo(hwnd, OBJID_VSCROLL, &sbi);
+
+  ScreenToClient(hwnd, reinterpret_cast<POINT*>(&sbi.rcScrollBar.left));
+  ScreenToClient(hwnd, reinterpret_cast<POINT*>(&sbi.rcScrollBar.right));
+
+  PAINTSTRUCT ps;
+  HDC hdc = BeginPaint(hwnd, &ps);
+  HBRUSH dbrush = CreateSolidBrush(COL_D_GRY),
+    lbrush = CreateSolidBrush(COL_L_GRY);
+
+  RECT scroll_grab{
+    sbi.rcScrollBar.left, sbi.xyThumbTop - 17,
+    sbi.rcScrollBar.right, sbi.xyThumbBottom + 18
+  };
+
+  FillRect(hdc, &sbi.rcScrollBar, dbrush);
+  FillRect(hdc, &scroll_grab, lbrush);
+
+  EndPaint(hwnd, &ps);
+  DeleteObject(dbrush);
+  DeleteObject(lbrush);
+  DeleteDC(hdc);
 }

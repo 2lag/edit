@@ -33,6 +33,16 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
 #endif
 
   switch( msg ) {
+  case WM_COMMAND: {
+    switch( HIWORD( wp ) ) {
+    case EN_AFTER_PASTE:
+    case EN_CHANGE:
+    case EN_VSCROLL: {
+      wnd_type_scroll_draw( (HWND)lp );
+      InvalidateRect( (HWND)lp, 0, TRUE );
+    } break;
+    }
+  } break;
   case WM_CREATE: {
     wnd_type_create( hwnd, pwnd_sz );
     SetFocus( txt_box );
@@ -84,6 +94,8 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
       pwnd_sz.y - 75,
       TRUE
     );
+    wnd_type_scroll_draw( txt_box );
+    InvalidateRect( txt_box, 0, TRUE );
   } break;
   }
   return DefWindowProcW( hwnd, msg, wp, lp );

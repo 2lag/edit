@@ -1,6 +1,6 @@
 todo :
 - finish customize scrollbar ( wnd_type.cpp )
-- - keep it drawn when typing, resizing, etc
+- - flicker when typing, scrolling more than 1 line
 - make tab key return 2 spaces
 - add line count ( use em_ )
 - minimize variable scope all around
