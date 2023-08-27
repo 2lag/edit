@@ -17,7 +17,6 @@
 #include "../typedef.h"
 
 extern HWND txt_box;
-extern HWND vscroll;
 
 extern u64 tps;
 extern u64 prev_time;

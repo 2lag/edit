@@ -20,11 +20,16 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
 
   wnd_tps_draw( hwnd, wnd_sz );
 
-
 #ifdef _DEBUG
   AllocConsole();
   FILE* new_std;
   freopen_s( &new_std, "CONOUT$", "w", stdout );
+  SetConsoleTitleW( L"type debug" );
+  void *std_handle = GetStdHandle( STD_OUTPUT_HANDLE );
+  const SMALL_RECT wnd_debug{ 00, 00, 42, 16 };
+  SetConsoleWindowInfo( std_handle, true, &wnd_debug );
+  SetConsoleScreenBufferSize( std_handle, { 43, 17 } );
+  SetConsoleWindowInfo( std_handle, true, &wnd_debug );
 #endif
 
   switch( msg ) {
@@ -77,12 +82,6 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
       25, 50,
       pwnd_sz.x - 25,
       pwnd_sz.y - 75,
-      TRUE
-    );
-
-    MoveWindow( vscroll,
-      pwnd_sz.x - 40, 0,
-      15, pwnd_sz.y - 75,
       TRUE
     );
   } break;

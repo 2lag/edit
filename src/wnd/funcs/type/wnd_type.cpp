@@ -1,27 +1,12 @@
 #include "wnd_type.h"
 
-HWND vscroll;
 HWND txt_box;
-
-SCROLLINFO si;
 
 LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
   RECT text_sz{};
   GetClientRect( hwnd, &text_sz );
 
-  SIZE txt_sz{};
-  HDC hdc = GetDC( hwnd );
-  
-  GetTextExtentPoint32W( hdc, L"A", 1, &txt_sz );
-
-  ReleaseDC( hwnd, hdc );
-
   switch( msg ) {
-  case WM_CTLCOLORSCROLLBAR: {
-    HDC hdc = (HDC)wp;
-
-    return (LRESULT)CreateSolidBrush( COL_D_GRY );
-  } break;
   case WM_ERASEBKGND: {
     HDC hdc = (HDC)wp;
     HBRUSH brush = CreateSolidBrush( COL_D_GRY );
@@ -31,35 +16,33 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     DeleteObject( brush );
     return 1;
   } break;
-  case WM_VSCROLL: {
-    s32 n_delta{};
+  case WM_PAINT: {
+    static SCROLLBARINFO sbi;
+    sbi.cbSize = sizeof( SCROLLBARINFO );
+    GetScrollBarInfo( hwnd, OBJID_VSCROLL, &sbi );
 
-    switch( LOWORD( wp ) ) {
-    case SB_LINEUP: {
-      n_delta -= 1;
-    } break;
-    case SB_LINEDOWN: {
-      n_delta = 1;
-    } break;
-    case SB_PAGEUP: {
-      n_delta = -(s32)si.nPage;
-    } break;
-    case SB_PAGEDOWN: {
-      n_delta = si.nPage;
-    } break;
-    case SB_THUMBPOSITION:
-    case SB_THUMBTRACK: {
-      si.nPos = (s32)HIWORD( wp );
-    } break;
+    ScreenToClient( hwnd, reinterpret_cast<POINT*>( &sbi.rcScrollBar.left ) );
+    ScreenToClient( hwnd, reinterpret_cast<POINT*>( &sbi.rcScrollBar.right ) );
 
-    si.nPos = max( 0, min( si.nMax, si.nPos + n_delta ) );
+    PAINTSTRUCT ps;
+    HDC hdc = BeginPaint( hwnd, &ps );
+    HBRUSH dbrush = CreateSolidBrush( COL_D_GRY ),
+           lbrush = CreateSolidBrush( COL_L_GRY );
 
-    // set max and page ? make sure
-    // maybe invalidate rect after too? no clue i hate winapi
+    RECT scroll_grab{
+      sbi.rcScrollBar.left, sbi.xyThumbTop - 17,
+      sbi.rcScrollBar.right, sbi.xyThumbBottom + 18
+    };
 
-    SetScrollInfo( vscroll, SB_CTL, &si, TRUE );
-    ScrollWindowEx( hwnd, 0, -n_delta * txt_sz.cy, 0, 0, 0, 0, SW_ERASE | SW_INVALIDATE );
-    }
+    FillRect( hdc, &sbi.rcScrollBar, dbrush );
+    FillRect( hdc, &scroll_grab, lbrush );
+
+    EndPaint( hwnd, &ps );
+    DeleteObject( dbrush );
+    DeleteObject( lbrush );
+    DeleteDC( hdc );
+
+    InvalidateRect( hwnd, &text_sz, false );
   } break;
   }
 
@@ -70,25 +53,11 @@ void wnd_type_create( HWND hwnd, POINT pwnd_sz ) {
   txt_box = CreateWindowExW( 0L,
     L"EDIT", 0,
     WS_CHILD | WS_VISIBLE | ES_MULTILINE |
-    ES_WANTRETURN | ES_NOHIDESEL | ES_AUTOVSCROLL,
+    ES_WANTRETURN | ES_NOHIDESEL |
+    WS_VSCROLL | ES_AUTOVSCROLL,
     0, 0, 0, 0, hwnd, 0,
     (HINSTANCE)GetWindowLongPtrW( hwnd, GWLP_HINSTANCE ), 0
   );
-
-  vscroll = CreateWindowExW( 0L,
-    L"ScrollBar", 0,
-    WS_CHILD | WS_VISIBLE | SBS_VERT,
-    0, 0, 0, 0, txt_box, 0, 0, 0
-  );
-
-  si.cbSize = sizeof( SCROLLINFO );
-  si.fMask = SIF_ALL;
-  si.nMin = 0;
-  si.nMax = 100;
-  si.nPage = 10;
-  si.nPos = 0;
-  si.nTrackPos = 0;
-  SetScrollInfo( vscroll, SB_CTL, &si, TRUE );
 
   SetWindowSubclass( txt_box, editproc, 0, 0 );
 }
