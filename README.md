@@ -1,7 +1,9 @@
 todo :
 - finish scrollbar
+- - [read](https://learn.microsoft.com/en-us/windows/win32/gdi/about-painting-and-drawing)
+- - [read](https://learn.microsoft.com/en-us/windows/win32/gdi/using-the-wm-paint-message)
+- - [read](https://learn.microsoft.com/en-us/windows/win32/gdi/painting-and-drawing-reference)
 - - flicker when typing, scrolling more than 1 line
-- make tab key return 2 spaces
 - add line count ( use em_ )
 - minimize variable scope all around
 - clean up everything in wnd_type(_scroll) & tps
@@ -38,37 +40,6 @@ case WM_PAINT: {
 
     EndPaint(hwnd, &ps);
 } break;
-```
-Scrollbar Customization: handle the WM_NCPAINT message for non-client area painting.
-Here's a simplified example of how you can customize the scrollbar in your wnd_type_scroll_draw function:
-```cpp
-void wnd_type_scroll_draw(HWND hwnd) {
-    // ... (previous code)
-
-    // Custom scrollbar colors
-    COLORREF scrollbarColor = RGB(255, 0, 0); // Red for example
-    COLORREF thumbColor = RGB(0, 0, 255);     // Blue for example
-
-    SetScrollInfo(hwnd, SB_VERT, &si, TRUE);
-
-    // Create a memory DC and select a compatible bitmap
-    HDC hdcMem = CreateCompatibleDC(hdc);
-    HBITMAP hBmp = CreateCompatibleBitmap(hdc, sbi.rcScrollBar.right - sbi.rcScrollBar.left, sbi.rcScrollBar.bottom - sbi.rcScrollBar.top);
-    SelectObject(hdcMem, hBmp);
-
-    // Custom drawing here, e.g., FillRect for the scrollbar background and thumb
-    FillRect(hdcMem, &sbi.rcScrollBar, CreateSolidBrush(scrollbarColor));
-    FillRect(hdcMem, &scroll_grab, CreateSolidBrush(thumbColor));
-
-    // Blit the memory DC to the screen
-    BitBlt(hdc, sbi.rcScrollBar.left, sbi.rcScrollBar.top, sbi.rcScrollBar.right - sbi.rcScrollBar.left, sbi.rcScrollBar.bottom - sbi.rcScrollBar.top, hdcMem, 0, 0, SRCCOPY);
-
-    // Clean up
-    DeleteObject(hBmp);
-    DeleteDC(hdcMem);
-
-    // ... (rest of the code)
-}
 ```
 Optimizing Drawing: involves minimizing redundant operations and making your code more efficient.
 For example, you can reduce the number of times you call FillRect by checking if the region actually needs to be redrawn.

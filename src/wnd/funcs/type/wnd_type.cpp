@@ -7,6 +7,12 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
   GetClientRect( hwnd, &text_sz );
 
   switch( msg ) {
+  case WM_CHAR: {
+    if (wp == VK_TAB) {
+      SendMessageW( hwnd, EM_REPLACESEL, FALSE, (LPARAM)L"  \0" );
+      return 0;
+    }
+  } break;
   case WM_ERASEBKGND: {
     HDC hdc = (HDC)wp;
     HBRUSH brush = CreateSolidBrush( COL_D_GRY );
