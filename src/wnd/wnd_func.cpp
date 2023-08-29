@@ -39,7 +39,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     case EN_CHANGE:
     case EN_VSCROLL: {
       wnd_type_scroll_draw( (HWND)lp );
-      InvalidateRect( (HWND)lp, 0, TRUE );
+      return 0;
     } break;
     }
   } break;

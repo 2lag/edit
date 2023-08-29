@@ -22,11 +22,10 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     DeleteObject( brush );
     return 1;
   } break;
+  case WM_NCPAINT:
   case WM_PAINT:
   case WM_VSCROLL: {
     wnd_type_scroll_draw( hwnd );
-
-    InvalidateRect( hwnd, &text_sz, false );
   } break;
   }
 
@@ -79,6 +78,7 @@ void wnd_type_scroll_draw( HWND hwnd ) {
 
   PAINTSTRUCT ps;
   HDC hdc = BeginPaint( hwnd, &ps );
+  ps.fErase = TRUE;
   HBRUSH dbrush = CreateSolidBrush( COL_D_GRY ),
          lbrush = CreateSolidBrush( COL_L_GRY );
 
@@ -93,4 +93,6 @@ void wnd_type_scroll_draw( HWND hwnd ) {
   EndPaint( hwnd, &ps );
   DeleteObject( dbrush );
   DeleteObject( lbrush );
+  
+  InvalidateRect( hwnd, 0, false ); // swap to immediate draw call
 }
