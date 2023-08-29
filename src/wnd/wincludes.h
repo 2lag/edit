@@ -18,6 +18,8 @@
 
 extern HWND txt_box;
 
+extern SCROLLBARINFO sbi;
+
 extern u64 tps;
 extern u64 prev_time;
 extern bool  user_resizing;

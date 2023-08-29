@@ -1,6 +1,7 @@
 #include "wnd_type.h"
 
 HWND txt_box;
+SCROLLBARINFO sbi;
 
 LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
   RECT text_sz{};
@@ -42,8 +43,10 @@ void wnd_type_create( HWND hwnd, POINT pwnd_sz ) {
     (HINSTANCE)GetWindowLongPtrW( hwnd, GWLP_HINSTANCE ), 0
   );
 
+  sbi.cbSize = sizeof( SCROLLBARINFO );
+
   SendMessageW( txt_box, SBM_ENABLE_ARROWS, ESB_DISABLE_BOTH, 0 );
-  
+
   SetWindowSubclass( txt_box, editproc, 0, 0 );
 }
 
@@ -69,8 +72,6 @@ void wnd_type_customize( WPARAM wp ) {
 }
 
 void wnd_type_scroll_draw( HWND hwnd ) {
-  static SCROLLBARINFO sbi;
-  sbi.cbSize = sizeof( SCROLLBARINFO );
   GetScrollBarInfo( hwnd, OBJID_VSCROLL, &sbi );
 
   ScreenToClient( hwnd, reinterpret_cast<POINT*>( &sbi.rcScrollBar.left ) );
