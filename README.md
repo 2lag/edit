@@ -41,7 +41,6 @@ case WM_PAINT: {
 ```
 
 use GetDC/GetDCEx to get dc outside of wndproc
-check rcPaint size as well in beginpaint calls where scrollbar may be drawn ?
 InvalidateRect does not generate WM_PAINT messages, it just adds to the update region for the next wm_paint message in queue
 maybe use ValidateRect to keep scrollbar drawn on moments where it bugs and displays one underneath ( hover, over-scroll, etc )
 to remove delay between sending invalidate, and it being drawn, use Update/RedrawWindow for syncronous drawing ( try both )

@@ -36,10 +36,18 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   case WM_COMMAND: {
     switch( HIWORD( wp ) ) {
     case EN_AFTER_PASTE:
+    case EN_BEFORE_PASTE:
     case EN_CHANGE:
+    case EN_UPDATE:
     case EN_VSCROLL: {
       wnd_type_scroll_draw( (HWND)lp );
       return 0;
+    } break;
+    case EN_ERRSPACE: {
+      MessageBoxW( (HWND)lp,
+        L"error", L"EN_ERRSPACE triggered",
+        MB_OK | MB_ICONERROR
+      );
     } break;
     }
   } break;

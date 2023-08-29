@@ -78,6 +78,17 @@ void wnd_type_scroll_draw( HWND hwnd ) {
 
   PAINTSTRUCT ps;
   HDC hdc = BeginPaint( hwnd, &ps );
+
+  if( !ps.rcPaint ) {
+    EndPaint( hwnd, &ps );
+    RedrawWindow( hwnd, 0, 0, RDW_INVALIDATE | RDW_UPDATENOW );
+    return;
+  }
+#ifdef _DEBUG
+  std::cout << "Scroll  " << sbi.rcScrollBar.left << " " << sbi.rcScrollBar.top << " " << sbi.rcScrollBar.right << " " << sbi.rcScrollBar.bottom << std::endl;
+  std::cout << "rcPaint " << ps.rcPaint.left << " " << ps.rcPaint.top << " " << ps.rcPaint.right << " " << ps.rcPaint.bottom << std::endl;
+  std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n" << std::endl;
+#endif
   ps.fErase = TRUE;
   HBRUSH dbrush = CreateSolidBrush( COL_D_GRY ),
          lbrush = CreateSolidBrush( COL_L_GRY );
