@@ -35,14 +35,6 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   switch( msg ) {
   case WM_COMMAND: {
     switch( HIWORD( wp ) ) {
-    case EN_AFTER_PASTE:
-    case EN_BEFORE_PASTE:
-    case EN_CHANGE:
-    case EN_UPDATE:
-    case EN_VSCROLL: {
-      wnd_type_scroll_draw( (HWND)lp );
-      return 0;
-    } break;
     case EN_ERRSPACE: {
       MessageBoxW( (HWND)lp,
         L"error", L"EN_ERRSPACE triggered",
@@ -102,8 +94,11 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
       pwnd_sz.y - 75,
       TRUE
     );
-    wnd_type_scroll_draw( txt_box );
-    InvalidateRect( txt_box, 0, TRUE );
+    MoveWindow( vscroll,
+      pwnd_sz.x - 40, -17,
+      15, pwnd_sz.y - 40,
+      TRUE
+    );
   } break;
   }
   return DefWindowProcW( hwnd, msg, wp, lp );
