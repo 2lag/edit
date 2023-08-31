@@ -37,8 +37,6 @@ void wnd_type_create( HWND hwnd, POINT pwnd_sz ) {
     (HINSTANCE)GetWindowLongPtrW( hwnd, GWLP_HINSTANCE ), 0
   );
 
-  wnd_type_scroll_create( hwnd, pwnd_sz );
-
   SetWindowSubclass( txt_box, editproc, 0, 0 );
 }
 

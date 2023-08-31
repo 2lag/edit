@@ -17,9 +17,6 @@
 #include "../typedef.h"
 
 extern HWND txt_box;
-extern HWND vscroll;
-
-extern SCROLLINFO si;
 
 extern u64 tps;
 extern u64 prev_time;
@@ -83,6 +80,12 @@ inline POINT to_sz_point( RECT r ) {
 
 inline POINT to_pos_point( RECT r ) {
   return { r.left, r.top };
+}
+
+inline RECT get_wnd_sz( HWND hwnd ) {
+  RECT r;
+  GetClientRect( hwnd, &r );
+  return r;
 }
 
 #define get_monitor_info( c_mon ) \
