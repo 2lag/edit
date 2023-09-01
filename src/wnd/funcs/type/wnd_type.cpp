@@ -3,6 +3,7 @@
 #include "wnd_type_scroll.h"
 
 HWND txt_box;
+CSCROLL vscroll;
 
 LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
   RECT text_sz{};
@@ -18,10 +19,13 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
   } break;
   case WM_ERASEBKGND: {
     HDC hdc = (HDC)wp;
-    HBRUSH brush = CreateSolidBrush( COL_D_GRY );
-    FillRect( hdc, &text_sz, brush );
-    DeleteObject( brush );
+    HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
+    FillRect( hdc, &text_sz, dbrush );
+    DeleteObject( dbrush );
+
+    vscroll.cscroll_create( txt_box );
     return 1;
+    
   } break;
   }
 

@@ -1,7 +1,8 @@
 todo :
-- make plan for custom scrollbar
-- - make scrollbar class ( RECT, hovered, draw function, get info (size,pos,etc) )
+- keep working on custom scrollbar plan
+- - global the cscroll if possible because we have to use it in wnd_type & func
 - add line count ( use edit_getlinecount/edit_getfirstvisibleline )
+- add cursor/caret position in bottom middle
 - minimize variable scope, clean up, & optimize everything in all files
 - add icon
 - add menu bar & functionality
