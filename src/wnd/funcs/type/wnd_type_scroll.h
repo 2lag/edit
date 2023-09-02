@@ -7,9 +7,6 @@ public:
   bool hovered;
   POINT size;
 
-private:
-  HCURSOR p_cursor;
-
 public:
   void cscroll_create( HWND hwnd ) {
     parent = hwnd;
