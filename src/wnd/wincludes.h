@@ -16,6 +16,21 @@
 
 #include "../typedef.h"
 
+enum wnd_col {
+  COL_D_GRY = RGB(  32,  32,  32 ),
+  COL_L_GRY = RGB( 120, 120, 120 ),
+  COL_D_RED = RGB(  64,  32,  32 ),
+};
+
+inline RECT get_wnd_sz( HWND hwnd ) {
+  RECT r;
+  GetClientRect( hwnd, &r );
+  return r;
+}
+
+#include "funcs/type/wnd_type_scroll.h"
+extern CSCROLL vscroll;
+
 extern HWND txt_box;
 
 extern u64 tps;
@@ -25,11 +40,6 @@ extern POINT max_prev_pos;
 extern RECT  max_prev_sz;
 extern bool  is_maxd;
 
-enum wnd_col {
-  COL_D_GRY = RGB(  32,  32,  32 ),
-  COL_L_GRY = RGB( 120, 120, 120 ),
-  COL_D_RED = RGB(  64,  32,  32 ),
-};
 
 inline POINT operator+=( POINT &a, const POINT b ) {
   a.x += b.x;
@@ -80,12 +90,6 @@ inline POINT to_sz_point( RECT r ) {
 
 inline POINT to_pos_point( RECT r ) {
   return { r.left, r.top };
-}
-
-inline RECT get_wnd_sz( HWND hwnd ) {
-  RECT r;
-  GetClientRect( hwnd, &r );
-  return r;
 }
 
 #define get_monitor_info( c_mon ) \

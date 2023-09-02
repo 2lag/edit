@@ -49,7 +49,7 @@ void wnd_type_outline( HWND hwnd, POINT wnd_sz ) {
   HBRUSH brush = CreateSolidBrush( COL_L_GRY );
   RECT outline_sz {
     24, 49,
-    wnd_sz.x,
+    wnd_sz.x - 25,
     wnd_sz.y - 24
   };
   FillRect( hdc, &outline_sz, brush );

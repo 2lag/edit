@@ -77,6 +77,8 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
       break;
     wnd_resize_get_cursor( m_pos, wnd_sz );
     wnd_resize( hwnd, m_pos, wnd_sz );
+
+    vscroll.cscroll_ishovered( m_pos );
   } break;
   case WM_PAINT: {
     PAINTSTRUCT ps;
@@ -90,7 +92,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   case WM_SIZE: {
     MoveWindow( txt_box,
       25, 50,
-      pwnd_sz.x - 25,
+      pwnd_sz.x - 50,
       pwnd_sz.y - 75,
       TRUE
     );

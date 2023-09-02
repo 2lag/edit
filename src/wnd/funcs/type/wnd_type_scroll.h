@@ -1,21 +1,22 @@
 #pragma once
-#include "../../wincludes.h"
 
 class CSCROLL {
 public:
   HWND parent;
   RECT rect;
   bool hovered;
-  s32  height;
+  POINT size;
+
+private:
+  HCURSOR p_cursor;
 
 public:
   void cscroll_create( HWND hwnd ) {
     parent = hwnd;
     RECT r = get_wnd_sz( parent );
-    s32 sbw = (s32)( r.right * 0.025 );
     rect = {
-      r.right - sbw, r.top,
-      r.right, r.bottom
+      r.right, r.top - 1,
+      r.right + 25, r.bottom + 1
     };
     cscroll_draw();
   }
@@ -28,19 +29,29 @@ public:
   }
 public:
   void cscroll_drag_off() {
-    // copy resize/drag on/off but use ishovered
+    // copy drag on/off but use ishovered
   }
   void cscroll_drag_on() {
-    // copy resize/drag on/off but use ishovered
+    // copy drag on/off but use ishovered
   }
-  void cscroll_drag(); // finish, use scrollwindowex ?
-  bool cscroll_ishovered() {
-    // ptinrect for rect and mousepos
-    // change cursor to arrow or whatever is good for click
-    // return true if so, false if not
+  void cscroll_drag() {
+    // finish after drag_on, then use scrollwindowex ?
+  }
+  bool cscroll_ishovered( POINT m_pos ) {
+    m_pos.x -= 25; m_pos.y -= 50;
+    if( PtInRect( &rect, m_pos ) ) {
+      hovered = true;
+      return true;
+    }
+
+    hovered = false;
+    return false;
   }
   void cscroll_scroll() {
     // get wm_commands en_vscroll message in wnd_func
   }
-  void cscroll_setinfo(); // to set info when line count/scroll pos changes
+  void cscroll_setinfo() {
+    // to set info when line count, scroll pos, current line, etc changes
+    // update .rect with the appropriate math
+  }
 };
