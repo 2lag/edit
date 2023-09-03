@@ -28,13 +28,22 @@ public:
     HBRUSH dbrush = CreateSolidBrush( COL_D_GRY ),
            lbrush = CreateSolidBrush( COL_L_GRY );
 
-    // calculate rect/size
-    s32 line_count = Edit_GetLineCount( parent );
-    // get line height
-    // get first visible line
-    // get total amount of visible lines ( get_wnd_sz parent, to_sz_pos that, divide by line height )
-    // get last visible line
-    // 
+    s32 line_count = Edit_GetLineCount( parent ), // + 1 ? check debug info
+        line_first = Edit_GetFirstVisibleLine( parent );
+    SIZE line_sz;
+    GetTextExtentPoint32W( hdc, L"A", 1, &line_sz );
+    s32 visible_lines = to_sz_point( get_wnd_sz( parent ) ).y / line_sz.cy,
+        line_last  = line_first + visible_lines; // - 1 ? check debug info
+
+    std::cout << "line count    : " << line_count    << std::endl;
+    std::cout << "line first    : " << line_first    << std::endl;
+    std::cout << "line size     : " << line_sz.cy    << std::endl;
+    std::cout << "lines visible : " << visible_lines << std::endl;
+    std::cout << "line last     : " << line_last     << std::endl;
+    std::cout << "\n\n\n\n\n\n\n\n\n\n\n" << std::endl;
+
+    // calculate & setup scrollbar rect
+
 
     FillRect( hdc, &bkrect, dbrush );
     FillRect( hdc, &rect, lbrush );
