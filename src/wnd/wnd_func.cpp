@@ -61,6 +61,9 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   case WM_LBUTTONDOWN: {
     wnd_resize_on( hwnd, m_pos, wnd_sz );
     wnd_drag_on( hwnd, m_pos, PtInRect( &drag, m_pos ) );
+    
+    vscroll.cscroll_drag_on( m_pos );
+
     wnd_title_cls( hwnd, PtInRect( &cls, m_pos ) );
     wnd_title_max( hwnd, PtInRect( &max, m_pos ) );
     wnd_title_min( hwnd, PtInRect( &min, m_pos ) );
@@ -68,17 +71,22 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   case WM_LBUTTONUP: {
     if( !user_resizing )
       wnd_drag_resize( hwnd, m_pos );
+
     wnd_drag_off();
     wnd_resize_off();
+
+    vscroll.cscroll_drag_off();
   } break;
   case WM_MOUSEMOVE: {
     wnd_drag( hwnd, m_pos );
-    if( is_maxd )
-      break;
-    wnd_resize_get_cursor( m_pos, wnd_sz );
-    wnd_resize( hwnd, m_pos, wnd_sz );
 
     vscroll.cscroll_ishovered( m_pos );
+
+    if( is_maxd )
+      break;
+
+    wnd_resize_get_cursor( m_pos, wnd_sz );
+    wnd_resize( hwnd, m_pos, wnd_sz );
   } break;
   case WM_PAINT: {
     PAINTSTRUCT ps;

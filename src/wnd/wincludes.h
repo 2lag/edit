@@ -28,10 +28,18 @@ inline RECT get_wnd_sz( HWND hwnd ) {
   return r;
 }
 
-#include "funcs/type/wnd_type_scroll.h"
-extern CSCROLL vscroll;
+inline POINT to_sz_point( RECT r ) {
+  return { r.right - r.left, r.bottom - r.top };
+}
+
+inline POINT to_pos_point( RECT r ) {
+  return { r.left, r.top };
+}
 
 extern HWND txt_box;
+
+#include "funcs/type/wnd_type_scroll.h"
+extern CSCROLL vscroll;
 
 extern u64 tps;
 extern u64 prev_time;
@@ -82,14 +90,6 @@ inline bool operator!( const POINT &a ) {
 inline bool operator!(const RECT& a) {
   return ( a.left == 0 && a.right == 0 &&
            a.top == 0 && a.bottom == 0 );
-}
-
-inline POINT to_sz_point( RECT r ) {
-  return { r.right - r.left, r.bottom - r.top };
-}
-
-inline POINT to_pos_point( RECT r ) {
-  return { r.left, r.top };
 }
 
 #define get_monitor_info( c_mon ) \
