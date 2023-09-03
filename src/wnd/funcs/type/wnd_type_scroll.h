@@ -29,10 +29,12 @@ public:
            lbrush = CreateSolidBrush( COL_L_GRY );
 
     // calculate rect/size
-    s32 line_count = (s32)SendMessageW( parent, EM_GETLINECOUNT, 0, 0 );
+    s32 line_count = Edit_GetLineCount( parent );
     // get line height
-    // get total amount of visible lines
     // get first visible line
+    // get total amount of visible lines ( get_wnd_sz parent, to_sz_pos that, divide by line height )
+    // get last visible line
+    // 
 
     FillRect( hdc, &bkrect, dbrush );
     FillRect( hdc, &rect, lbrush );
