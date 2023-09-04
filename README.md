@@ -1,5 +1,7 @@
 todo :
-- keep working on custom scrollbar plan
+- keep working on custom scrollbar
+- then simplify/optimize cscroll class
+- move txt box and outline right side left by 1px
 - add line count ( use edit_getlinecount/edit_getfirstvisibleline )
 - add cursor/caret position in bottom middle
 - minimize variable scope, clean up, & optimize everything in all files
