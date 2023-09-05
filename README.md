@@ -1,5 +1,7 @@
 todo :
 - keep working on custom scrollbar
+- - debug positioning, add changing locations on up/down arrow as well as other binds that move
+- - also redraw/invalidate textbox when scrollbar is updated
 - then simplify/optimize cscroll class
 - move txt box and outline right side left by 1px
 - add line count ( use edit_getlinecount/edit_getfirstvisibleline )
