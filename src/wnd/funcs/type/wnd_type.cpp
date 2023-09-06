@@ -11,10 +11,15 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
 
   switch( msg ) {
   case WM_CHAR: {
+    // https://learn.microsoft.com/en-us/windows/win32/inputdev/wm-char
+    // maybe draw vscroll here when current line doesnt equal previous line ? ( gonna have to add that var )
     switch( wp ) {
     case VK_TAB: {
       SendMessageW( hwnd, EM_REPLACESEL, FALSE, (LPARAM)L"  \0" );
     } return 0;
+    case VK_RETURN: {
+      vscroll.cscroll_draw();
+    } break;
     }
   } break;
   case WM_ERASEBKGND: {
@@ -47,10 +52,10 @@ void wnd_type_create( HWND hwnd, POINT pwnd_sz ) {
 
 void wnd_type_outline( HWND hwnd, POINT wnd_sz ) {
   HDC hdc = GetDC( hwnd );
-  HBRUSH brush = CreateSolidBrush( COL_L_GRY );
+  HBRUSH brush = CreateSolidBrush( COL_M_GRY );
   RECT outline_sz {
     24, 49,
-    wnd_sz.x - 25,
+    wnd_sz.x - 24,
     wnd_sz.y - 24
   };
   FillRect( hdc, &outline_sz, brush );
@@ -63,5 +68,5 @@ void wnd_type_customize( WPARAM wp ) {
   HDC hdc = (HDC)wp;
 
   SetBkMode( hdc, TRANSPARENT );
-  SetTextColor( hdc, COL_L_GRY );
+  SetTextColor( hdc, COL_M_GRY );
 }

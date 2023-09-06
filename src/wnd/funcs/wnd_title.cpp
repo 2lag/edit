@@ -2,18 +2,18 @@
 
 void wnd_title_draw( HDC hdc, POINT m_pos, RECT wnd_sz ) {
   WND_OBJ obj[] = {
-    wnd_obj_create( {                 0, 0, wnd_sz.right     , 25 }, COL_L_GRY, false ),
+    wnd_obj_create( {                 0, 0, wnd_sz.right     , 25 }, COL_M_GRY, false ),
     wnd_obj_create( {                 0, 0, wnd_sz.right     , 24 }, COL_D_GRY, false ),
-    wnd_obj_create( { wnd_sz.right - 25, 0, wnd_sz.right     , 25 }, COL_L_GRY, true  ),
+    wnd_obj_create( { wnd_sz.right - 25, 0, wnd_sz.right     , 25 }, COL_M_GRY, true  ),
     wnd_obj_create( { wnd_sz.right - 24, 0, wnd_sz.right     , 24 }, COL_D_GRY, false ),
-    wnd_obj_create( { wnd_sz.right - 50, 0, wnd_sz.right - 25, 25 }, COL_L_GRY, true  ),
+    wnd_obj_create( { wnd_sz.right - 50, 0, wnd_sz.right - 25, 25 }, COL_M_GRY, true  ),
     wnd_obj_create( { wnd_sz.right - 49, 0, wnd_sz.right - 25, 24 }, COL_D_GRY, false ),
-    wnd_obj_create( { wnd_sz.right - 75, 0, wnd_sz.right - 50, 25 }, COL_L_GRY, true  ),
+    wnd_obj_create( { wnd_sz.right - 75, 0, wnd_sz.right - 50, 25 }, COL_M_GRY, true  ),
     wnd_obj_create( { wnd_sz.right - 74, 0, wnd_sz.right - 50, 24 }, COL_D_GRY, false )
   };
 
   SetBkMode( hdc, TRANSPARENT );
-  SetTextColor( hdc, COL_L_GRY );
+  SetTextColor( hdc, COL_M_GRY );
 
   for( s32 idx = 0; idx < 8; ++idx ) {
     FillRect( hdc, &obj[ idx ].r, obj[ idx ].col );
