@@ -11,11 +11,11 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
 
   switch( msg ) {
   case WM_CHAR: {
-    if( wp != VK_TAB )
-      break;
-
-    SendMessageW( hwnd, EM_REPLACESEL, FALSE, (LPARAM)L"  \0" );
-    return 0;
+    switch( wp ) {
+    case VK_TAB: {
+      SendMessageW( hwnd, EM_REPLACESEL, FALSE, (LPARAM)L"  \0" );
+    } return 0;
+    }
   } break;
   case WM_ERASEBKGND: {
     HDC hdc = (HDC)wp;
@@ -24,6 +24,7 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     DeleteObject( dbrush );
 
     vscroll.cscroll_create( txt_box );
+    vscroll.cscroll_draw();
     return 1;
     
   } break;

@@ -1,5 +1,16 @@
 #pragma once
 
+struct SCROLL_PROP {
+  s32 line_count;
+  s32 line_first;
+  SIZE line_sz;
+  s32 visible_lines;
+  s32 line_last;
+  s32 curr_line;
+  s32 scroll_height;
+  s32 scroll_y_top;
+};
+
 class CSCROLL {
 public:
   HWND parent;
@@ -8,6 +19,7 @@ public:
   bool hovered;
   bool dragging;
   POINT drag_pos;
+  SCROLL_PROP pscroll;
 
 public:
   void cscroll_create( HWND hwnd ) {
@@ -19,27 +31,14 @@ public:
       r.right + 25, r.bottom + 1
     };
 
-    cscroll_draw();
   }
   void cscroll_draw() {
     HDC hdc = GetDC( parent );
     HBRUSH dbrush = CreateSolidBrush( COL_D_GRY ),
            lbrush = CreateSolidBrush( COL_L_GRY );
 
-    s32 line_count = Edit_GetLineCount( parent ),
-        line_first = Edit_GetFirstVisibleLine( parent ) + 1;
-    SIZE line_sz;
-    GetTextExtentPoint32W( hdc, L"A", 1, &line_sz );
-    s32 visible_lines = to_sz_point( get_wnd_sz( parent ) ).y / line_sz.cy,
-        line_last     = line_first + visible_lines - 1,
-        current_line  = (s32)SendMessageW( txt_box, EM_LINEFROMCHAR, -1, 0 ) + 1,
-        scroll_height = bkrect.bottom / ( ( line_count >= visible_lines ) ? line_count - visible_lines : 1 ) + 1,
-        scroll_ytop   = ( bkrect.bottom - scroll_height ) * ( current_line / line_count );
-
-    rect = {
-      rect.left, scroll_ytop,
-      rect.right, scroll_ytop + scroll_height
-    };
+    GetTextExtentPoint32W( hdc, L"A", 1, &pscroll.line_sz );
+    cscroll_setinfo();
 
     FillRect( hdc, &bkrect, dbrush );
     FillRect( hdc, &rect, lbrush );
@@ -83,7 +82,29 @@ public:
   }
 public:
   void cscroll_setinfo() {
-    // to set info when line count, scroll pos, current line, etc changes
-    // update .rect with the appropriate math
+    pscroll.line_count = Edit_GetLineCount( parent );
+    pscroll.line_first = Edit_GetFirstVisibleLine( parent ) + 1;
+    pscroll.visible_lines = to_sz_point( get_wnd_sz( parent ) ).y / pscroll.line_sz.cy,
+    pscroll.line_last     = pscroll.line_first + pscroll.visible_lines - 1,
+    pscroll.curr_line  = (s32)SendMessageW( txt_box, EM_LINEFROMCHAR, -1, 0 ) + 1,
+    pscroll.scroll_height = bkrect.bottom / ( ( pscroll.line_count >= pscroll.visible_lines ) ? pscroll.line_count - pscroll.visible_lines : 1 ) + 1,
+    pscroll.scroll_y_top   = ( bkrect.bottom - pscroll.scroll_height ) * ( pscroll.curr_line / pscroll.line_count );
+
+    std::cout << "line count    : " << pscroll.line_count    << std::endl;
+    std::cout << "line first    : " << pscroll.line_first    << std::endl;
+    std::cout << "line size     : " << pscroll.line_sz.cy    << std::endl;
+    std::cout << "lines visible : " << pscroll.visible_lines << std::endl;
+    std::cout << "line last     : " << pscroll.line_last     << std::endl;
+    std::cout << "current line  : " << pscroll.curr_line << std::endl;
+    std::cout << "scroll height : " << pscroll.scroll_height << std::endl;
+    std::cout << "scroll y top  : " << pscroll.scroll_y_top << std::endl;
+    std::cout << "\n\n\n\n\n\n\n\n" << std::endl;
+
+    rect = {
+      rect.left,
+      pscroll.scroll_y_top,
+      rect.right,
+      pscroll.scroll_y_top + pscroll.scroll_height
+    };
   }
 };
