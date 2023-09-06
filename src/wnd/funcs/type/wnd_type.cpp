@@ -11,15 +11,10 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
 
   switch( msg ) {
   case WM_CHAR: {
-    // https://learn.microsoft.com/en-us/windows/win32/inputdev/wm-char
-    // maybe draw vscroll here when current line doesnt equal previous line ? ( gonna have to add that var )
     switch( wp ) {
     case VK_TAB: {
       SendMessageW( hwnd, EM_REPLACESEL, FALSE, (LPARAM)L"  \0" );
     } return 0;
-    case VK_RETURN: {
-      vscroll.cscroll_draw();
-    } break;
     }
   } break;
   case WM_ERASEBKGND: {
