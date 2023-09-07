@@ -34,14 +34,15 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
 
   switch( msg ) {
   case WM_COMMAND: {
-    // https://learn.microsoft.com/en-us/windows/win32/inputdev/wm-char
-    // maybe draw vscroll here when current line doesnt equal previous line ? ( gonna have to add that var )
     switch( HIWORD( wp ) ) {
     case EN_ERRSPACE: {
       MessageBoxW( (HWND)lp,
         L"error", L"EN_ERRSPACE triggered",
         MB_OK | MB_ICONERROR
       );
+    } break;
+    case EN_VSCROLL: {
+      vscroll.cscroll_setinfo( true ); // swap to csroll_scroll when done ? idk make plan
     } break;
     }
   } break;
