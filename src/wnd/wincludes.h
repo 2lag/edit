@@ -16,7 +16,7 @@
 
 #include "../typedef.h"
 
-enum wnd_col {
+enum WND_COL {
   COL_D_GRY = RGB(  32,  32,  32 ),
   COL_M_GRY = RGB( 120, 120, 120 ),
   COL_L_GRY = RGB( 150, 150, 150 ),

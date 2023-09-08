@@ -63,12 +63,19 @@ public:
     drag_pos = m_pos;
   }
   void cscroll_drag( POINT m_pos ) {
+    if( !GetAsyncKeyState( MK_LBUTTON ) )
+      dragging = false;
+
     if( !dragging )
       return;
-    // make plan for calculations
-
-    // use scrollwindowex or em_linescroll/em_scroll ? ( copy wnd_drag )
-    // make sure to invalidate/repaint txt_box & limit position
+    /* plan for calc
+         get y position within scrollbar
+         get m delta like in wnd_drag
+         convert delta_y to line count
+         call scrollwindowex or send em_linescroll/em_scroll with that val
+         set bounds for drawing
+         call cscroll_draw with repaint true :) gg ez
+    */
   }
   bool cscroll_ishovered( POINT m_pos ) {
     m_pos.x -= 25; m_pos.y -= 50;
@@ -83,18 +90,17 @@ public:
   }
 public:
   void cscroll_setinfo( bool redraw ) {
+    curr_line  = (s32)SendMessageW( txt_box, EM_LINEFROMCHAR, -1, 0 ) + 1;
     line_count = (s32)SendMessageW( parent, EM_GETLINECOUNT, 0, 0 );
     line_first = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 ) + 1;
     lines_vis = to_sz_point( get_wnd_sz( parent ) ).y / line_sz.cy;
     line_last     = line_first + lines_vis - 1;
-    curr_line  = (s32)SendMessageW( txt_box, EM_LINEFROMCHAR, -1, 0 ) + 1;
     if( line_count > lines_vis )
       scroll_h = bkrect.bottom / ( line_count - lines_vis );
     else
       scroll_h = bkrect.bottom + 1;
     scroll_y   = ( bkrect.bottom - scroll_h ) * ( curr_line / line_count );
-    // ^^ ** fix top most scroll when small scroll is in action ** ^^
-    // also fix the fucking math because its clearly not working right
+    // also fix the fucking math by writing out values and testing then find proper equation
 #ifdef _DEBUG
     std::cout << "current line   : " << curr_line << std::endl;
     std::cout << "line count     : " << line_count << std::endl;
@@ -105,7 +111,8 @@ public:
     std::cout << "scroll height  : " << scroll_h << std::endl;
     std::cout << "scroll y top   : " << scroll_y << std::endl;
     std::cout << "scroll hover   : " << hovered << std::endl;
-    std::cout << "\n\n\n\n\n\n" << std::endl;
+    std::cout << "scroll draggin : " << dragging << std::endl;
+    std::cout << "\n\n\n\n\n" << std::endl;
 #endif
     rect = {
       rect.left,
