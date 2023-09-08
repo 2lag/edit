@@ -19,7 +19,7 @@
 enum wnd_col {
   COL_D_GRY = RGB(  32,  32,  32 ),
   COL_M_GRY = RGB( 120, 120, 120 ),
-  COL_L_GRY = RGB( 200, 200, 200 ),
+  COL_L_GRY = RGB( 150, 150, 150 ),
   COL_D_RED = RGB(  64,  32,  32 ),
 };
 

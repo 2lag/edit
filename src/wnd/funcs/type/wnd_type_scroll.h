@@ -33,12 +33,10 @@ public:
   }
   void cscroll_draw( bool redraw = false ) {
     HDC hdc = GetDC( parent );
-    HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
-    HBRUSH lbrush;
-    if( hovered )
-      lbrush = CreateSolidBrush( COL_L_GRY );
-    else
-      lbrush = CreateSolidBrush( COL_M_GRY );
+    HBRUSH dbrush = CreateSolidBrush( COL_D_GRY ),
+           lbrush = CreateSolidBrush(
+             ( hovered ) ? COL_L_GRY : COL_M_GRY
+    );
 
     GetTextExtentPoint32W( hdc, L"A", 1, &line_sz );
     cscroll_setinfo( redraw );
@@ -67,7 +65,9 @@ public:
   void cscroll_drag( POINT m_pos ) {
     if( !dragging )
       return;
-    // use scrollwindowex or em_linescroll/em|en_scroll ? ( copy wnd_drag )
+    // make plan for calculations
+
+    // use scrollwindowex or em_linescroll/em_scroll ? ( copy wnd_drag )
     // make sure to invalidate/repaint txt_box & limit position
   }
   bool cscroll_ishovered( POINT m_pos ) {
@@ -80,9 +80,6 @@ public:
     hovered = false;
     cscroll_draw();
     return false;
-  }
-  void cscroll_scroll() {
-
   }
 public:
   void cscroll_setinfo( bool redraw ) {

@@ -42,7 +42,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
       );
     } break;
     case EN_VSCROLL: {
-      vscroll.cscroll_setinfo( true ); // swap to csroll_scroll when done ? idk make plan
+      vscroll.cscroll_setinfo( true );
     } break;
     }
   } break;

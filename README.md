@@ -1,6 +1,6 @@
 todo :
 - debug, fix, and keep working on cscroll
-- - if curr_line != sendmessage( currentline ), invalidate txtbox rect ?
+- - add hover scrolling
 - then simplify/optimize cscroll class
 - move txt box and outline right side left by 1px
 - add line count ( use edit_getlinecount/edit_getfirstvisibleline )
