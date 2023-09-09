@@ -1,7 +1,7 @@
 todo :
 - finish cscroll_drag, then add hover scrolling
-- then simplify/optimize cscroll class
-- move txt box and outline right side left by 1px
+- - remove debug print info
+- simplify/optimize cscroll class
 - add line count ( use edit_getlinecount/edit_getfirstvisibleline )
 - add cursor/caret position in bottom middle
 - minimize variable scope, clean up, & optimize everything in all files

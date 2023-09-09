@@ -29,8 +29,6 @@ public:
       r.right + 25,
       r.bottom + 1
     };
-
-    // send em_fmtlines maybe to fix the enter issue?
   }
   void cscroll_draw( bool redraw = false ) {
     HDC hdc = GetDC( parent );
@@ -116,10 +114,8 @@ public:
     std::cout << "scroll y top   : " << scroll_y << std::endl;
     std::cout << "scroll hover   : " << hovered << std::endl;
     std::cout << "scroll drag    : " << dragging << std::endl;
-    std::cout << "\n" << std::endl;
-    std::cout << "scroll top     : " << ( bkrect.bottom - scroll_h ) << std::endl;
     std::cout << "scroll ratio   : " << ( (f32)curr_line / (f32)line_count ) << std::endl;
-    std::cout << "\n" << std::endl;
+    std::cout << "\n\n\n\n" << std::endl;
 #endif
     rect = {
       rect.left,

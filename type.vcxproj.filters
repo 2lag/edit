@@ -68,6 +68,12 @@
     <ClInclude Include="src\wnd\funcs\type\wnd_type_scroll.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\wnd\funcs\util\util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wnd\funcs\util\overloads.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="customme.bin">
