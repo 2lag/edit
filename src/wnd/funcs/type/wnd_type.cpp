@@ -25,7 +25,9 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     vscroll.cscroll_create( txt_box );
     vscroll.cscroll_draw();
     return 1;
-    
+  } break;
+  case WM_KEYDOWN: {
+    vscroll.cscroll_draw( true );
   } break;
   }
 

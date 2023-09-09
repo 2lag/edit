@@ -30,6 +30,7 @@ public:
       r.bottom + 1
     };
 
+    // send em_fmtlines maybe to fix the enter issue?
   }
   void cscroll_draw( bool redraw = false ) {
     HDC hdc = GetDC( parent );
@@ -72,9 +73,10 @@ public:
          get y position within scrollbar
          get m delta like in wnd_drag
          convert delta_y to line count
-         call scrollwindowex or send em_linescroll/em_scroll with that val
+         call scrollwindowex or send em_scroll with that val
          set bounds for drawing
-         call cscroll_draw with repaint true :) gg ez
+         call cscroll_draw with repaint true
+         then set em_scrollcaret :) gg ez
     */
   }
   bool cscroll_ishovered( POINT m_pos ) {
@@ -90,17 +92,19 @@ public:
   }
 public:
   void cscroll_setinfo( bool redraw ) {
-    curr_line  = (s32)SendMessageW( txt_box, EM_LINEFROMCHAR, -1, 0 ) + 1;
+    curr_line  = (s32)SendMessageW( parent, EM_LINEFROMCHAR, -1, 0 ) + 1;
     line_count = (s32)SendMessageW( parent, EM_GETLINECOUNT, 0, 0 );
     line_first = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 ) + 1;
     lines_vis = to_sz_point( get_wnd_sz( parent ) ).y / line_sz.cy;
-    line_last     = line_first + lines_vis - 1;
+    line_last = line_first + lines_vis - 1;
     if( line_count > lines_vis )
       scroll_h = bkrect.bottom / ( line_count - lines_vis );
     else
       scroll_h = bkrect.bottom + 1;
-    scroll_y   = ( bkrect.bottom - scroll_h ) * ( curr_line / line_count );
-    // also fix the fucking math by writing out values and testing then find proper equation
+    if( curr_line == 1 )
+      scroll_y = -1;
+    else
+      scroll_y = (s32)( ( bkrect.bottom - scroll_h ) * ( (f32)curr_line / (f32)line_count ) );
 #ifdef _DEBUG
     std::cout << "current line   : " << curr_line << std::endl;
     std::cout << "line count     : " << line_count << std::endl;
@@ -111,8 +115,11 @@ public:
     std::cout << "scroll height  : " << scroll_h << std::endl;
     std::cout << "scroll y top   : " << scroll_y << std::endl;
     std::cout << "scroll hover   : " << hovered << std::endl;
-    std::cout << "scroll draggin : " << dragging << std::endl;
-    std::cout << "\n\n\n\n\n" << std::endl;
+    std::cout << "scroll drag    : " << dragging << std::endl;
+    std::cout << "\n" << std::endl;
+    std::cout << "scroll top     : " << ( bkrect.bottom - scroll_h ) << std::endl;
+    std::cout << "scroll ratio   : " << ( (f32)curr_line / (f32)line_count ) << std::endl;
+    std::cout << "\n" << std::endl;
 #endif
     rect = {
       rect.left,
@@ -122,7 +129,7 @@ public:
     };
 
     if( redraw ) {
-      RedrawWindow( parent, 0, 0, RDW_ERASE | RDW_INVALIDATE | RDW_UPDATENOW );
+      RedrawWindow( parent, 0, 0, RDW_ERASE | RDW_INVALIDATE );
       cscroll_draw();
     }
   }

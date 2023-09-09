@@ -1,6 +1,5 @@
 todo :
-- fix cscroll_setinfo math for scroll_y, finish cscroll_drag
-- - add hover scrolling
+- finish cscroll_drag, then add hover scrolling
 - then simplify/optimize cscroll class
 - move txt box and outline right side left by 1px
 - add line count ( use edit_getlinecount/edit_getfirstvisibleline )
