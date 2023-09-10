@@ -71,28 +71,25 @@ public:
       return;
     }
 
-    // fix this math w/ debug
-    s32 delta_y = scroll_y - m_pos.y;
+    // fix this math by debugging with _DEBUG couts
     s32 m_delta = m_pos.y - duser_start.y;
-    m_delta -= delta_y; // this may be the issue ?
     s32 delta_lines = m_delta / line_sz.cy;
 
-    // verify this is right
+    // verify this
     if( curr_line + delta_lines > line_count )
       delta_lines = 0;
     else if( curr_line + delta_lines < 1 )
       delta_lines = 0;
-
-    // also double check this
-    scroll_y += delta_y;
     
     RECT r_parent = get_wnd_sz( parent );
+    // swap for em_scroll?
     ScrollWindowEx( parent,
-      0, delta_lines,
+      0, -delta_lines,
       0, &r_parent, 0, 0,
       SW_ERASE | SW_INVALIDATE
     );
 
+    scroll_y += m_delta;
 
 #ifdef _DEBUG
     std::cout << "current line   : " << curr_line << std::endl;
@@ -103,14 +100,15 @@ public:
     std::cout << "scroll height  : " << scroll_h << std::endl;
     std::cout << "scroll y top   : " << scroll_y << std::endl;
     std::cout << "scroll hover   : " << hovered << std::endl;
-    std::cout << "scroll drag    : " << dragging << std::endl;
+    std::cout << "scroll drag    : " << dragging << "\n" << std::endl;
     std::cout << "delta lines    : " << delta_lines << std::endl;
-    std::cout << "\n\n\n\n\n" << std::endl;
+    std::cout << "m_delta        : " << m_delta << std::endl;
+    std::cout << "\n\n" << std::endl;
 #endif
 
 
     SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
-    cscroll_draw( false, true );
+    cscroll_draw( false );
   }
   bool cscroll_ishovered( POINT m_pos ) {
     m_pos.x -= 25; m_pos.y -= 50;
