@@ -1,7 +1,7 @@
 todo :
 - debug cscroll_drag, add update scrollbar when clicked in window, then add hover scrolling
 - - remove debug print info
-- simplify/optimize cscroll class
+- simplify/optimize cscroll & edit control
 - add line count ( use edit_getlinecount/edit_getfirstvisibleline )
 - add cursor/caret position in bottom middle
 - minimize variable scope, clean up, & optimize everything in all files
