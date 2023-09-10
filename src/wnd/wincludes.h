@@ -24,6 +24,7 @@ enum WND_COL {
 };
 
 #include "funcs/util/util.h"
+#include "funcs/util/overloads.h"
 
 extern HWND txt_box;
 
@@ -37,7 +38,6 @@ extern POINT max_prev_pos;
 extern RECT  max_prev_sz;
 extern bool  is_maxd;
 
-#include "funcs/util/overloads.h"
 
 #define get_monitor_info( c_mon ) \
 MONITORINFO i_mon; \

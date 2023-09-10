@@ -27,7 +27,7 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     return 1;
   } break;
   case WM_KEYDOWN: {
-    vscroll.cscroll_draw( true );
+    vscroll.cscroll_draw( true, true );
   } break;
   }
 

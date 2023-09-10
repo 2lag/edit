@@ -16,7 +16,7 @@ public:
   RECT rect;
   bool hovered;
   bool dragging;
-  POINT drag_pos;
+  POINT duser_start;
 
 public:
   void cscroll_create( HWND hwnd ) {
@@ -30,7 +30,7 @@ public:
       r.bottom + 1
     };
   }
-  void cscroll_draw( bool redraw = false ) {
+  void cscroll_draw( bool update_info = true, bool redraw = false ) {
     HDC hdc = GetDC( parent );
     HBRUSH dbrush = CreateSolidBrush( COL_D_GRY ),
            lbrush = CreateSolidBrush(
@@ -38,7 +38,8 @@ public:
     );
 
     GetTextExtentPoint32W( hdc, L"A", 1, &line_sz );
-    cscroll_setinfo( redraw );
+    if( update_info )
+      cscroll_setinfo( redraw );
 
     FillRect( hdc, &bkrect, dbrush );
     FillRect( hdc, &rect  , lbrush );
@@ -59,23 +60,57 @@ public:
       return;
 
     dragging = true;
-    drag_pos = m_pos;
+    duser_start = m_pos;
   }
   void cscroll_drag( POINT m_pos ) {
     if( !GetAsyncKeyState( MK_LBUTTON ) )
       dragging = false;
 
-    if( !dragging )
+    if( !dragging ) {
+      duser_start = m_pos;
       return;
-    /* plan for calc
-         get y position within scrollbar
-         get m delta like in wnd_drag
-         convert delta_y to line count
-         call scrollwindowex or send em_scroll with that val
-         set bounds for drawing
-         call cscroll_draw with repaint true
-         then set em_scrollcaret :) gg ez
-    */
+    }
+
+    // fix this math w/ debug
+    s32 delta_y = scroll_y - m_pos.y;
+    s32 m_delta = m_pos.y - duser_start.y;
+    m_delta -= delta_y; // this may be the issue ?
+    s32 delta_lines = m_delta / line_sz.cy;
+
+    // verify this is right
+    if( curr_line + delta_lines > line_count )
+      delta_lines = 0;
+    else if( curr_line + delta_lines < 1 )
+      delta_lines = 0;
+
+    // also double check this
+    scroll_y += delta_y;
+    
+    RECT r_parent = get_wnd_sz( parent );
+    ScrollWindowEx( parent,
+      0, delta_lines,
+      0, &r_parent, 0, 0,
+      SW_ERASE | SW_INVALIDATE
+    );
+
+
+#ifdef _DEBUG
+    std::cout << "current line   : " << curr_line << std::endl;
+    std::cout << "line count     : " << line_count << std::endl;
+    std::cout << "line first vis : " << line_first << std::endl;
+    std::cout << "line last vis  : " << line_last << std::endl;
+    std::cout << "line total vis : " << lines_vis << std::endl;
+    std::cout << "scroll height  : " << scroll_h << std::endl;
+    std::cout << "scroll y top   : " << scroll_y << std::endl;
+    std::cout << "scroll hover   : " << hovered << std::endl;
+    std::cout << "scroll drag    : " << dragging << std::endl;
+    std::cout << "delta lines    : " << delta_lines << std::endl;
+    std::cout << "\n\n\n\n\n" << std::endl;
+#endif
+
+
+    SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
+    cscroll_draw( false, true );
   }
   bool cscroll_ishovered( POINT m_pos ) {
     m_pos.x -= 25; m_pos.y -= 50;
@@ -103,20 +138,7 @@ public:
       scroll_y = -1;
     else
       scroll_y = (s32)( ( bkrect.bottom - scroll_h ) * ( (f32)curr_line / (f32)line_count ) );
-#ifdef _DEBUG
-    std::cout << "current line   : " << curr_line << std::endl;
-    std::cout << "line count     : " << line_count << std::endl;
-    std::cout << "line first vis : " << line_first << std::endl;
-    std::cout << "line last vis  : " << line_last << std::endl;
-    std::cout << "line total vis : " << lines_vis << std::endl;
-    std::cout << "line height    : " << line_sz.cy << std::endl;
-    std::cout << "scroll height  : " << scroll_h << std::endl;
-    std::cout << "scroll y top   : " << scroll_y << std::endl;
-    std::cout << "scroll hover   : " << hovered << std::endl;
-    std::cout << "scroll drag    : " << dragging << std::endl;
-    std::cout << "scroll ratio   : " << ( (f32)curr_line / (f32)line_count ) << std::endl;
-    std::cout << "\n\n\n\n" << std::endl;
-#endif
+
     rect = {
       rect.left,
       scroll_y,
