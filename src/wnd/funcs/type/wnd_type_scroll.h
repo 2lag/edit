@@ -82,6 +82,7 @@ public:
       delta_lines = 0;
     
     RECT r_parent = get_wnd_sz( parent );
+
     // swap for em_scroll?
     ScrollWindowEx( parent,
       0, -delta_lines,

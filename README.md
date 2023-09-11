@@ -1,5 +1,5 @@
 todo :
-- debug cscroll_drag, add update scrollbar when clicked in window, then add hover scrolling
+- debug cscroll_drag not redrawing when dragged, add update scrollbar when clicked in window, then add hover scrolling
 - - remove debug print info
 - simplify/optimize cscroll & edit control
 - add line count ( use edit_getlinecount/edit_getfirstvisibleline )
