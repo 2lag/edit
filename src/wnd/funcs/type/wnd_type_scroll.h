@@ -84,20 +84,14 @@ public:
 
     if( scroll_y < -1 )
       scroll_y = -1;
-    else if( scroll_y + scroll_h > bkrect.bottom )
-      scroll_y = bkrect.bottom - scroll_h;
+    else if( scroll_y + scroll_h > r_parent.bottom )
+      scroll_y = r_parent.bottom - scroll_h + 1;
 
 #ifdef _DEBUG
-    std::cout << "line count     : " << line_count << std::endl;
-    std::cout << "line first vis : " << line_first << std::endl;
-    std::cout << "line last vis  : " << line_last << std::endl;
-    std::cout << "line total vis : " << lines_vis << std::endl;
-    std::cout << "scroll height  : " << scroll_h << std::endl;
-    std::cout << "scroll y top   : " << scroll_y << std::endl;
-    std::cout << "scroll hover   : " << hovered << std::endl;
-    std::cout << "scroll drag    : " << dragging << "\n" << std::endl;
-    std::cout << "m_delta        : " << m_delta << std::endl;
-    std::cout << "\n\n\n\n\n" << std::endl;
+    printf(
+      "line count     : %d\nline first vis : %d\nline last vis  : %d\nline total vis : %d\nscroll height  : %d\nscroll y top   : %d\nscroll hover   : %d\nscroll drag    : %d\nm_delta        : %d\n\n\n\n\n\n\n\n",
+      line_count, line_first, line_last, lines_vis, scroll_h, scroll_y, hovered, dragging, m_delta
+    );
 #endif
 
     rect.top = scroll_y;

@@ -11,7 +11,7 @@
 #pragma comment( lib, "comctl32" )
 
 #ifdef _DEBUG
-#include <iostream>
+#include <stdio.h>
 #endif
 
 #include "../typedef.h"
