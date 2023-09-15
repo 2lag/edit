@@ -76,8 +76,8 @@ public:
 
     ScrollWindowEx( parent,
       0, -m_delta,
-      0, &r_parent, 0, 0,
-      SW_INVALIDATE | SW_ERASE
+      &r_parent, &r_parent,
+      0, 0, SW_INVALIDATE | SW_ERASE
     );
 
     scroll_y += m_delta;
@@ -88,7 +88,6 @@ public:
       scroll_y = bkrect.bottom - scroll_h;
 
 #ifdef _DEBUG
-    std::cout << "current line   : " << curr_line << std::endl;
     std::cout << "line count     : " << line_count << std::endl;
     std::cout << "line first vis : " << line_first << std::endl;
     std::cout << "line last vis  : " << line_last << std::endl;
@@ -98,9 +97,11 @@ public:
     std::cout << "scroll hover   : " << hovered << std::endl;
     std::cout << "scroll drag    : " << dragging << "\n" << std::endl;
     std::cout << "m_delta        : " << m_delta << std::endl;
-    std::cout << "\n\n\n\n" << std::endl;
+    std::cout << "\n\n\n\n\n" << std::endl;
 #endif
 
+    rect.top = scroll_y;
+    rect.bottom = scroll_h + scroll_y;
 
     SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
     cscroll_draw( false, true );
@@ -109,11 +110,11 @@ public:
     m_pos.x -= 25; m_pos.y -= 50;
     if( PtInRect( &rect, m_pos ) ) {
       hovered = true;
-      cscroll_draw();
+      cscroll_draw( false, true );
       return true;
     }
     hovered = false;
-    cscroll_draw();
+    cscroll_draw( false, true );
     return false;
   }
 public:
