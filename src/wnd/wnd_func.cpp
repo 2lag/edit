@@ -42,7 +42,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
       );
     } break;
     case EN_VSCROLL: {
-      vscroll.cscroll_setinfo( true );
+      vscroll.cscroll_setinfo( true, true );
     } break;
     }
   } break;

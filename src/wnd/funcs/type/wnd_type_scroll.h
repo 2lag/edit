@@ -38,8 +38,7 @@ public:
     );
 
     GetTextExtentPoint32W( hdc, L"A", 1, &line_sz );
-    if( update_info )
-      cscroll_setinfo( redraw );
+    cscroll_setinfo( update_info, redraw );
 
     FillRect( hdc, &bkrect, dbrush );
     FillRect( hdc, &rect  , lbrush );
@@ -71,26 +70,22 @@ public:
       return;
     }
 
-    // fix this math by debugging with _DEBUG couts
     s32 m_delta = m_pos.y - duser_start.y;
-    s32 delta_lines = m_delta / line_sz.cy;
-
-    // verify this
-    if( curr_line + delta_lines > line_count )
-      delta_lines = 0;
-    else if( curr_line + delta_lines < 1 )
-      delta_lines = 0;
     
     RECT r_parent = get_wnd_sz( parent );
 
-    // swap for em_scroll?
     ScrollWindowEx( parent,
-      0, -delta_lines,
+      0, -m_delta,
       0, &r_parent, 0, 0,
-      SW_ERASE | SW_INVALIDATE
+      SW_INVALIDATE | SW_ERASE
     );
 
     scroll_y += m_delta;
+
+    if( scroll_y < -1 )
+      scroll_y = -1;
+    else if( scroll_y + scroll_h > bkrect.bottom )
+      scroll_y = bkrect.bottom - scroll_h;
 
 #ifdef _DEBUG
     std::cout << "current line   : " << curr_line << std::endl;
@@ -102,14 +97,13 @@ public:
     std::cout << "scroll y top   : " << scroll_y << std::endl;
     std::cout << "scroll hover   : " << hovered << std::endl;
     std::cout << "scroll drag    : " << dragging << "\n" << std::endl;
-    std::cout << "delta lines    : " << delta_lines << std::endl;
     std::cout << "m_delta        : " << m_delta << std::endl;
-    std::cout << "\n\n" << std::endl;
+    std::cout << "\n\n\n\n" << std::endl;
 #endif
 
 
     SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
-    cscroll_draw( false );
+    cscroll_draw( false, true );
   }
   bool cscroll_ishovered( POINT m_pos ) {
     m_pos.x -= 25; m_pos.y -= 50;
@@ -123,31 +117,33 @@ public:
     return false;
   }
 public:
-  void cscroll_setinfo( bool redraw ) {
-    curr_line  = (s32)SendMessageW( parent, EM_LINEFROMCHAR, -1, 0 ) + 1;
-    line_count = (s32)SendMessageW( parent, EM_GETLINECOUNT, 0, 0 );
-    line_first = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 ) + 1;
-    lines_vis = to_sz_point( get_wnd_sz( parent ) ).y / line_sz.cy;
-    line_last = line_first + lines_vis - 1;
-    if( line_count > lines_vis )
-      scroll_h = bkrect.bottom / ( line_count - lines_vis );
-    else
-      scroll_h = bkrect.bottom + 1;
-    if( curr_line == 1 )
-      scroll_y = -1;
-    else
-      scroll_y = (s32)( ( bkrect.bottom - scroll_h ) * ( (f32)curr_line / (f32)line_count ) );
+  void cscroll_setinfo( bool update_info, bool redraw ) {
+    if( update_info ) {
+      curr_line  = (s32)SendMessageW( parent, EM_LINEFROMCHAR, -1, 0 ) + 1;
+      line_count = (s32)SendMessageW( parent, EM_GETLINECOUNT, 0, 0 );
+      line_first = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 ) + 1;
+      lines_vis = to_sz_point( get_wnd_sz( parent ) ).y / line_sz.cy;
+      line_last = line_first + lines_vis - 1;
+      if( line_count > lines_vis )
+        scroll_h = bkrect.bottom / ( line_count - lines_vis );
+      else
+        scroll_h = bkrect.bottom + 1;
+      if( curr_line == 1 )
+        scroll_y = -1;
+      else
+        scroll_y = (s32)( ( bkrect.bottom - scroll_h ) * ( (f32)curr_line / (f32)line_count ) );
 
-    rect = {
-      rect.left,
-      scroll_y,
-      rect.right,
-      scroll_y + scroll_h
-    };
+      rect = {
+        rect.left,
+        scroll_y,
+        rect.right,
+        scroll_y + scroll_h
+      };
+    }
 
     if( redraw ) {
       RedrawWindow( parent, 0, 0, RDW_ERASE | RDW_INVALIDATE );
-      cscroll_draw();
+      cscroll_draw( false, false );
     }
   }
 };

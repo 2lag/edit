@@ -1,6 +1,8 @@
 todo :
-- debug cscroll_drag not redrawing when dragged, add update scrollbar when clicked in window, then add hover scrolling
+- fix cscroll_drag not redrawing
 - - remove debug print info
+- add update scrollbar when clicked in text box
+- add hover scrolling
 - simplify/optimize cscroll & edit control
 - add line count ( use edit_getlinecount/edit_getfirstvisibleline )
 - add cursor/caret position in bottom middle
