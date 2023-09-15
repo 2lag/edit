@@ -105,6 +105,8 @@ public:
 
     SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
     cscroll_draw( false, true );
+
+    duser_start = m_pos;
   }
   bool cscroll_ishovered( POINT m_pos ) {
     m_pos.x -= 25; m_pos.y -= 50;

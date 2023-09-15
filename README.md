@@ -1,5 +1,5 @@
 todo :
-- fix cscroll_drag bugging out
+- fix text not scrolling and rerendering as expected when scrolling
 - - remove debug print info
 - add update scrollbar when clicked in text box
 - add hover scrolling

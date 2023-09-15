@@ -84,7 +84,8 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     wnd_drag( hwnd, m_pos );
 
     vscroll.cscroll_drag( m_pos );
-    vscroll.cscroll_ishovered( m_pos );
+    if( !vscroll.dragging )
+      vscroll.cscroll_ishovered( m_pos );
 
     if( is_maxd )
       break;

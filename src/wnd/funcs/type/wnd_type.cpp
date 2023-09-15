@@ -5,6 +5,8 @@
 HWND txt_box;
 CSCROLL vscroll;
 
+bool once = false;
+
 LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
   RECT text_sz{};
   GetClientRect( hwnd, &text_sz );
@@ -22,8 +24,13 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     FillRect( hdc, &text_sz, dbrush );
     DeleteObject( dbrush );
 
-    vscroll.cscroll_create( txt_box );
-    vscroll.cscroll_draw();
+    if( !once ) {
+      vscroll.cscroll_create( txt_box );
+      vscroll.cscroll_draw();
+
+      once = true;
+    }
+    
     return 1;
   } break;
   case WM_KEYDOWN: {
