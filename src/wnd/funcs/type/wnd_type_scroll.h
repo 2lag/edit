@@ -71,15 +71,15 @@ public:
     }
 
     s32 m_delta = m_pos.y - duser_start.y;
-    
+    s32 delta_lines = m_delta / line_sz.cy;
+
+    if( curr_line + delta_lines > line_count )
+      delta_lines = 0;
+    else if( curr_line + delta_lines < 1 )
+      delta_lines = 0;
+
     RECT r_parent = get_wnd_sz( parent );
-
-    ScrollWindowEx( parent,
-      0, -m_delta,
-      &r_parent, &r_parent,
-      0, 0, SW_INVALIDATE | SW_ERASE
-    );
-
+    
     scroll_y += m_delta;
 
     if( scroll_y < -1 )
@@ -87,18 +87,23 @@ public:
     else if( scroll_y + scroll_h > r_parent.bottom )
       scroll_y = r_parent.bottom - scroll_h + 1;
 
-#ifdef _DEBUG
-    printf(
-      "line count     : %d\nline first vis : %d\nline last vis  : %d\nline total vis : %d\nscroll height  : %d\nscroll y top   : %d\nscroll hover   : %d\nscroll drag    : %d\nm_delta        : %d\n\n\n\n\n\n\n\n",
-      line_count, line_first, line_last, lines_vis, scroll_h, scroll_y, hovered, dragging, m_delta
-    );
-#endif
-
     rect.top = scroll_y;
     rect.bottom = scroll_h + scroll_y;
 
-    SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
-    cscroll_draw( false, true );
+#ifdef _DEBUG
+    printf(
+      "line count     : %d\nline first vis : %d\nline last vis  : %d\nline total vis : %d\nscroll height  : %d\nscroll y top   : %d\nscroll hover   : %d\nscroll drag    : %d\nm_delta        : %d\ndelta lines    : %d\n\n\n\n\n\n\n",
+      line_count, line_first, line_last, lines_vis, scroll_h, scroll_y, hovered, dragging, m_delta, delta_lines
+    );
+#endif
+
+    ScrollWindowEx( parent,
+      0, -m_delta,
+      &r_parent, &r_parent,
+      0, 0, SW_ERASE
+    );
+
+    cscroll_draw( false, false );
 
     duser_start = m_pos;
   }
@@ -130,10 +135,12 @@ public:
       else
         scroll_y = (s32)( ( bkrect.bottom - scroll_h ) * ( (f32)curr_line / (f32)line_count ) );
 
+      RECT r = get_wnd_sz( parent );
+
       rect = {
-        rect.left,
+        r.right + 1,
         scroll_y,
-        rect.right,
+        r.right + 25,
         scroll_y + scroll_h
       };
     }

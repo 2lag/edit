@@ -109,6 +109,17 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
       pwnd_sz.y - 75,
       TRUE
     );
+
+    RECT r = get_wnd_sz( vscroll.parent );
+
+    vscroll.bkrect = {
+      r.right + 1,
+      r.top - 1,
+      r.right + 25,
+      r.bottom + 1
+    };
+  
+    vscroll.cscroll_draw( true, true );
   } break;
   }
   return DefWindowProcW( hwnd, msg, wp, lp );
