@@ -71,12 +71,6 @@ public:
     }
 
     s32 m_delta = m_pos.y - duser_start.y;
-    s32 delta_lines = m_delta / line_sz.cy;
-
-    if( curr_line + delta_lines > line_count )
-      delta_lines = 0;
-    else if( curr_line + delta_lines < 1 )
-      delta_lines = 0;
 
     RECT r_parent = get_wnd_sz( parent );
     
@@ -92,8 +86,8 @@ public:
 
 #ifdef _DEBUG
     printf(
-      "line count     : %d\nline first vis : %d\nline last vis  : %d\nline total vis : %d\nscroll height  : %d\nscroll y top   : %d\nscroll hover   : %d\nscroll drag    : %d\nm_delta        : %d\ndelta lines    : %d\n\n\n\n\n\n\n",
-      line_count, line_first, line_last, lines_vis, scroll_h, scroll_y, hovered, dragging, m_delta, delta_lines
+      "line count     : %d\nline first vis : %d\nline last vis  : %d\nline total vis : %d\nscroll height  : %d\nscroll y top   : %d\nscroll hover   : %d\nscroll drag    : %d\nm_delta        : %d\n\n\n\n\n\n\n\n",
+      line_count, line_first, line_last, lines_vis, scroll_h, scroll_y, hovered, dragging, m_delta
     );
 #endif
 
@@ -101,7 +95,10 @@ public:
       0, -m_delta,
       &r_parent, &r_parent,
       0, 0, SW_ERASE
-    );
+    ); // maybe add back  | SW_SMOOTHSCROLL | HIWORD( 300 )
+
+    // fix this call
+    SendMessageW( parent, EM_LINESCROLL, 0, m_delta );
 
     cscroll_draw( false, false );
 
