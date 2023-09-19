@@ -91,14 +91,12 @@ public:
     );
 #endif
 
-    ScrollWindowEx( parent,
-      0, -m_delta,
-      &r_parent, &r_parent,
-      0, 0, SW_ERASE
-    ); // maybe add back  | SW_SMOOTHSCROLL | HIWORD( 300 )
+    if( m_delta < 0 )
+      SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
+    else if( m_delta > 0 )
+      SendMessageW( parent, EM_SCROLL, SB_LINEDOWN, 0 );
 
-    // fix this call
-    SendMessageW( parent, EM_LINESCROLL, 0, m_delta );
+    SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
 
     cscroll_draw( false, false );
 

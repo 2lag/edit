@@ -1,5 +1,5 @@
 todo :
-- fix text not scrolling enough
+- fix text not scrolling properly
 - - remove debug print info
 - add update scrollbar when clicked in text box
 - add hover scrolling
