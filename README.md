@@ -1,5 +1,5 @@
 todo :
-- fix text not scrolling properly ( use adding scroll_vis to fix scroll size )
+- fix scroll bar math for height and also y pos after that, then fix not scrolling when on the bottom or top line
 - - remove debug print info
 - add update scrollbar when clicked in text box
 - add hover scrolling

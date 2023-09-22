@@ -122,7 +122,7 @@ public:
       lines_vis = to_sz_point( get_wnd_sz( parent ) ).y / line_sz.cy;
       line_last = line_first + lines_vis - 1;
       if( line_count > lines_vis )
-        scroll_h = bkrect.bottom / ( line_count - lines_vis );
+        scroll_h = bkrect.bottom / ( line_count - lines_vis ); // scroll_h = bkrect.bottom - line_sz.cy * ( line_count - lines_vis ); worked but was too small
       else
         scroll_h = bkrect.bottom + 1;
       if( curr_line == 1 )
