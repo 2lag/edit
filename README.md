@@ -1,6 +1,6 @@
 todo :
 - continue to fix scroll bar math for height
-- fix scroll y pos too if needed when done
+- fix scroll y pos too
 - - remove debug print info
 - add update scrollbar when clicked in text box
 - add hover scrolling

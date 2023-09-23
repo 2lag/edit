@@ -133,14 +133,14 @@ public:
       line_last = line_first + lines_vis - 1;
       
       if( line_count > lines_vis )
-        scroll_h = bkrect.bottom - ( line_sz.cy * ( line_count - lines_vis ) ); // fix height calculation to be bigger and going off-screen
+        scroll_h = bkrect.bottom - ( line_sz.cy * ( line_count - lines_vis ) ); // fix height calculation so scrollbar represents visible area in comparison to total lines
       else
         scroll_h = bkrect.bottom + 1;
 
       if( curr_line == 1 )
         scroll_y = -1;
       else
-        scroll_y = (s32)( ( bkrect.bottom - scroll_h ) * ( (f32)curr_line / (f32)line_count ) );
+        scroll_y = (s32)( ( bkrect.bottom - scroll_h ) * ( (f32)curr_line / (f32)line_count ) ); // scroll y top is equivalent of ratio'd/map'd first line pos
 
       RECT r = get_wnd_sz( parent );
 
