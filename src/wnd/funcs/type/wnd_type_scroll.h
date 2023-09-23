@@ -72,6 +72,23 @@ public:
 
     s32 m_delta = m_pos.y - duser_start.y;
 
+    if( m_delta < 0 ) {
+      if( curr_line == 1 )
+        return;
+      SendMessageW( parent, EM_SETSEL, curr_line - 1, curr_line - 1 );
+      curr_line++;
+      SendMessageW( parent, EM_SCROLL, SB_LINEDOWN, 0 );
+    }
+    else if( m_delta > 0 ) {
+      if( curr_line == line_last )
+        return;
+      SendMessageW( parent, EM_SETSEL, curr_line + 1, curr_line + 1 );
+      curr_line--;
+      SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
+    }
+
+    SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
+
     RECT r_parent = get_wnd_sz( parent );
     
     scroll_y += m_delta;
@@ -90,13 +107,6 @@ public:
       line_count, line_first, line_last, lines_vis, scroll_h, scroll_y, hovered, dragging, m_delta
     );
 #endif
-
-    if( m_delta < 0 )
-      SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
-    else if( m_delta > 0 )
-      SendMessageW( parent, EM_SCROLL, SB_LINEDOWN, 0 );
-
-    SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
 
     cscroll_draw( false, false );
 
@@ -121,10 +131,12 @@ public:
       line_first = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 ) + 1;
       lines_vis = to_sz_point( get_wnd_sz( parent ) ).y / line_sz.cy;
       line_last = line_first + lines_vis - 1;
+      
       if( line_count > lines_vis )
-        scroll_h = bkrect.bottom / ( line_count - lines_vis ); // scroll_h = bkrect.bottom - line_sz.cy * ( line_count - lines_vis ); worked but was too small
+        scroll_h = bkrect.bottom - ( line_sz.cy * ( line_count - lines_vis ) ); // fix height calculation to be bigger and going off-screen
       else
         scroll_h = bkrect.bottom + 1;
+
       if( curr_line == 1 )
         scroll_y = -1;
       else
