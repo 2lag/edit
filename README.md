@@ -1,8 +1,8 @@
 todo :
 - fix scroll bar dragging
 - - remove debug print info
-- add update scrollbar when clicked in text box
-- add hover scrolling
+- add update scrollbar pos when clicked in text box
+- add scrolling using scroll wheel while hovered over text box
 - simplify/optimize cscroll & edit control
 - add line count ( use edit_getlinecount/edit_getfirstvisibleline )
 - add cursor/caret position in bottom middle

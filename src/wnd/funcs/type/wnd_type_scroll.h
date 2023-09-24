@@ -70,21 +70,26 @@ public:
       return;
     }
 
-    s32 m_delta = m_pos.y - duser_start.y; // make static and see how it works? and every time the abs(m_delta) goes past line_sz.cy, reset to 0 after doing the scroll
+    static s32 m_delta = m_pos.y - duser_start.y;
 
-    if( m_delta < 0 ) {
+    if( m_delta <= -line_sz.cy ) {
       if( curr_line == 1 )
         return;
+      
       SendMessageW( parent, EM_SETSEL, curr_line - 1, curr_line - 1 );
       curr_line++;
       SendMessageW( parent, EM_SCROLL, SB_LINEDOWN, 0 );
-    }
-    else if( m_delta > 0 ) {
+
+      m_delta = 0;
+    } else if( m_delta >= line_sz.cy ) {
       if( curr_line == line_last )
         return;
+
       SendMessageW( parent, EM_SETSEL, curr_line + 1, curr_line + 1 );
       curr_line--;
       SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
+
+      m_delta = 0;
     }
 
     SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
