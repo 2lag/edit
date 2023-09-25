@@ -10,6 +10,7 @@ public:
   SIZE line_sz;
   s32 scroll_h;
   s32 scroll_y;
+  s32 m_delta;
 public:
   HWND parent;
   RECT bkrect;
@@ -53,58 +54,53 @@ public:
       return;
 
     dragging = false;
+    m_delta = 0;
   }
   void cscroll_drag_on( POINT m_pos ) {
     if( !cscroll_ishovered( m_pos ) )
       return;
 
-    dragging = true;
     duser_start = m_pos;
+    dragging = true;
   }
   void cscroll_drag( POINT m_pos ) {
-    if( !GetAsyncKeyState( MK_LBUTTON ) )
-      dragging = false;
-
-    if( !dragging ) {
+    if( !GetAsyncKeyState( MK_LBUTTON ) || !dragging ) {
       duser_start = m_pos;
+      dragging = false;
       return;
     }
 
-    static s32 m_delta = m_pos.y - duser_start.y;
+    m_delta = m_pos.y - duser_start.y;
 
     if( m_delta <= -line_sz.cy ) {
-      if( curr_line == 1 )
-        return;
-      
-      SendMessageW( parent, EM_SETSEL, curr_line - 1, curr_line - 1 );
-      curr_line++;
-      SendMessageW( parent, EM_SCROLL, SB_LINEDOWN, 0 );
-
       m_delta = 0;
+      duser_start = m_pos;
+      if( curr_line != 1 ) {
+        curr_line++;
+        SendMessageW( parent, EM_SETSEL, curr_line, curr_line );
+        SendMessageW( parent, EM_SCROLL, SB_LINEDOWN, 0 );
+      }
     } else if( m_delta >= line_sz.cy ) {
-      if( curr_line == line_last )
-        return;
-
-      SendMessageW( parent, EM_SETSEL, curr_line + 1, curr_line + 1 );
-      curr_line--;
-      SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
-
       m_delta = 0;
+      duser_start = m_pos;
+      if( curr_line != line_last ) {
+        curr_line--;
+        SendMessageW( parent, EM_SETSEL, curr_line, curr_line );
+        SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
+      }
     }
 
     SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
-
-    RECT r_parent = get_wnd_sz( parent );
     
-    scroll_y += m_delta;
+    if( m_delta > 0 )
+      scroll_y++;
+    else if( m_delta < 0 )
+      scroll_y--;
 
     if( scroll_y < -1 )
       scroll_y = -1;
-    else if( scroll_y + scroll_h > r_parent.bottom )
-      scroll_y = r_parent.bottom - scroll_h + 1;
-
-    rect.top = scroll_y;
-    rect.bottom = scroll_h + scroll_y;
+    else if( scroll_y + scroll_h > bkrect.bottom )
+      scroll_y = bkrect.bottom - scroll_h;
 
 #ifdef _DEBUG
     printf(
@@ -113,9 +109,10 @@ public:
     );
 #endif
 
-    cscroll_draw( false, false );
+    rect.top = scroll_y;
+    rect.bottom = scroll_y + scroll_h;
 
-    duser_start = m_pos;
+    cscroll_draw( false, false );
   }
   bool cscroll_ishovered( POINT m_pos ) {
     m_pos.x -= 25; m_pos.y -= 50;

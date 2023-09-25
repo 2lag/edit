@@ -1,5 +1,11 @@
 todo :
-- fix scroll bar dragging
+- fix scroll bar jumping
+- - write out math and needs, maybe use :
+```
+s32 char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, curr_line - 1, 0 );
+SendMessageW( parent, EM_SETSEL, char_idx, char_idx );
+```
+- fix min size
 - - remove debug print info
 - add update scrollbar pos when clicked in text box
 - add scrolling using scroll wheel while hovered over text box
