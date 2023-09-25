@@ -83,7 +83,8 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   case WM_MOUSEMOVE: {
     wnd_drag( hwnd, m_pos );
 
-    vscroll.cscroll_drag( m_pos );
+    if( !user_resizing )
+      vscroll.cscroll_drag( m_pos );
     if( !vscroll.dragging )
       vscroll.cscroll_ishovered( m_pos );
 

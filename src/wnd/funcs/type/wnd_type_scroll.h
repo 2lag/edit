@@ -72,22 +72,21 @@ public:
 
     m_delta = m_pos.y - duser_start.y;
 
-    if( m_delta <= -line_sz.cy ) {
+    s32 scroll_dir = ( m_delta <= -line_sz.cy ) ? -1 : ( ( m_delta >= line_sz.cy ) ? 1 : 0 );
+
+    if( scroll_dir ) {
       m_delta = 0;
       duser_start = m_pos;
-      if( curr_line != 1 ) {
-        curr_line++;
-        SendMessageW( parent, EM_SETSEL, curr_line, curr_line );
-        SendMessageW( parent, EM_SCROLL, SB_LINEDOWN, 0 );
-      }
-    } else if( m_delta >= line_sz.cy ) {
-      m_delta = 0;
-      duser_start = m_pos;
-      if( curr_line != line_last ) {
-        curr_line--;
-        SendMessageW( parent, EM_SETSEL, curr_line, curr_line );
-        SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
-      }
+      curr_line += scroll_dir;
+
+      if( scroll_dir == 1 && curr_line == line_last )
+        return;
+      if( scroll_dir == -1 && curr_line == 1 )
+        return;
+
+      s32 char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, curr_line - 1, 0 );
+      SendMessageW( parent, EM_SCROLL, ( scroll_dir == 1 ) ? SB_LINEDOWN : SB_LINEUP, 0 );
+      SendMessageW( parent, EM_SETSEL, char_idx, char_idx );
     }
 
     SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
@@ -104,8 +103,8 @@ public:
 
 #ifdef _DEBUG
     printf(
-      "line count     : %d\nline first vis : %d\nline last vis  : %d\nline total vis : %d\nscroll height  : %d\nscroll y top   : %d\nscroll hover   : %d\nscroll drag    : %d\nm_delta        : %d\n\n\n\n\n\n\n\n",
-      line_count, line_first, line_last, lines_vis, scroll_h, scroll_y, hovered, dragging, m_delta
+      "line count     : %d\nline first vis : %d\nline last vis  : %d\nline total vis : %d\nscroll height  : %d\nscroll y top   : %d\nscroll hover   : %d\nscroll drag    : %d\nm_delta        : %d\ncurrent line  : %d\n\n\n\n\n\n\n",
+      line_count, line_first, line_last, lines_vis, scroll_h, scroll_y, hovered, dragging, m_delta, curr_line
     );
 #endif
 
