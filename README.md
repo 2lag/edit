@@ -1,6 +1,5 @@
 todo :
-- fix scroll bar jumping due to incorrect position updates
-- fix min size
+- fix scroll bar jump pos and min size
 - - remove debug print info
 - add update scrollbar pos when clicked in text box
 - add scrolling using scroll wheel while hovered over text box

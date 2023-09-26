@@ -34,9 +34,7 @@ public:
   void cscroll_draw( bool update_info = true, bool redraw = false ) {
     HDC hdc = GetDC( parent );
     HBRUSH dbrush = CreateSolidBrush( COL_D_GRY ),
-           lbrush = CreateSolidBrush(
-             ( hovered ) ? COL_L_GRY : COL_M_GRY
-    );
+           lbrush = CreateSolidBrush( hovered ? COL_L_GRY : COL_M_GRY );
 
     GetTextExtentPoint32W( hdc, L"A", 1, &line_sz );
     cscroll_setinfo( update_info, redraw );
@@ -53,6 +51,7 @@ public:
     if( !dragging )
       return;
 
+    cscroll_setinfo( true, true );
     dragging = false;
     m_delta = 0;
   }
@@ -72,44 +71,45 @@ public:
 
     m_delta = m_pos.y - duser_start.y;
 
+    // fix this, dont use line_sz.cy
+    // maybe redo the whole thing, just plan it all out
     s32 scroll_dir = ( m_delta <= -line_sz.cy ) ? -1 : ( ( m_delta >= line_sz.cy ) ? 1 : 0 );
 
     if( scroll_dir ) {
       m_delta = 0;
       duser_start = m_pos;
+      
+      s32 prev_line = curr_line;
       curr_line += scroll_dir;
 
-      if( scroll_dir == 1 && curr_line == line_last )
-        return;
-      if( scroll_dir == -1 && curr_line == 1 )
-        return;
-
+      s32 first_line = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 );
+      if( scroll_dir == 1 && curr_line < line_last )
+        curr_line = first_line + lines_vis;
+      else if( scroll_dir == -1 && curr_line > 1 )
+        curr_line = first_line;
+      
       s32 char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, curr_line - 1, 0 );
-      SendMessageW( parent, EM_SCROLL, ( scroll_dir == 1 ) ? SB_LINEDOWN : SB_LINEUP, 0 );
       SendMessageW( parent, EM_SETSEL, char_idx, char_idx );
     }
 
     SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
     
-    if( m_delta > 0 )
-      scroll_y++;
-    else if( m_delta < 0 )
-      scroll_y--;
+    scroll_y = (s32)( (f32)( curr_line - 1 ) / (f32)line_count * (f32)scroll_h );
 
     if( scroll_y < -1 )
       scroll_y = -1;
     else if( scroll_y + scroll_h > bkrect.bottom )
       scroll_y = bkrect.bottom - scroll_h;
 
+    rect.top = scroll_y;
+    rect.bottom = scroll_y + scroll_h;
+      
 #ifdef _DEBUG
     printf(
       "line count     : %d\nline first vis : %d\nline last vis  : %d\nline total vis : %d\nscroll height  : %d\nscroll y top   : %d\nscroll hover   : %d\nscroll drag    : %d\nm_delta        : %d\ncurrent line  : %d\n\n\n\n\n\n\n",
       line_count, line_first, line_last, lines_vis, scroll_h, scroll_y, hovered, dragging, m_delta, curr_line
     );
 #endif
-
-    rect.top = scroll_y;
-    rect.bottom = scroll_y + scroll_h;
 
     cscroll_draw( false, false );
   }
@@ -141,7 +141,7 @@ public:
       if( curr_line == 1 )
         scroll_y = -1;
       else
-        scroll_y = (s32)( ( bkrect.bottom - scroll_h ) * ( (f32)curr_line / (f32)line_count ) );
+        scroll_y = (s32)( (f32)( bkrect.bottom - scroll_h ) * ( (f32)curr_line / (f32)line_count ) );
 
       RECT r = get_wnd_sz( parent );
 
