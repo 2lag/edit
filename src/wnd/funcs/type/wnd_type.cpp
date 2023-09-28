@@ -34,7 +34,15 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     return 1;
   } break;
   case WM_KEYDOWN: {
-    vscroll.cscroll_draw( true, true );
+    switch( wp ) {
+    case 0x41: { // implement ctrl+s and shit here too
+      if( GetAsyncKeyState( VK_CONTROL ) )
+        SendMessageW( txt_box, EM_SETSEL, 0, -1 );
+    } break;
+    default: {
+      vscroll.cscroll_draw( true, true );
+    } break;
+    }
   } break;
   }
 

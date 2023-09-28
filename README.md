@@ -1,15 +1,15 @@
 todo :
-- fix scroll bar jump pos and min size
-- - remove debug print info
+- modify scrollbar to use bottom visible line and min size
 - add update scrollbar pos when clicked in text box
 - add scrolling using scroll wheel while hovered over text box
+- - remove debug print info
 - simplify/optimize cscroll & edit control
 - add line count ( use edit_getlinecount/edit_getfirstvisibleline )
-- add cursor/caret position in bottom middle
-- minimize variable scope, clean up, & optimize everything in all files
+- add caret position in bottom middle
+- minimize var scope, clean & optimize all files ( make checklist )
 - - "const all vars unless they cant be"
 - add icon
-- add menu bar & functionality
+- add menu bar & functionality + keybinds
 - - file
 - - macro
 - - theme

@@ -79,37 +79,26 @@ public:
       
       curr_line += scroll_dir;
 
-      /* this is the issue area */
       s32 first_line = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 );
       if( scroll_dir == 1 && curr_line < line_last )
         curr_line = first_line + lines_vis;
       else if( scroll_dir == -1 && curr_line > 1 )
         curr_line = first_line;
-      /* same with this */
+
       s32 char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, curr_line - 1, 0 );
       SendMessageW( parent, EM_SETSEL, char_idx, char_idx );
     }
 
     SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
-    /* maybe this too */
-    scroll_y = (s32)( (f32)( curr_line - 1 ) / (f32)line_count * (f32)scroll_h );
-
-    if( scroll_y < -1 )
-      scroll_y = -1;
-    else if( scroll_y + scroll_h > bkrect.bottom )
-      scroll_y = bkrect.bottom - scroll_h;
-
-    rect.top = scroll_y;
-    rect.bottom = scroll_y + scroll_h;
       
+    cscroll_draw( true, false );
+
 #ifdef _DEBUG
     printf(
       "line count     : %d\nline first vis : %d\nline last vis  : %d\nline total vis : %d\nscroll height  : %d\nscroll y top   : %d\nscroll hover   : %d\nscroll drag    : %d\nm_delta        : %d\ncurrent line  : %d\n\n\n\n\n\n\n",
       line_count, line_first, line_last, lines_vis, scroll_h, scroll_y, hovered, dragging, m_delta, curr_line
     );
 #endif
-
-    cscroll_draw( false, false );
   }
   bool cscroll_ishovered( POINT m_pos ) {
     m_pos.x -= 25; m_pos.y -= 50;
@@ -125,22 +114,24 @@ public:
 public:
   void cscroll_setinfo( bool update_info, bool redraw ) {
     if( update_info ) {
-      /* verify these values are correct */
       curr_line  = (s32)SendMessageW( parent, EM_LINEFROMCHAR, -1, 0 ) + 1;
       line_count = (s32)SendMessageW( parent, EM_GETLINECOUNT, 0, 0 );
       line_first = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 ) + 1;
       lines_vis = to_sz_point( get_wnd_sz( parent ) ).y / line_sz.cy;
       line_last = line_first + lines_vis - 1;
       
+      /* verify these values are correct */
       if( line_count > lines_vis )
         scroll_h = bkrect.bottom - ( line_sz.cy * ( line_count - lines_vis ) );
       else
         scroll_h = bkrect.bottom + 1;
 
-      if( curr_line == 1 )
+      scroll_y = (s32)( (f32)( bkrect.bottom - scroll_h ) * ( (f32)curr_line / (f32)line_count ) );
+
+      if( scroll_y < -1 || curr_line == 1 )
         scroll_y = -1;
-      else
-        scroll_y = (s32)( (f32)( bkrect.bottom - scroll_h ) * ( (f32)curr_line / (f32)line_count ) );
+      else if( scroll_y + scroll_h > bkrect.bottom || curr_line == line_last )
+        scroll_y = bkrect.bottom - scroll_h;
 
       RECT r = get_wnd_sz( parent );
 
