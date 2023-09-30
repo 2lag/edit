@@ -19,11 +19,10 @@ void wnd_drag_on( HWND hwnd, POINT m_pos, bool mouse_over ) {
 } 
 
 void wnd_drag_off() {
-  if( !user_dragging )
-    return;
-  
-  user_dragging = false;
-  ReleaseCapture();
+  if( user_dragging ) {
+    user_dragging = false;
+    ReleaseCapture();
+  }
 }
 
 void wnd_drag( HWND hwnd, POINT m_pos ) {
@@ -67,6 +66,9 @@ void wnd_drag( HWND hwnd, POINT m_pos ) {
 }
 
 void wnd_drag_resize( HWND hwnd, POINT m_pos ) {
+  if( user_resizing )
+    return;
+
   POINT sm_pos;
   GetCursorPos( &sm_pos );
 
@@ -110,12 +112,9 @@ void wnd_drag_resize( HWND hwnd, POINT m_pos ) {
    within_tcorner_range = ( m_in_lxr || m_in_rxr ) && m_in_tyr,
    within_bcorner_range = ( m_in_lxr || m_in_rxr ) && m_in_byr,
            within_range =  within_max_range     ||
-                           within_lhalf_range   ||
-                           within_rhalf_range   ||
-                           within_lcorner_range ||
-                           within_tcorner_range ||
-                           within_rcorner_range ||
-                           within_bcorner_range;
+                           within_lhalf_range   || within_rhalf_range   ||
+                           within_lcorner_range || within_tcorner_range ||
+                           within_rcorner_range || within_bcorner_range;
 
   if( !within_range )
     return;
@@ -126,7 +125,7 @@ void wnd_drag_resize( HWND hwnd, POINT m_pos ) {
   if( within_max_range ) {
     nwnd_pos = to_pos_point( i_mon.rcWork ),
     nwnd_sz  = mon_sz;
-  } else if ( within_lhalf_range || within_rhalf_range ) {
+  } else if( within_lhalf_range || within_rhalf_range ) {
     nwnd_pos = {
       within_lhalf_range ?
         i_mon.rcWork.left : i_mon.rcWork.right - mon_sz.x / 2,
@@ -145,7 +144,7 @@ void wnd_drag_resize( HWND hwnd, POINT m_pos ) {
     nwnd_pos = {
       within_lcorner_range ?
         i_mon.rcWork.left : i_mon.rcWork.right - mon_sz.x / 2,
-        mon_sz.y / 2 + monitor_offset.y
+      mon_sz.y / 2 + monitor_offset.y
     };
     nwnd_sz = mon_sz / 2;
   }

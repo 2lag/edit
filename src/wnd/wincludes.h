@@ -4,11 +4,11 @@
 #include <windowsx.h>
 #include   <dwmapi.h>
 #pragma comment( lib, "dwmapi" )
-#include <unordered_map>
-#include <functional>
-
 #include <commctrl.h>
 #pragma comment( lib, "comctl32" )
+
+#include <unordered_map>
+#include <functional>
 
 #ifdef _DEBUG
 #include <stdio.h>
@@ -31,13 +31,26 @@ extern HWND txt_box;
 #include "funcs/type/wnd_type_scroll.h"
 extern CSCROLL vscroll;
 
-extern u64 tps;
-extern u64 prev_time;
+extern HHOOK mouse_hook;
+
 extern bool  user_resizing;
 extern POINT max_prev_pos;
 extern RECT  max_prev_sz;
 extern bool  is_maxd;
 
+inline void run_debug_console() {
+#ifdef _DEBUG
+  AllocConsole();
+  FILE* new_std;
+  freopen_s( &new_std, "CONOUT$", "w", stdout );
+  SetConsoleTitleW( L"type debug" );
+  void *std_handle = GetStdHandle( STD_OUTPUT_HANDLE );
+  const SMALL_RECT wnd_debug{ 00, 00, 42, 16 };
+  SetConsoleWindowInfo( std_handle, true, &wnd_debug );
+  SetConsoleScreenBufferSize( std_handle, { 43, 17 } );
+  SetConsoleWindowInfo( std_handle, true, &wnd_debug );
+#endif
+}
 
 #define get_monitor_info( c_mon ) \
 MONITORINFO i_mon; \

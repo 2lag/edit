@@ -1,8 +1,7 @@
 #include "wnd_type.h"
 
-#include "wnd_type_scroll.h"
-
 HWND txt_box;
+HHOOK mouse_hook;
 CSCROLL vscroll;
 
 bool once = false;
@@ -10,12 +9,12 @@ bool once = false;
 LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
   RECT text_sz{};
   GetClientRect( hwnd, &text_sz );
+
   switch( msg ) {
   case WM_CHAR: {
-    switch( wp ) {
-    case VK_TAB: {
+    if( wp == VK_TAB ) {
       SendMessageW( hwnd, EM_REPLACESEL, FALSE, (LPARAM)L"  \0" );
-    } return 0;
+      return 0;
     }
   } break;
   case WM_ERASEBKGND: {
@@ -26,27 +25,32 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
 
     if( !once ) {
       vscroll.cscroll_create( txt_box );
-      vscroll.cscroll_draw();
-
       once = true;
     }
     
     return 1;
   } break;
   case WM_KEYDOWN: {
-    switch( wp ) {
-    case 0x41: { // implement ctrl+s and shit here too
+    if( wp == 0x41 ) {
       if( GetAsyncKeyState( VK_CONTROL ) )
         SendMessageW( txt_box, EM_SETSEL, 0, -1 );
-    } break;
-    default: {
-      vscroll.cscroll_draw( true, true );
-    } break;
     }
+    vscroll.cscroll_draw( true, true );
   } break;
   }
 
   return DefSubclassProc( hwnd, msg, wp, lp );
+}
+
+LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
+  if( ncode == HC_ACTION ) {
+    MSLLHOOKSTRUCT* p_mouse = reinterpret_cast<MSLLHOOKSTRUCT*>( lp );
+
+    if( wp == WM_MOUSEWHEEL )
+      vscroll.cscroll_hover_scroll( p_mouse );
+  }
+
+  return CallNextHookEx( 0, ncode, wp, lp );
 }
 
 void wnd_type_create( HWND hwnd, POINT pwnd_sz ) {
@@ -59,6 +63,11 @@ void wnd_type_create( HWND hwnd, POINT pwnd_sz ) {
   );
 
   SetWindowSubclass( txt_box, editproc, 0, 0 );
+
+  mouse_hook = SetWindowsHookExW(
+    WH_MOUSE_LL, mouse_hook_proc,
+    GetModuleHandleW( NULL ), 0
+  );
 }
 
 void wnd_type_outline( HWND hwnd, POINT wnd_sz ) {

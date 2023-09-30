@@ -1,13 +1,12 @@
 todo :
-- add scrolling using scroll wheel while hovered over text box
-- fix scrollbar sliding too fast
-- simplify/optimize cscroll & edit control
 - add line count ( use edit_getlinecount/edit_getfirstvisibleline )
 - add caret position in bottom middle
 - minimize var scope, clean & optimize all files ( make checklist )
 - - "const all vars unless they cant be"
 - add icon
-- add menu bar & functionality + keybinds
+- add menu bar & functionality + keybinds ( wnd_type -> editproc -> wm_keydown )
 - - file
-- - macro
+- - tools
+- - - macro
+- - - mutli-cursor
 - - theme

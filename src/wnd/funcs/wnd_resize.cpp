@@ -1,6 +1,9 @@
 #pragma warning( disable : 26812 )
 #include "wnd_resize.h"
 
+#define RESIZE_THRESHOLD 5
+#define MIN_WINDOW_SIZE 200
+
 bool user_resizing = false;
 POINT ruser_start{};
 s32 d_side{};
@@ -8,10 +11,10 @@ s32 d_side{};
 void wnd_resize_get_side( POINT m_pos, RECT wnd_sz ) {
   POINT pwn_sz = to_sz_point( wnd_sz );
   
-  bool on_left   = ( m_pos.x <= 5 ),
-       on_top    = ( m_pos.y <= 5 ),
-       on_right  = ( m_pos.x >= pwn_sz.x - 5 ),
-       on_bottom = ( m_pos.y >= pwn_sz.y - 5 ),
+  bool on_left   = ( m_pos.x <= RESIZE_THRESHOLD ),
+       on_top    = ( m_pos.y <= RESIZE_THRESHOLD ),
+       on_right  = ( m_pos.x >= pwn_sz.x - RESIZE_THRESHOLD ),
+       on_bottom = ( m_pos.y >= pwn_sz.y - RESIZE_THRESHOLD ),
        in_hcenter =  ( !on_right && !on_left ),
        in_vcenter =  ( !on_bottom && !on_top );
 
@@ -30,10 +33,10 @@ void wnd_resize_get_side( POINT m_pos, RECT wnd_sz ) {
 void wnd_resize_get_cursor( POINT m_pos, RECT wnd_sz ) {
   POINT pwn_sz = to_sz_point( wnd_sz );
   
-  bool on_left   = ( m_pos.x <= 5 ),
-       on_top    = ( m_pos.y <= 5 ),
-       on_right  = ( m_pos.x >= pwn_sz.x - 5 ),
-       on_bottom = ( m_pos.y >= pwn_sz.y - 5 ),
+  bool on_left   = ( m_pos.x <= RESIZE_THRESHOLD ),
+       on_top    = ( m_pos.y <= RESIZE_THRESHOLD ),
+       on_right  = ( m_pos.x >= pwn_sz.x - RESIZE_THRESHOLD ),
+       on_bottom = ( m_pos.y >= pwn_sz.y - RESIZE_THRESHOLD ),
        in_hcenter =  ( !on_right && !on_left ),
        in_vcenter =  ( !on_bottom && !on_top );
 
@@ -57,20 +60,18 @@ void wnd_resize_get_cursor( POINT m_pos, RECT wnd_sz ) {
 
 void wnd_resize_on( HWND hwnd, POINT m_pos, RECT wnd_sz ) {
   wnd_resize_get_side( m_pos, wnd_sz );
-  if( d_side == 0 )
-    return;
-
-  user_resizing = true;
-  ruser_start = m_pos;
-  SetCapture( hwnd );
+  if( d_side ) {
+    user_resizing = true;
+    ruser_start = m_pos;
+    SetCapture( hwnd );
+  }
 }
 
 void wnd_resize_off() {
-  if( !user_resizing )
-    return;
-  
-  user_resizing = false;
-  ReleaseCapture();
+  if( user_resizing ) {
+    user_resizing = false;
+    ReleaseCapture();
+  }
 }
 
 void wnd_resize_check_bounds( HWND hwnd, LPPOINT wnd_pos, LPPOINT wnd_sz, POINT m_delta ) {
@@ -90,12 +91,12 @@ void wnd_resize_check_bounds( HWND hwnd, LPPOINT wnd_pos, LPPOINT wnd_sz, POINT 
   if( wnd_pos->y + wnd_sz->y >= i_mon.rcWork.bottom )
     wnd_sz->y = i_mon.rcWork.bottom - wnd_pos->y;
 
-  if( wnd_sz->x < 200 ) {
-    wnd_sz->x = 200;
+  if( wnd_sz->x < MIN_WINDOW_SIZE ) {
+    wnd_sz->x = MIN_WINDOW_SIZE;
     wnd_pos->x -= ( m_delta.x > 0 ) ? m_delta.x : 0;
   }
-  if( wnd_sz->y < 200 ) {
-    wnd_sz->y = 200;
+  if( wnd_sz->y < MIN_WINDOW_SIZE ) {
+    wnd_sz->y = MIN_WINDOW_SIZE;
     wnd_pos->y -= ( m_delta.y > 0 ) ? m_delta.y : 0;
   }
 }
@@ -106,45 +107,37 @@ void wnd_resize( HWND hwnd, POINT m_pos, RECT wnd_sz ) {
     return;
   }
 
-  POINT m_delta { m_pos - ruser_start },
+  POINT m_delta = ( m_pos - ruser_start ),
         wnd_pos = ( to_pos_point( wnd_sz ) -= 1 ),
-        _wnd_sz = ( to_sz_point ( wnd_sz ) += 2 );
-
+        pwnd_sz = ( to_sz_point ( wnd_sz ) += 2 );
+  
   ClientToScreen( hwnd, &wnd_pos );
 
   auto wnd_adj = [&]( POINT pos, POINT size ) {
     wnd_pos += pos;
-    _wnd_sz += size;
+    pwnd_sz += size;
   };  
 
   std::unordered_map<s32, std::function<void()>> edge_actions {
-    { EDGE_TOP_LEFT    ,
-      { [&](){ wnd_adj( m_delta, -m_delta ); } } },
-    { EDGE_TOP         ,
-      { [&](){ wnd_adj( { 0, m_delta.y }, { 0, -m_delta.y } ); } } },
-    { EDGE_TOP_RIGHT   ,
-      { [&](){ wnd_adj( { 0, m_delta.y }, { m_delta.x, -m_delta.y } ); ruser_start.x = m_pos.x; } } },
-    { EDGE_RIGHT       ,
-      { [&](){ wnd_adj( {},{ m_delta.x, 0 } ); ruser_start.x = m_pos.x; } } },
-    { EDGE_BOTTOM_RIGHT,
-      { [&](){ wnd_adj( {}, m_delta ); ruser_start = m_pos; } } },
-    { EDGE_BOTTOM      ,
-      { [&](){ wnd_adj( {}, { 0, m_delta.y } ); ruser_start.y = m_pos.y; } } },
-    { EDGE_BOTTOM_LEFT ,
-      { [&](){ wnd_adj( { m_delta.x, 0 }, { -m_delta.x, m_delta.y } ); ruser_start.y = m_pos.y; } } },
-    { EDGE_LEFT        ,
-      { [&](){ wnd_adj( { m_delta.x, 0 }, { -m_delta.x, 0 } ); } } }
+    { EDGE_TOP_LEFT    , { [&](){ wnd_adj( { m_delta.x, m_delta.y }, { -m_delta.x, -m_delta.y } ); } } },
+    { EDGE_TOP         , { [&](){ wnd_adj( {         0, m_delta.y }, {          0, -m_delta.y } ); } } },
+    { EDGE_TOP_RIGHT   , { [&](){ wnd_adj( {         0, m_delta.y }, {  m_delta.x, -m_delta.y } ); ruser_start.x = m_pos.x; } } },
+    { EDGE_RIGHT       , { [&](){ wnd_adj( {         0,         0 }, {  m_delta.x,          0 } ); ruser_start.x = m_pos.x; } } },
+    { EDGE_BOTTOM_RIGHT, { [&](){ wnd_adj( {         0,         0 }, {  m_delta.x,  m_delta.y } ); ruser_start   = m_pos;   } } },
+    { EDGE_BOTTOM      , { [&](){ wnd_adj( {         0,         0 }, {          0,  m_delta.y } ); ruser_start.y = m_pos.y; } } },
+    { EDGE_BOTTOM_LEFT , { [&](){ wnd_adj( { m_delta.x,         0 }, { -m_delta.x,  m_delta.y } ); ruser_start.y = m_pos.y; } } },
+    { EDGE_LEFT        , { [&](){ wnd_adj( { m_delta.x,         0 }, { -m_delta.x,          0 } ); } } }
   };
 
   auto it = edge_actions.find( d_side );
   if( it != edge_actions.end() )
     it->second();
 
-  wnd_resize_check_bounds( hwnd, &wnd_pos, &_wnd_sz, m_delta );
+  wnd_resize_check_bounds( hwnd, &wnd_pos, &pwnd_sz, m_delta );
 
   SetWindowPos( hwnd, 0,
     wnd_pos.x, wnd_pos.y,
-    _wnd_sz.x, _wnd_sz.y,
+    pwnd_sz.x, pwnd_sz.y,
     SWP_NOZORDER
   );
 }

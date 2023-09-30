@@ -27,6 +27,8 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
   ShowWindow( hwnd, cmdshow );
   UpdateWindow( hwnd );
 
+  run_debug_console();
+
   MSG msg;
   while( true ) {
     while( PeekMessageW( &msg, nullptr, 0, 0, PM_REMOVE ) ) {
@@ -39,5 +41,8 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
 
     wnd_tps_calc();
   }
+
+  UnhookWindowsHookEx( mouse_hook );
+
   return (s32)msg.wParam;
 }

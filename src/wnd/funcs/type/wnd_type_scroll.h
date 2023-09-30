@@ -8,17 +8,13 @@ public:
   s32 line_last;
   s32 lines_vis;
   SIZE line_sz;
-  
   s32 scroll_h;
   s32 scroll_y;
-
   s32 m_delta;
 public:
   HWND parent;
-  
   RECT bkrect;
   RECT rect;
-  
   bool hovered;
   bool dragging;
   POINT duser_start;
@@ -34,6 +30,8 @@ public:
       r.right + 25,
       r.bottom + 1
     };
+
+    cscroll_draw();
   }
   void cscroll_draw( bool update_info = true, bool redraw = false ) {
     HDC hdc = GetDC( parent );
@@ -52,19 +50,17 @@ public:
   }
 public:
   void cscroll_drag_off() {
-    if( !dragging )
-      return;
-
-    cscroll_setinfo( true, true );
-    dragging = false;
-    m_delta = 0;
+    if( dragging ) {
+      cscroll_setinfo( true, true );
+      dragging = false;
+      m_delta = 0;
+    }
   }
   void cscroll_drag_on( POINT m_pos ) {
-    if( !cscroll_ishovered( m_pos ) )
-      return;
-
-    duser_start = m_pos;
-    dragging = true;
+    if( cscroll_ishovered( m_pos ) ) {
+      duser_start = m_pos;
+      dragging = true;
+    }
   }
   void cscroll_drag( POINT m_pos ) {
     if( !GetAsyncKeyState( MK_LBUTTON ) || !dragging ) {
@@ -102,24 +98,51 @@ public:
           curr_line--;
       }
 
-      s32 char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, curr_line - 1, 0 );
+      s32 char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, (u64)curr_line - 1, 0 );
       SendMessageW( parent, EM_SETSEL, char_idx, char_idx );
     }
 
     SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
       
-    cscroll_draw( true, false );
+    cscroll_draw();
+  }
+  void cscroll_hover_scroll( MSLLHOOKSTRUCT* p_mouse ) {
+    if( !txt_box )
+      return;
+
+    RECT txt_rect = get_wnd_sz( txt_box );
+    POINT cm_pos = p_mouse->pt;
+    ScreenToClient( txt_box, &cm_pos );
+    if( !PtInRect( &txt_rect, cm_pos ) )
+      return;
+
+    if( HIWORD( p_mouse->mouseData ) == 120 ) {
+      if( curr_line > lines_vis )
+        SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
+      if( curr_line != 1 )
+        curr_line--;
+    } else {
+      if( curr_line < line_last )
+        SendMessageW( parent, EM_SCROLL, SB_LINEDOWN, 0 );
+      if( curr_line != line_count )
+        curr_line++;
+    }
+
+    s32 char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, (u64)curr_line - 1, 0 );
+    SendMessageW( parent, EM_SETSEL, char_idx, char_idx );
+
+    SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
+
+    cscroll_draw();
   }
   bool cscroll_ishovered( POINT m_pos ) {
+    if( dragging )
+      return false;
+
     m_pos.x -= 25; m_pos.y -= 50;
-    if( PtInRect( &rect, m_pos ) ) {
-      hovered = true;
-      cscroll_draw( false, true );
-      return true;
-    }
-    hovered = false;
-    cscroll_draw( false, true );
-    return false;
+    hovered = PtInRect( &rect, m_pos );
+    cscroll_draw( false, false );
+    return hovered;
   }
 public:
   void cscroll_setinfo( bool update_info, bool redraw ) {
@@ -150,18 +173,22 @@ public:
         r.right + 25,
         scroll_y + scroll_h
       };
-
-#ifdef _DEBUG
-      printf(
-        "line count     : %d\nline first vis : %d\nline last vis  : %d\nline total vis : %d\nscroll height  : %d\nscroll y top   : %d\nscroll hover   : %d\nscroll drag    : %d\nm_delta        : %d\ncurrent line   : %d\n\n\n\n\n\n\n",
-        line_count, line_first, line_last, lines_vis, scroll_h, scroll_y, hovered, dragging, m_delta, curr_line
-      );
-#endif
     }
 
     if( redraw ) {
       RedrawWindow( parent, 0, 0, RDW_ERASE | RDW_INVALIDATE );
       cscroll_draw( false, false );
+    }
+  }
+  void cscroll_update() {
+    if( parent ) {
+      static s64 prev_sel = 0;
+      s64 sel = SendMessageW( parent, EM_GETSEL, 0, 0 );
+
+      if( sel != prev_sel ) {
+        cscroll_draw( true, true );
+        prev_sel = sel;
+      }
     }
   }
 };

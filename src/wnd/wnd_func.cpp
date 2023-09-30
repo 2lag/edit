@@ -9,53 +9,16 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   GetCursorPos( &m_pos );
   ScreenToClient( hwnd, &m_pos );
 
-  RECT drag { 0, 6, wnd_sz.right - 75, 25 },
-       cls { wnd_sz.right - 25, 05,
-             wnd_sz.right - 05, 25
-  },   max { wnd_sz.right - 50, 05,
-             wnd_sz.right - 25, 25
-  },   min { wnd_sz.right - 75, 5,
-             wnd_sz.right - 50, 25
-  };
+  RECT drag {                00, 06, wnd_sz.right - 75, 25 },
+        cls { wnd_sz.right - 25, 05, wnd_sz.right - 05, 25 },
+        max { wnd_sz.right - 50, 05, wnd_sz.right - 25, 25 },
+        min { wnd_sz.right - 75, 05, wnd_sz.right - 50, 25 };
 
   wnd_tps_draw( hwnd, wnd_sz );
 
-  if( txt_box ) {
-    static s64 prev_sel = 0;
-    s64 sel = SendMessageW( txt_box, EM_GETSEL, 0, 0 );
-    
-    if( sel != prev_sel ) {
-      vscroll.cscroll_draw( true, true );
-      prev_sel = sel;
-    }
-  }
-
-#ifdef _DEBUG
-  AllocConsole();
-  FILE* new_std;
-  freopen_s( &new_std, "CONOUT$", "w", stdout );
-  SetConsoleTitleW( L"type debug" );
-  void *std_handle = GetStdHandle( STD_OUTPUT_HANDLE );
-  const SMALL_RECT wnd_debug{ 00, 00, 42, 16 };
-  SetConsoleWindowInfo( std_handle, true, &wnd_debug );
-  SetConsoleScreenBufferSize( std_handle, { 43, 17 } );
-  SetConsoleWindowInfo( std_handle, true, &wnd_debug );
-#endif
+  vscroll.cscroll_update();
 
   switch( msg ) {
-  case WM_COMMAND: {
-    switch( HIWORD( wp ) ) {
-    case EN_ERRSPACE: {
-      MessageBoxW( (HWND)lp,
-        L"error", L"EN_ERRSPACE triggered",
-        MB_OK | MB_ICONERROR
-      );
-    } break;
-    case EN_VSCROLL: {
-      vscroll.cscroll_draw( true, true );
-    } break;
-    }
-  } break;
   case WM_CREATE: {
     wnd_type_create( hwnd, pwnd_sz );
     SetFocus( txt_box );
@@ -82,8 +45,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     wnd_title_min( hwnd, PtInRect( &min, m_pos ) );
   } break;
   case WM_LBUTTONUP: {
-    if( !user_resizing )
-      wnd_drag_resize( hwnd, m_pos );
+    wnd_drag_resize( hwnd, m_pos );
 
     wnd_drag_off();
     wnd_resize_off();
@@ -93,13 +55,11 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   case WM_MOUSEMOVE: {
     wnd_drag( hwnd, m_pos );
 
+    vscroll.cscroll_ishovered( m_pos );
     if( !user_resizing )
       vscroll.cscroll_drag( m_pos );
-    if( !vscroll.dragging )
-      vscroll.cscroll_ishovered( m_pos );
 
-    if( is_maxd )
-      break;
+    if( is_maxd ) break;
 
     wnd_resize_get_cursor( m_pos, wnd_sz );
     wnd_resize( hwnd, m_pos, wnd_sz );
@@ -114,20 +74,17 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     EndPaint( hwnd, &ps );
   } break;
   case WM_SIZE: {
-    MoveWindow( txt_box,
-      25, 50,
-      pwnd_sz.x - 50,
-      pwnd_sz.y - 75,
-      TRUE
-    );
+    if( txt_box ) {
+      MoveWindow( txt_box, 25, 50,
+        pwnd_sz.x - 50, pwnd_sz.y - 75, TRUE
+      );
+    }
 
     RECT r = get_wnd_sz( vscroll.parent );
 
     vscroll.bkrect = {
-      r.right + 1,
-      r.top - 1,
-      r.right + 25,
-      r.bottom + 1
+      r.right + 01, r.top - 1,
+      r.right + 25, r.bottom + 1
     };
   
     vscroll.cscroll_draw( true, true );

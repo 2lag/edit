@@ -1,7 +1,7 @@
 #include "wnd_title.h"
 
 void wnd_title_draw( HDC hdc, POINT m_pos, RECT wnd_sz ) {
-  WND_OBJ obj[] = {
+  WND_OBJ obj[8] = {
     wnd_obj_create( {                 0, 0, wnd_sz.right     , 25 }, COL_M_GRY, false ),
     wnd_obj_create( {                 0, 0, wnd_sz.right     , 24 }, COL_D_GRY, false ),
     wnd_obj_create( { wnd_sz.right - 25, 0, wnd_sz.right     , 25 }, COL_M_GRY, true  ),
@@ -15,7 +15,7 @@ void wnd_title_draw( HDC hdc, POINT m_pos, RECT wnd_sz ) {
   SetBkMode( hdc, TRANSPARENT );
   SetTextColor( hdc, COL_M_GRY );
 
-  for( s32 idx = 0; idx < 8; ++idx ) {
+  for( s8 idx = 0; idx < 8; ++idx ) {
     FillRect( hdc, &obj[ idx ].r, obj[ idx ].col );
     if( obj[ idx ].next ) {
       ++idx;

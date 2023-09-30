@@ -1,9 +1,7 @@
 #pragma once
 
 inline POINT operator+=( POINT &a, const POINT b ) {
-  a.x += b.x;
-  a.y += b.y;
-  return a;
+  return { a.x += b.x, a.y += b.y }; // only god knows why it doesnt work without the =
 }
 
 inline POINT operator+=( const POINT a, const s32 b ) {
@@ -39,6 +37,5 @@ inline bool operator!( const POINT &a ) {
 }
 
 inline bool operator!(const RECT& a) {
-  return ( a.left == 0 && a.right == 0 &&
-           a.top == 0 && a.bottom == 0 );
+  return ( a.left == 0 && a.right == 0 && a.top == 0 && a.bottom == 0 );
 }
