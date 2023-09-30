@@ -23,12 +23,12 @@ public:
   void cscroll_create( HWND hwnd ) {
     parent = hwnd;
 
-    RECT r = get_wnd_sz( parent );
+    RECT txt_rect = get_wnd_sz( txt_box );
     bkrect = rect = {
-      r.right + 1,
-      -1,
-      r.right + 25,
-      r.bottom + 1
+      txt_rect.right + 1,
+      txt_rect.top - 1,
+      txt_rect.right + 25,
+      txt_rect.bottom + 1
     };
 
     cscroll_draw();
@@ -110,7 +110,7 @@ public:
     if( !txt_box )
       return;
 
-    RECT txt_rect = get_wnd_sz( txt_box );
+    RECT txt_rect = get_wnd_sz( parent );
     POINT cm_pos = p_mouse->pt;
     ScreenToClient( txt_box, &cm_pos );
     if( !PtInRect( &txt_rect, cm_pos ) )
@@ -150,7 +150,9 @@ public:
       curr_line  = (s32)SendMessageW( parent, EM_LINEFROMCHAR, -1, 0 ) + 1;
       line_count = (s32)SendMessageW( parent, EM_GETLINECOUNT, 0, 0 );
       line_first = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 ) + 1;
-      lines_vis = to_sz_point( get_wnd_sz( parent ) ).y / line_sz.cy;
+
+      RECT txt_rect = get_wnd_sz( parent );
+      lines_vis = to_sz_point( txt_rect ).y / line_sz.cy;
       line_last = line_first + lines_vis - 1;
       
       if( line_count <= lines_vis )
@@ -165,12 +167,10 @@ public:
       else if( scroll_y + scroll_h > bkrect.bottom || curr_line == line_count )
         scroll_y = bkrect.bottom - scroll_h;
 
-      RECT r = get_wnd_sz( parent );
-
       rect = {
-        r.right + 1,
+        txt_rect.right + 1,
         scroll_y,
-        r.right + 25,
+        txt_rect.right + 25,
         scroll_y + scroll_h
       };
     }

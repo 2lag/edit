@@ -1,4 +1,5 @@
 todo :
+- figure out where extra line is coming from lol
 - add line count ( use edit_getfirstvisibleline ) to cscroll
 - - for loop through lines_vis
 - - start at first line ( from edit_getfirstvisibleline )

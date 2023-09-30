@@ -9,10 +9,10 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   GetCursorPos( &m_pos );
   ScreenToClient( hwnd, &m_pos );
 
-  RECT drag {                00, 06, wnd_sz.right - 75, 25 },
-        cls { wnd_sz.right - 25, 05, wnd_sz.right - 05, 25 },
-        max { wnd_sz.right - 50, 05, wnd_sz.right - 25, 25 },
-        min { wnd_sz.right - 75, 05, wnd_sz.right - 50, 25 };
+  RECT drag {                 0, 6, wnd_sz.right - 75, 25 },
+        cls { wnd_sz.right - 25, 5, wnd_sz.right -  5, 25 },
+        max { wnd_sz.right - 50, 5, wnd_sz.right - 25, 25 },
+        min { wnd_sz.right - 75, 5, wnd_sz.right - 50, 25 };
 
   wnd_tps_draw( hwnd, wnd_sz );
 
@@ -80,11 +80,11 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
       );
     }
 
-    RECT r = get_wnd_sz( vscroll.parent );
+    RECT txt_rect = get_wnd_sz( vscroll.parent );
 
     vscroll.bkrect = {
-      r.right + 01, r.top - 1,
-      r.right + 25, r.bottom + 1
+      txt_rect.right + 1 , txt_rect.top - 1,
+      txt_rect.right + 25, txt_rect.bottom + 1
     };
   
     vscroll.cscroll_draw( true, true );
