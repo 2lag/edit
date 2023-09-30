@@ -1,8 +1,6 @@
 todo :
-- modify scrollbar to use bottom visible line and min size
-- add update scrollbar pos when clicked in text box
 - add scrolling using scroll wheel while hovered over text box
-- - remove debug print info
+- fix scrollbar sliding too fast
 - simplify/optimize cscroll & edit control
 - add line count ( use edit_getlinecount/edit_getfirstvisibleline )
 - add caret position in bottom middle

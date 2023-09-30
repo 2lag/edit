@@ -20,6 +20,16 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
 
   wnd_tps_draw( hwnd, wnd_sz );
 
+  if( txt_box ) {
+    static s64 prev_sel = 0;
+    s64 sel = SendMessageW( txt_box, EM_GETSEL, 0, 0 );
+    
+    if( sel != prev_sel ) {
+      vscroll.cscroll_draw( true, true );
+      prev_sel = sel;
+    }
+  }
+
 #ifdef _DEBUG
   AllocConsole();
   FILE* new_std;
@@ -42,7 +52,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
       );
     } break;
     case EN_VSCROLL: {
-      vscroll.cscroll_setinfo( true, true );
+      vscroll.cscroll_draw( true, true );
     } break;
     }
   } break;

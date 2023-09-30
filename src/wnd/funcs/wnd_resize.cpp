@@ -8,10 +8,10 @@ s32 d_side{};
 void wnd_resize_get_side( POINT m_pos, RECT wnd_sz ) {
   POINT pwn_sz = to_sz_point( wnd_sz );
   
-  bool on_left   = ( m_pos.x <= pwn_sz.x * 0.01f ),
+  bool on_left   = ( m_pos.x <= 5 ),
        on_top    = ( m_pos.y <= 5 ),
-       on_right  = ( m_pos.x >= pwn_sz.x * 0.99f ),
-       on_bottom = ( m_pos.y >= pwn_sz.y * 0.99f ),
+       on_right  = ( m_pos.x >= pwn_sz.x - 5 ),
+       on_bottom = ( m_pos.y >= pwn_sz.y - 5 ),
        in_hcenter =  ( !on_right && !on_left ),
        in_vcenter =  ( !on_bottom && !on_top );
 
@@ -29,11 +29,11 @@ void wnd_resize_get_side( POINT m_pos, RECT wnd_sz ) {
 
 void wnd_resize_get_cursor( POINT m_pos, RECT wnd_sz ) {
   POINT pwn_sz = to_sz_point( wnd_sz );
-
-  bool on_left   = ( m_pos.x <= pwn_sz.x * 0.01f ),
+  
+  bool on_left   = ( m_pos.x <= 5 ),
        on_top    = ( m_pos.y <= 5 ),
-       on_right  = ( m_pos.x >= pwn_sz.x * 0.99f ),
-       on_bottom = ( m_pos.y >= pwn_sz.y * 0.99f ),
+       on_right  = ( m_pos.x >= pwn_sz.x - 5 ),
+       on_bottom = ( m_pos.y >= pwn_sz.y - 5 ),
        in_hcenter =  ( !on_right && !on_left ),
        in_vcenter =  ( !on_bottom && !on_top );
 

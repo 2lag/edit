@@ -8,13 +8,17 @@ public:
   s32 line_last;
   s32 lines_vis;
   SIZE line_sz;
+  
   s32 scroll_h;
   s32 scroll_y;
+
   s32 m_delta;
 public:
   HWND parent;
+  
   RECT bkrect;
   RECT rect;
+  
   bool hovered;
   bool dragging;
   POINT duser_start;
@@ -71,19 +75,32 @@ public:
 
     m_delta = m_pos.y - duser_start.y;
 
-    s32 scroll_dir = ( m_delta <= -line_sz.cy ) ? -1 : ( ( m_delta >= line_sz.cy ) ? 1 : 0 );
+    s32 scroll_dir;
+    if( m_delta <= -bkrect.bottom / line_count )
+      scroll_dir = -1;
+    else if( m_delta >= bkrect.bottom / line_count )
+      scroll_dir = 1;
+    else
+      scroll_dir = 0;
 
     if( scroll_dir ) {
       m_delta = 0;
       duser_start = m_pos;
-      
       curr_line += scroll_dir;
-
-      s32 first_line = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 );
-      if( scroll_dir == 1 && curr_line < line_last )
-        curr_line = first_line + lines_vis;
-      else if( scroll_dir == -1 && curr_line > 1 )
-        curr_line = first_line;
+      line_first = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 );
+      
+      if( scroll_dir == 1 && curr_line <= line_last ) {
+        if( curr_line == line_last )
+          curr_line = line_first + lines_vis;
+        else
+          curr_line++;
+      } else if( scroll_dir == -1 && curr_line > 1 ) {
+        if( curr_line >= lines_vis ) {
+          SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
+          curr_line = line_first + lines_vis - 1;
+        } else
+          curr_line--;
+      }
 
       s32 char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, curr_line - 1, 0 );
       SendMessageW( parent, EM_SETSEL, char_idx, char_idx );
@@ -92,13 +109,6 @@ public:
     SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
       
     cscroll_draw( true, false );
-
-#ifdef _DEBUG
-    printf(
-      "line count     : %d\nline first vis : %d\nline last vis  : %d\nline total vis : %d\nscroll height  : %d\nscroll y top   : %d\nscroll hover   : %d\nscroll drag    : %d\nm_delta        : %d\ncurrent line  : %d\n\n\n\n\n\n\n",
-      line_count, line_first, line_last, lines_vis, scroll_h, scroll_y, hovered, dragging, m_delta, curr_line
-    );
-#endif
   }
   bool cscroll_ishovered( POINT m_pos ) {
     m_pos.x -= 25; m_pos.y -= 50;
@@ -120,17 +130,16 @@ public:
       lines_vis = to_sz_point( get_wnd_sz( parent ) ).y / line_sz.cy;
       line_last = line_first + lines_vis - 1;
       
-      /* verify these values are correct */
-      if( line_count > lines_vis )
-        scroll_h = bkrect.bottom - ( line_sz.cy * ( line_count - lines_vis ) );
-      else
+      if( line_count <= lines_vis )
         scroll_h = bkrect.bottom + 1;
+      else
+        scroll_h = max( bkrect.bottom - ( line_sz.cy * ( line_count - lines_vis ) ), 50 );
 
       scroll_y = (s32)( (f32)( bkrect.bottom - scroll_h ) * ( (f32)curr_line / (f32)line_count ) );
 
       if( scroll_y < -1 || curr_line == 1 )
         scroll_y = -1;
-      else if( scroll_y + scroll_h > bkrect.bottom || curr_line == line_last )
+      else if( scroll_y + scroll_h > bkrect.bottom || curr_line == line_count )
         scroll_y = bkrect.bottom - scroll_h;
 
       RECT r = get_wnd_sz( parent );
@@ -141,6 +150,13 @@ public:
         r.right + 25,
         scroll_y + scroll_h
       };
+
+#ifdef _DEBUG
+      printf(
+        "line count     : %d\nline first vis : %d\nline last vis  : %d\nline total vis : %d\nscroll height  : %d\nscroll y top   : %d\nscroll hover   : %d\nscroll drag    : %d\nm_delta        : %d\ncurrent line   : %d\n\n\n\n\n\n\n",
+        line_count, line_first, line_last, lines_vis, scroll_h, scroll_y, hovered, dragging, m_delta, curr_line
+      );
+#endif
     }
 
     if( redraw ) {
