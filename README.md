@@ -1,6 +1,12 @@
 todo :
-- add line count ( use edit_getlinecount/edit_getfirstvisibleline )
-- add caret position in bottom middle
+- add line count ( use edit_getfirstvisibleline ) to cscroll
+- - for loop through lines_vis
+- - start at first line ( from edit_getfirstvisibleline )
+- - draw text for line to the left of edit control accounting for size so we can use right side pos
+- - add to setinfo/draw function ( figure out which works best )
+- add caret position
+- - get position and draw in bottom middle
+- - use math like tps make it ezpz
 - minimize var scope, clean & optimize all files ( make checklist )
 - - "const all vars unless they cant be"
 - add icon
