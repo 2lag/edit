@@ -74,11 +74,12 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     EndPaint( hwnd, &ps );
   } break;
   case WM_SIZE: {
-    if( txt_box ) {
-      MoveWindow( txt_box, 25, 50,
-        pwnd_sz.x - 50, pwnd_sz.y - 75, TRUE
-      );
-    }
+    MoveWindow( txt_box, 25, 50,
+      pwnd_sz.x - 50, pwnd_sz.y - 75, TRUE
+    );
+
+    if( !vscroll.parent )
+      break;
 
     RECT txt_rect = get_wnd_sz( vscroll.parent );
 
