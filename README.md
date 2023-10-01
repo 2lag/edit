@@ -1,4 +1,5 @@
 todo :
+- fix scrollbar dragging over textbox and off if already dragging with mousehook
 - add line count ( use edit_getfirstvisibleline ) to cscroll
 - - for loop through lines_vis
 - - start at first line ( from edit_getfirstvisibleline )
