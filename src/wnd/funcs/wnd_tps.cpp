@@ -30,7 +30,7 @@ void wnd_tps_draw( HWND hwnd, RECT wnd_sz ) {
     (s32)wcslen( tps_txt ), &txt_sz
   );
 
-  SetBkColor( hdc, COL_D_GRY );
+  SetBkMode( hdc, TRANSPARENT );
   SetTextColor( hdc, COL_M_GRY );
   TextOutW( hdc,
     wnd_sz.right  - txt_sz.cx - 5,

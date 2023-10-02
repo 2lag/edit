@@ -14,8 +14,8 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
         max { wnd_sz.right - 50, 5, wnd_sz.right - 25, 25 },
         min { wnd_sz.right - 75, 5, wnd_sz.right - 50, 25 };
 
+  wnd_type_caret_pos( hwnd, wnd_sz );
   wnd_tps_draw( hwnd, wnd_sz );
-
   vscroll.cscroll_update();
 
   switch( msg ) {
