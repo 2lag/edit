@@ -46,8 +46,19 @@ LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
   if( ncode == HC_ACTION ) {
     MSLLHOOKSTRUCT* p_mouse = reinterpret_cast<MSLLHOOKSTRUCT*>( lp );
 
-    if( wp == WM_MOUSEWHEEL )
+    switch( wp ) {
+    case WM_MOUSEMOVE: {
+      if( vscroll.dragging ) {
+        POINT m_pos = p_mouse->pt;
+        ScreenToClient( global_wnd, &m_pos );
+
+        vscroll.cscroll_drag( m_pos );
+      }
+    } break;
+    case WM_MOUSEWHEEL: {
       vscroll.cscroll_hover_scroll( p_mouse );
+    } break;
+    }
   }
 
   return CallNextHookEx( 0, ncode, wp, lp );

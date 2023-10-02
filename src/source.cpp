@@ -1,6 +1,8 @@
 #include "wnd/wnd_func.h"
 #include "wnd/funcs/wnd_tps.h"
 
+HWND global_wnd;
+
 s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
                     _In_opt_ HINSTANCE         ,
                     _In_     LPSTR             ,
@@ -23,6 +25,8 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
     420, 420,
     0, 0, inst, 0
   );
+
+  global_wnd = hwnd;
 
   ShowWindow( hwnd, cmdshow );
   UpdateWindow( hwnd );
