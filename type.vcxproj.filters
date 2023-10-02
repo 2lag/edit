@@ -36,6 +36,9 @@
     <ClCompile Include="src\wnd\funcs\type\wnd_type.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\wnd\funcs\type\wnd_type_caret.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\typedef.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\wnd\funcs\util\overloads.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wnd\funcs\type\wnd_type_caret.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

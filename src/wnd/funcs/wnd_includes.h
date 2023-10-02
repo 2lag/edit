@@ -5,4 +5,5 @@
 #include "wnd_drag.h"
 #include "wnd_tps.h"
 
+#include "type/wnd_type_caret.h"
 #include "type/wnd_type.h"
