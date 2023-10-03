@@ -3,7 +3,6 @@ todo :
 - - for loop through lines_vis
 - - start at first line ( from edit_getfirstvisibleline )
 - - draw text for line to the left of edit control accounting for size so we can use right side pos
-- - add to setinfo/draw function ( figure out which works best )
 - minimize var scope, clean & optimize all files ( make checklist )
 - - "const all vars unless they cant be"
 - add icon
