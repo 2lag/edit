@@ -12,3 +12,4 @@ todo :
 - - - - macro
 - - - - mutli-cursor
 - - - theme
+- add picture and documentation here
