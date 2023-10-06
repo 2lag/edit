@@ -56,7 +56,7 @@ void wnd_title_draw( const HDC hdc, const RECT wnd_sz ) {
   }
 
 
-  TextOutW( hdc, 26, 4, L"Edit", 4 );
+  TextOutW( hdc, 30, 4, L"Edit", 4 );
 
   for( auto& it : obj )
     DeleteObject( it.col );

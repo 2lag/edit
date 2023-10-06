@@ -7,5 +7,5 @@ todo :
 - - - - macro
 - - - - mutli-cursor
 - - - theme
-- minimize var scope, const vars, clean & optimize all files ( make file checklist )
+- minimize var scope | const vars | clean, optimize, and create files ( make file checklist ) |
 - add picture and documentation here

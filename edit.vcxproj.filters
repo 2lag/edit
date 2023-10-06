@@ -104,9 +104,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="icon1.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="edit.ico">
       <Filter>Resource Files</Filter>
     </Image>
