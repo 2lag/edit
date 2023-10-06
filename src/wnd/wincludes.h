@@ -29,7 +29,7 @@ enum WND_COL {
 extern HWND global_wnd;
 extern HWND txt_box;
 
-#include "funcs/type/wnd_type_scroll.h"
+#include "funcs/edit/wnd_edit_scroll.h"
 extern CSCROLL vscroll;
 
 extern HHOOK mouse_hook;
@@ -44,7 +44,7 @@ inline void run_debug_console() {
   AllocConsole();
   FILE* new_std;
   freopen_s( &new_std, "CONOUT$", "w", stdout );
-  SetConsoleTitleW( L"type debug" );
+  SetConsoleTitleW( L"edit debug" );
   void *std_handle = GetStdHandle( STD_OUTPUT_HANDLE );
   const SMALL_RECT wnd_debug{ 00, 00, 42, 16 };
   SetConsoleWindowInfo( std_handle, true, &wnd_debug );

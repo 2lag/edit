@@ -33,13 +33,13 @@
     <ClCompile Include="src\wnd\funcs\wnd_tps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\funcs\type\wnd_type.cpp">
+    <ClCompile Include="src\wnd\funcs\edit\wnd_edit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\funcs\type\wnd_type_caret.cpp">
+    <ClCompile Include="src\wnd\funcs\edit\wnd_edit_caret.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\funcs\type\wnd_type_line_count.cpp">
+    <ClCompile Include="src\wnd\funcs\edit\wnd_edit_line_count.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,10 +68,10 @@
     <ClInclude Include="src\wnd\funcs\wnd_tps.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\type\wnd_type.h">
+    <ClInclude Include="src\wnd\funcs\edit\wnd_edit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\type\wnd_type_scroll.h">
+    <ClInclude Include="src\wnd\funcs\edit\wnd_edit_scroll.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\wnd\funcs\util\util.h">
@@ -80,10 +80,10 @@
     <ClInclude Include="src\wnd\funcs\util\overloads.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\type\wnd_type_caret.h">
+    <ClInclude Include="src\wnd\funcs\edit\wnd_edit_caret.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\type\wnd_type_line_count.h">
+    <ClInclude Include="src\wnd\funcs\edit\wnd_edit_line_count.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

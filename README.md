@@ -1,5 +1,4 @@
 todo :
-- rename to something else and rename on personal site
 - design and add icon ( .rc file voodoo )
 - add menu bar & functionality + keybinds ( wnd_type -> editproc -> wm_keydown )
 - - make "one time renderer" so you pass info and it draws itself

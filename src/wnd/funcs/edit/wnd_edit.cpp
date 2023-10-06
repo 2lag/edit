@@ -1,4 +1,4 @@
-#include "wnd_type.h"
+#include "wnd_edit.h"
 
 HWND txt_box;
 HHOOK mouse_hook;

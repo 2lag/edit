@@ -13,13 +13,13 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
     wnd_proc, 0, 0, inst, 0,
     LoadCursorW( 0, IDC_ARROW ),
     CreateSolidBrush( RGB( 32, 32, 32 ) ),
-    L"type", L"type_class", 0
+    L"edit", L"edit_class", 0
   };
 
   RegisterClassExW( &wnd_cls );
 
   HWND hwnd = CreateWindowExW( 0,
-    L"type_class", L"type",
+    L"edit_class", L"edit",
     WS_POPUPWINDOW,
     100, 100,
     420, 420,
