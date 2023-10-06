@@ -1,6 +1,6 @@
 todo :
-- fix bug where line count doesnt update until you type on the new line, and not drawing after resizing
-- rename to something else
+- fix bug where line count doesnt update until you type on the new line ( look at caret ? )
+- rename to something else and rename on personal site
 - design and add icon ( .rc file voodoo )
 - add menu bar & functionality + keybinds ( wnd_type -> editproc -> wm_keydown )
 - - make "one time renderer" so you pass info and it draws itself

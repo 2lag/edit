@@ -13,10 +13,10 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
         max { wnd_sz.right - 50, 5, wnd_sz.right - 25, 25 },
         min { wnd_sz.right - 75, 5, wnd_sz.right - 50, 25 };
 
+  vscroll.cscroll_update();
   wnd_type_caret_pos( hwnd, wnd_sz );
   wnd_type_line_count( hwnd, wnd_sz );
   wnd_tps_draw( hwnd, wnd_sz );
-  vscroll.cscroll_update();
 
   switch( msg ) {
   case WM_CREATE: {
@@ -77,6 +77,8 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     MoveWindow( txt_box, 25, 50,
       pwnd_sz.x - 50, pwnd_sz.y - 75, TRUE
     );
+
+    wnd_type_line_count( hwnd, wnd_sz, true );
 
     if( !vscroll.parent )
       break;
