@@ -1,5 +1,4 @@
 todo :
-- fix bug where line count doesnt update until you type on the new line ( look at caret ? )
 - rename to something else and rename on personal site
 - design and add icon ( .rc file voodoo )
 - add menu bar & functionality + keybinds ( wnd_type -> editproc -> wm_keydown )

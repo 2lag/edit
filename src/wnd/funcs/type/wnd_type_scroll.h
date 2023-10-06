@@ -83,17 +83,17 @@ public:
       m_delta = 0;
       duser_start = m_pos;
       curr_line += scroll_dir;
-      line_first = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 );
+      line_first = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 ) + 1;
       
       if( scroll_dir == 1 && curr_line <= line_last ) {
         if( curr_line == line_last )
-          curr_line = line_first + lines_vis;
+          curr_line = line_first + lines_vis - 1;
         else
           curr_line++;
       } else if( scroll_dir == -1 && curr_line > 1 ) {
         if( curr_line >= lines_vis ) {
           SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
-          curr_line = line_first + lines_vis - 1;
+          curr_line = line_first + lines_vis - 2;
         } else
           curr_line--;
       }
@@ -152,9 +152,12 @@ public:
       line_first = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 ) + 1;
 
       RECT txt_rect = get_wnd_sz( parent );
-      lines_vis = to_sz_point( txt_rect ).y / line_sz.cy;
+      lines_vis = (s32)( to_sz_point( txt_rect ).y / line_sz.cy );
       line_last = line_first + lines_vis - 1;
-      
+
+      if( curr_line >= lines_vis + 1 )
+        line_first++;
+
       if( line_count <= lines_vis )
         scroll_h = bkrect.bottom + 1;
       else
