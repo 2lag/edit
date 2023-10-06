@@ -20,7 +20,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
 
   switch( msg ) {
   case WM_CREATE: {
-    wnd_type_create( hwnd, pwnd_sz );
+    wnd_type_create( hwnd );
     SetFocus( txt_box );
   } break;
   case WM_CTLCOLOREDIT: {
@@ -40,7 +40,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     
     vscroll.cscroll_drag_on( m_pos );
 
-    wnd_title_cls( hwnd, PtInRect( &cls, m_pos ) );
+    wnd_title_cls( PtInRect( &cls, m_pos ) );
     wnd_title_max( hwnd, PtInRect( &max, m_pos ) );
     wnd_title_min( hwnd, PtInRect( &min, m_pos ) );
   } break;
@@ -68,7 +68,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     PAINTSTRUCT ps;
     HDC hdc = BeginPaint( hwnd, &ps );
 
-    wnd_title_draw( hdc, m_pos, wnd_sz );
+    wnd_title_draw( hdc, wnd_sz );
     wnd_type_outline( hwnd, pwnd_sz );
 
     EndPaint( hwnd, &ps );

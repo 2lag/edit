@@ -16,7 +16,7 @@ void wnd_tps_calc() {
   prev_time = GetTickCount64();
 }
 
-void wnd_tps_draw( HWND hwnd, RECT wnd_sz ) {
+void wnd_tps_draw( const HWND hwnd, const RECT wnd_sz ) {
   wchar_t tps_txt[32];
   swprintf_s( tps_txt,
     sizeof( tps_txt ) / sizeof( wchar_t ),

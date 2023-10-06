@@ -1,6 +1,6 @@
 #include "wnd_title.h"
 
-void wnd_title_draw( HDC hdc, POINT m_pos, RECT wnd_sz ) {
+void wnd_title_draw( const HDC hdc, const RECT wnd_sz ) {
   WND_OBJ obj[8] = {
     wnd_obj_create( {                 0, 0, wnd_sz.right     , 25 }, COL_M_GRY, false ),
     wnd_obj_create( {                 0, 0, wnd_sz.right     , 24 }, COL_D_GRY, false ),
@@ -50,7 +50,7 @@ void wnd_title_draw( HDC hdc, POINT m_pos, RECT wnd_sz ) {
     DeleteObject( it.col );
 }
 
-void wnd_title_cls( HWND hwnd, bool mouse_over ) {
+void wnd_title_cls( const bool mouse_over ) {
   if( mouse_over )
     ExitProcess( 0 );
 }
@@ -58,7 +58,7 @@ void wnd_title_cls( HWND hwnd, bool mouse_over ) {
 RECT max_prev_sz;
 POINT max_prev_pos;
 bool is_maxd = false;
-void wnd_title_max( HWND hwnd, bool mouse_over ) {
+void wnd_title_max( const HWND hwnd, const bool mouse_over ) {
   if( !mouse_over )
     return;
 
@@ -96,7 +96,7 @@ void wnd_title_max( HWND hwnd, bool mouse_over ) {
   );
 }
 
-void wnd_title_min( HWND hwnd, bool mouse_over ) {
+void wnd_title_min( const HWND hwnd, const bool mouse_over ) {
   if( mouse_over )
     ShowWindow( hwnd, SW_MINIMIZE );
 }

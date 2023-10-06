@@ -63,7 +63,7 @@ LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
   return CallNextHookEx( 0, ncode, wp, lp );
 }
 
-void wnd_type_create( HWND hwnd, POINT pwnd_sz ) {
+void wnd_type_create( const HWND hwnd ) {
   txt_box = CreateWindowExW( WS_EX_TRANSPARENT,
     L"EDIT", 0,
     WS_CHILD | WS_VISIBLE | ES_MULTILINE |
@@ -80,7 +80,7 @@ void wnd_type_create( HWND hwnd, POINT pwnd_sz ) {
   );
 }
 
-void wnd_type_outline( HWND hwnd, POINT wnd_sz ) {
+void wnd_type_outline( const HWND hwnd, const POINT wnd_sz ) {
   HDC hdc = GetDC( hwnd );
   HBRUSH brush = CreateSolidBrush( COL_M_GRY );
   RECT outline_sz {
@@ -94,7 +94,7 @@ void wnd_type_outline( HWND hwnd, POINT wnd_sz ) {
   ReleaseDC( hwnd, hdc );
 }
 
-void wnd_type_customize( WPARAM wp ) {
+void wnd_type_customize( const WPARAM wp ) {
   HDC hdc = (HDC)wp;
 
   SetBkMode( hdc, TRANSPARENT );

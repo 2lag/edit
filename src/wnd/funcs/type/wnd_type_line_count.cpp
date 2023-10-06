@@ -1,6 +1,6 @@
 #include "wnd_type_line_count.h"
 
-void wnd_type_line_count( HWND hwnd, RECT wnd_sz ) {
+void wnd_type_line_count( const HWND hwnd, const RECT wnd_sz ) {
   static s32 prev_line = 0;
   if( !txt_box || prev_line == vscroll.line_first )
     return;

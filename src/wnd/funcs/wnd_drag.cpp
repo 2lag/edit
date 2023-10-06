@@ -3,7 +3,7 @@
 bool user_dragging = false;
 POINT duser_start{};
 
-void wnd_drag_on( HWND hwnd, POINT m_pos, bool mouse_over ) {
+void wnd_drag_on( const HWND hwnd, const POINT m_pos, const bool mouse_over ) {
   if( !mouse_over )
     return;
 
@@ -25,7 +25,7 @@ void wnd_drag_off() {
   }
 }
 
-void wnd_drag( HWND hwnd, POINT m_pos ) {
+void wnd_drag( const HWND hwnd, const POINT m_pos ) {
   if( !user_dragging ) {
     duser_start = m_pos;
     return;
@@ -65,7 +65,7 @@ void wnd_drag( HWND hwnd, POINT m_pos ) {
   );
 }
 
-void wnd_drag_resize( HWND hwnd, POINT m_pos ) {
+void wnd_drag_resize( const HWND hwnd, const POINT m_pos ) {
   if( user_resizing )
     return;
 

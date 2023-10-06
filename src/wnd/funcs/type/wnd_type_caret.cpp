@@ -1,6 +1,6 @@
 #include "wnd_type_caret.h"
 
-void wnd_type_caret_pos( HWND hwnd, RECT wnd_sz ) {
+void wnd_type_caret_pos( const HWND hwnd, const RECT wnd_sz ) {
   if( !txt_box )
     return;
 

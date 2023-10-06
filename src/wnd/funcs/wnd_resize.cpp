@@ -8,7 +8,7 @@ bool user_resizing = false;
 POINT ruser_start{};
 s32 d_side{};
 
-void wnd_resize_get_side( POINT m_pos, RECT wnd_sz ) {
+void wnd_resize_get_side( const POINT m_pos, const RECT wnd_sz ) {
   POINT pwn_sz = to_sz_point( wnd_sz );
   
   bool on_left   = ( m_pos.x <= RESIZE_THRESHOLD ),
@@ -30,7 +30,7 @@ void wnd_resize_get_side( POINT m_pos, RECT wnd_sz ) {
     d_side = 0;
 }
 
-void wnd_resize_get_cursor( POINT m_pos, RECT wnd_sz ) {
+void wnd_resize_get_cursor( const POINT m_pos, const RECT wnd_sz ) {
   POINT pwn_sz = to_sz_point( wnd_sz );
   
   bool on_left   = ( m_pos.x <= RESIZE_THRESHOLD ),
@@ -58,7 +58,7 @@ void wnd_resize_get_cursor( POINT m_pos, RECT wnd_sz ) {
     SetCursor( cur_def );
 }
 
-void wnd_resize_on( HWND hwnd, POINT m_pos, RECT wnd_sz ) {
+void wnd_resize_on( const HWND hwnd, const POINT m_pos, const RECT wnd_sz ) {
   wnd_resize_get_side( m_pos, wnd_sz );
   if( d_side ) {
     user_resizing = true;
@@ -74,7 +74,7 @@ void wnd_resize_off() {
   }
 }
 
-void wnd_resize_check_bounds( HWND hwnd, LPPOINT wnd_pos, LPPOINT wnd_sz, POINT m_delta ) {
+void wnd_resize_check_bounds( const HWND hwnd, LPPOINT wnd_pos, LPPOINT wnd_sz, const POINT m_delta ) {
   HMONITOR c_mon = MonitorFromWindow( hwnd, MONITOR_DEFAULTTONEAREST );
   get_monitor_info( c_mon );
 
@@ -101,7 +101,7 @@ void wnd_resize_check_bounds( HWND hwnd, LPPOINT wnd_pos, LPPOINT wnd_sz, POINT 
   }
 }
 
-void wnd_resize( HWND hwnd, POINT m_pos, RECT wnd_sz ) {
+void wnd_resize( const HWND hwnd, const POINT m_pos, const RECT wnd_sz ) {
   if( !d_side || !user_resizing ) {
     ruser_start = m_pos;
     return;
@@ -142,7 +142,7 @@ void wnd_resize( HWND hwnd, POINT m_pos, RECT wnd_sz ) {
   );
 }
 
-void wnd_resize_title( HWND hwnd, bool mouse_over ) {
+void wnd_resize_title( const HWND hwnd, const bool mouse_over ) {
   if( !mouse_over )
     return;
 
