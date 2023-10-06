@@ -1,5 +1,5 @@
 todo :
-- design and add icon ( .rc file voodoo )
+- make sure caret pos and tps dont overlap
 - add menu bar & functionality + keybinds ( wnd_type -> editproc -> wm_keydown )
 - - make "one time renderer" so you pass info and it draws itself
 - - - file

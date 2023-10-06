@@ -182,12 +182,14 @@
     <ClCompile Include="src\wnd\wnd_func.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\typedef.h" />
     <ClInclude Include="src\wnd\funcs\edit\wnd_edit_caret.h" />
     <ClInclude Include="src\wnd\funcs\edit\wnd_edit_line_count.h" />
     <ClInclude Include="src\wnd\funcs\edit\wnd_edit_scroll.h" />
     <ClInclude Include="src\wnd\funcs\util\overloads.h" />
     <ClInclude Include="src\wnd\funcs\util\util.h" />
+    <ClInclude Include="src\wnd\funcs\wnd_title_icon.h" />
     <ClInclude Include="src\wnd\funcs\wnd_tps.h" />
     <ClInclude Include="src\wnd\funcs\wnd_includes.h" />
     <ClInclude Include="src\wnd\funcs\edit\wnd_edit.h" />
@@ -199,6 +201,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="customme.bin" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="edit.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="edit.ico" />
+    <Image Include="icon1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
