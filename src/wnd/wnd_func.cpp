@@ -2,8 +2,7 @@
 #include "funcs/wnd_includes.h"
 
 LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
-  RECT wnd_sz;
-  GetClientRect( hwnd, &wnd_sz );
+  RECT wnd_sz = get_wnd_sz( hwnd );
   POINT pwnd_sz = to_sz_point( wnd_sz ),
         m_pos{};
   GetCursorPos( &m_pos );

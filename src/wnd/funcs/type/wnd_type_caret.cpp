@@ -4,16 +4,15 @@ void wnd_type_caret_pos( HWND hwnd, RECT wnd_sz ) {
   if( !txt_box )
     return;
 
-  s32 line_idx_y = (s32)SendMessageW( txt_box, EM_LINEFROMCHAR, -1, 0 ) + 1;
   s32 curr_line_start_idx = (s32)SendMessageW( txt_box, EM_LINEINDEX, -1, 0 ) + 1;
   s32 curr_caret_idx = (s32)HIWORD( SendMessageW( txt_box, EM_GETSEL, 0, 0 ) ) + 1;
   s32 line_idx_x = curr_caret_idx - curr_line_start_idx;
 
   wchar_t caret_pos[32];
   swprintf_s( caret_pos,
-    sizeof( caret_pos ) / sizeof( wchar_t),
+    sizeof( caret_pos ) / sizeof( wchar_t ),
     L"X : %d   Y : %d\0",
-    line_idx_x, line_idx_y
+    line_idx_x, vscroll.curr_line
   );
 
   HDC hdc = GetDC( hwnd );
@@ -24,11 +23,10 @@ void wnd_type_caret_pos( HWND hwnd, RECT wnd_sz ) {
   );
 
   RECT r {
-    wnd_sz.left + 5,
-    wnd_sz.bottom - txt_sz.cy - 5,
-    wnd_sz.right - 5,
-    wnd_sz.bottom - 5
+    wnd_sz.left + 5, wnd_sz.bottom - txt_sz.cy - 5,
+    wnd_sz.right - 5, wnd_sz.bottom - 5
   };
+
   HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
   FillRect( hdc, &r, dbrush );
 

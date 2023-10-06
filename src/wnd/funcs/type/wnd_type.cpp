@@ -4,9 +4,8 @@ HWND txt_box;
 HHOOK mouse_hook;
 CSCROLL vscroll;
 
-bool once = false;
-
 LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
+  static bool once = false;
   RECT text_sz{};
   GetClientRect( hwnd, &text_sz );
 

@@ -1,8 +1,7 @@
 #include "wnd_type_line_count.h"
 
-s32 prev_line = 0;
-
 void wnd_type_line_count( HWND hwnd, RECT wnd_sz ) {
+  static s32 prev_line = 0;
   if( !txt_box || prev_line == vscroll.line_first )
     return;
 
@@ -13,14 +12,10 @@ void wnd_type_line_count( HWND hwnd, RECT wnd_sz ) {
   
   HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
   
-  RECT r {
-    0, 50, 24,
-    wnd_sz.bottom - 25
-  };
+  RECT r { 0, 50, 24, wnd_sz.bottom - 25 };
   FillRect( hdc, &r, dbrush );
 
-  s32 idx = 0;
-  for( s32 curr_line = vscroll.line_first; curr_line < vscroll.line_first + vscroll.lines_vis; curr_line++, idx++ ) {
+  for( s32 curr_line = vscroll.line_first; curr_line < vscroll.line_first + vscroll.lines_vis; curr_line++ ) {
     SIZE txt_sz;
     wchar_t line[32];
     swprintf_s( line,
@@ -28,11 +23,13 @@ void wnd_type_line_count( HWND hwnd, RECT wnd_sz ) {
       L"%d\0", curr_line
     );
 
-    GetTextExtentPoint32W( hdc, line, (s32)wcslen( line ), &txt_sz );
+    GetTextExtentPoint32W( hdc, line,
+      (s32)wcslen( line ), &txt_sz
+    );
 
     TextOutW( hdc,
       ( 24 - txt_sz.cx ) / 2,
-      51 + ( txt_sz.cy * idx ),
+      51 + ( txt_sz.cy * ( curr_line - vscroll.line_first ) ),
       line, (s32)wcslen( line )
     );
   }

@@ -1,5 +1,6 @@
 todo :
-- minimize var scope, const vars, clean & optimize all files ( make file checklist )
+- minimize var scope, const vars
+- fix bug where line count doesnt update until you type on the new line, and not drawing after resizing
 - design and add icon ( .rc file voodoo )
 - add menu bar & functionality + keybinds ( wnd_type -> editproc -> wm_keydown )
 - - make "one time renderer" so you pass info and it draws itself
