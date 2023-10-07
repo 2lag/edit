@@ -30,7 +30,7 @@ void wnd_type_line_count( const HWND hwnd, const RECT wnd_sz, const bool force_r
 
     TextOutW( hdc,
       ( 24 - txt_sz.cx ) / 2,
-      51 + ( txt_sz.cy * ( curr_line - vscroll.line_first ) ),
+      50 + ( txt_sz.cy * ( curr_line - vscroll.line_first ) ),
       line, (s32)wcslen( line )
     );
   }

@@ -155,9 +155,6 @@ public:
       lines_vis = (s32)( to_sz_point( txt_rect ).y / line_sz.cy );
       line_last = line_first + lines_vis - 1;
 
-      if( curr_line >= lines_vis + 1 )
-        line_first++;
-
       if( line_count <= lines_vis )
         scroll_h = bkrect.bottom + 1;
       else

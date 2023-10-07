@@ -56,6 +56,7 @@ LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
     } break;
     case WM_MOUSEWHEEL: {
       vscroll.cscroll_hover_scroll( p_mouse );
+      vscroll.cscroll_update();
     } break;
     }
   }

@@ -1,5 +1,4 @@
 #include "wnd_title.h"
-#include "wnd_title_icon.h"
 
 void wnd_title_draw( const HDC hdc, const RECT wnd_sz ) {
   WND_OBJ obj[8] = {
@@ -46,17 +45,7 @@ void wnd_title_draw( const HDC hdc, const RECT wnd_sz ) {
     );
   }
 
-  s32 idx = 0;
-  for( s32 y = 0; y < EDIT_HEIGHT; ++y ) {
-    for( s32 x = 0; x < EDIT_WIDTH; ++x ) {
-      COLORREF color = RGB( edit[idx] >> 16, ( edit[idx] >> 8 ) & 0xFF, edit[idx] & 0xFF );
-      SetPixel( hdc, x + 1, y, color );
-      idx++;
-    }
-  }
-
-
-  TextOutW( hdc, 30, 4, L"Edit", 4 );
+  TextOutW( hdc, 6, 4, L"Edit", 4 );
 
   for( auto& it : obj )
     DeleteObject( it.col );

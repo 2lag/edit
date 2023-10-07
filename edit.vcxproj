@@ -189,7 +189,6 @@
     <ClInclude Include="src\wnd\funcs\edit\wnd_edit_scroll.h" />
     <ClInclude Include="src\wnd\funcs\util\overloads.h" />
     <ClInclude Include="src\wnd\funcs\util\util.h" />
-    <ClInclude Include="src\wnd\funcs\wnd_title_icon.h" />
     <ClInclude Include="src\wnd\funcs\wnd_tps.h" />
     <ClInclude Include="src\wnd\funcs\wnd_includes.h" />
     <ClInclude Include="src\wnd\funcs\edit\wnd_edit.h" />
