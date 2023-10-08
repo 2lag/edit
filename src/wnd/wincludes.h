@@ -34,6 +34,8 @@ extern CSCROLL vscroll;
 
 extern HHOOK mouse_hook;
 
+extern RECT caret_info_pos;
+
 extern bool  user_resizing;
 extern POINT max_prev_pos;
 extern RECT  max_prev_sz;

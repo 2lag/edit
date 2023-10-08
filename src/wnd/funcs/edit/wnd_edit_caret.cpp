@@ -1,5 +1,7 @@
 #include "wnd_edit_caret.h"
 
+RECT caret_info_pos;
+
 void wnd_type_caret_pos( const HWND hwnd, const RECT wnd_sz ) {
   if( !txt_box )
     return;
@@ -22,13 +24,15 @@ void wnd_type_caret_pos( const HWND hwnd, const RECT wnd_sz ) {
     (s32)wcslen( caret_pos ), &txt_sz
   );
 
-  RECT r {
-    wnd_sz.left + 5, wnd_sz.bottom - txt_sz.cy - 5,
-    wnd_sz.right - 5, wnd_sz.bottom - 5
+  caret_info_pos = {
+    ( wnd_sz.right - txt_sz.cx ) / 2 - 20,
+    wnd_sz.bottom - txt_sz.cy - 5,
+    ( wnd_sz.right + txt_sz.cx ) / 2 + 20,
+    wnd_sz.bottom - 5
   };
 
   HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
-  FillRect( hdc, &r, dbrush );
+  FillRect( hdc, &caret_info_pos, dbrush );
 
   SetBkMode( hdc, TRANSPARENT );
   SetTextColor( hdc, COL_M_GRY );

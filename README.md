@@ -1,6 +1,5 @@
 todo :
-- figure out why line count lags behind when starting a new line
-- make sure caret pos and tps dont overlap ( hide tps if they do )
+- figure out why line count lags behind when starting a new line ( readd debug info cuz wtf lol )
 - add menu bar & functionality + keybinds ( wnd_type -> editproc -> wm_keydown )
 - - make "one time renderer" so you pass info and it draws itself
 - - - file

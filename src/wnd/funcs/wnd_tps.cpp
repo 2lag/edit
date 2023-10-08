@@ -30,7 +30,12 @@ void wnd_tps_draw( const HWND hwnd, const RECT wnd_sz ) {
     (s32)wcslen( tps_txt ), &txt_sz
   );
 
-  SetBkMode( hdc, TRANSPARENT );
+  if( caret_info_pos.right > wnd_sz.right - txt_sz.cx - 5 ) {
+    ReleaseDC( hwnd, hdc );
+    return;
+  }
+
+  SetBkColor( hdc, COL_D_GRY );
   SetTextColor( hdc, COL_M_GRY );
   TextOutW( hdc,
     wnd_sz.right  - txt_sz.cx - 5,
