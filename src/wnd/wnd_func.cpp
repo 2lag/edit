@@ -16,7 +16,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   vscroll.cscroll_update();
   wnd_type_line_count( hwnd, wnd_sz );
   wnd_type_caret_pos( hwnd, wnd_sz );
-  wnd_fps_draw( hwnd );
+  wnd_fps_draw( hwnd, wnd_sz );
 
   switch( msg ) {
   case WM_CREATE: {
@@ -83,11 +83,11 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     if( !vscroll.parent )
       break;
 
-    RECT txt_rect = get_wnd_sz( vscroll.parent );
+    vscroll.txt_rect = get_wnd_sz( vscroll.parent );
 
     vscroll.bkrect = {
-      txt_rect.right + 1 , txt_rect.top - 1,
-      txt_rect.right + 25, txt_rect.bottom + 1
+      vscroll.txt_rect.right + 1 , vscroll.txt_rect.top - 1,
+      vscroll.txt_rect.right + 25, vscroll.txt_rect.bottom + 1
     };
   
     vscroll.cscroll_draw( true, true );

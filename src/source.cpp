@@ -40,10 +40,10 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
       DispatchMessageW( &msg );
     }
 
+    wnd_fps_calc();
+
     if( msg.message == WM_QUIT )
       break;
-
-    wnd_fps_calc();
   }
 
   UnhookWindowsHookEx( mouse_hook );

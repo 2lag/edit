@@ -14,6 +14,7 @@ public:
 public:
   HWND parent;
   RECT bkrect;
+  RECT txt_rect;
   RECT rect;
   bool hovered;
   bool dragging;
@@ -22,8 +23,7 @@ public:
 public:
   void cscroll_create( HWND hwnd ) {
     parent = hwnd;
-
-    RECT txt_rect = get_wnd_sz( txt_box );
+    txt_rect = get_wnd_sz( parent );
     bkrect = rect = {
       txt_rect.right + 1,
       txt_rect.top - 1,
@@ -110,7 +110,6 @@ public:
     if( !txt_box )
       return;
 
-    RECT txt_rect = get_wnd_sz( parent );
     POINT cm_pos = p_mouse->pt;
     ScreenToClient( txt_box, &cm_pos );
     if( !PtInRect( &txt_rect, cm_pos ) )
@@ -151,7 +150,7 @@ public:
       line_count = (s32)SendMessageW( parent, EM_GETLINECOUNT, 0, 0 );
       line_first = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 ) + 1;
 
-      RECT txt_rect = get_wnd_sz( parent );
+      txt_rect = get_wnd_sz( parent );
       lines_vis = (s32)( to_sz_point( txt_rect ).y / line_sz.cy );
       line_last = line_first + lines_vis - 1;
 

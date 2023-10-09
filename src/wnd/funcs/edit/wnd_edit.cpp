@@ -6,8 +6,7 @@ CSCROLL vscroll;
 
 LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
   static bool once = false;
-  RECT text_sz{};
-  GetClientRect( hwnd, &text_sz );
+  RECT text_sz = get_wnd_sz( hwnd );
 
   switch( msg ) {
   case WM_CHAR: {
