@@ -1,6 +1,5 @@
 todo :
-- modify tps calc to update realtime instead of every second
-- figure out why line count lags behind when starting a new line ( readd debug info cuz wtf lol )
+- performance profile and optimize calls to only call necessary ones
 - add menu bar & functionality + keybinds ( wnd_type -> editproc -> wm_keydown )
 - - make "one time renderer" so you pass info and it draws itself
 - - - file

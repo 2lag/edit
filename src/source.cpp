@@ -1,5 +1,5 @@
 #include "wnd/wnd_func.h"
-#include "wnd/funcs/wnd_tps.h"
+#include "wnd/funcs/wnd_fps.h"
 
 HWND global_wnd;
 
@@ -43,7 +43,7 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
     if( msg.message == WM_QUIT )
       break;
 
-    wnd_tps_calc();
+    wnd_fps_calc();
   }
 
   UnhookWindowsHookEx( mouse_hook );

@@ -18,6 +18,10 @@ void wnd_type_line_count( const HWND hwnd, const RECT wnd_sz, const bool force_r
   RECT r { 0, 50, 24, wnd_sz.bottom - 25 };
   FillRect( hdc, &r, dbrush );
 
+  if( vscroll.curr_line  == vscroll.line_first + vscroll.lines_vis &&
+      vscroll.line_first == vscroll.line_last  - vscroll.lines_vis + 1 )
+    vscroll.line_first++;
+
   for( s32 curr_line = vscroll.line_first; curr_line < vscroll.line_first + vscroll.lines_vis && curr_line <= vscroll.line_count; curr_line++ ) {
     SIZE txt_sz;
     wchar_t line[32];

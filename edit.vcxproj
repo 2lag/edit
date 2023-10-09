@@ -74,7 +74,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)build\</OutDir>
     <IntDir>$(SolutionDir)build\inter\</IntDir>
-    <TargetName>type</TargetName>
+    <TargetName>edit</TargetName>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
@@ -83,7 +83,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)build\</OutDir>
     <IntDir>$(SolutionDir)build\inter\</IntDir>
-    <TargetName>type</TargetName>
+    <TargetName>edit</TargetName>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
@@ -92,7 +92,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)build\</OutDir>
     <IntDir>$(SolutionDir)build\inter\</IntDir>
-    <TargetName>type</TargetName>
+    <TargetName>edit</TargetName>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
@@ -101,7 +101,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)build\</OutDir>
     <IntDir>$(SolutionDir)build\inter\</IntDir>
-    <TargetName>type</TargetName>
+    <TargetName>edit</TargetName>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
@@ -114,6 +114,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -130,12 +132,14 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -146,6 +150,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -162,12 +168,14 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <Profile>true</Profile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -175,7 +183,7 @@
     <ClCompile Include="src\wnd\funcs\edit\wnd_edit_caret.cpp" />
     <ClCompile Include="src\wnd\funcs\edit\wnd_edit_line_count.cpp" />
     <ClCompile Include="src\wnd\funcs\wnd_drag.cpp" />
-    <ClCompile Include="src\wnd\funcs\wnd_tps.cpp" />
+    <ClCompile Include="src\wnd\funcs\wnd_fps.cpp" />
     <ClCompile Include="src\wnd\funcs\wnd_resize.cpp" />
     <ClCompile Include="src\wnd\funcs\wnd_title.cpp" />
     <ClCompile Include="src\wnd\funcs\edit\wnd_edit.cpp" />
@@ -189,7 +197,7 @@
     <ClInclude Include="src\wnd\funcs\edit\wnd_edit_scroll.h" />
     <ClInclude Include="src\wnd\funcs\util\overloads.h" />
     <ClInclude Include="src\wnd\funcs\util\util.h" />
-    <ClInclude Include="src\wnd\funcs\wnd_tps.h" />
+    <ClInclude Include="src\wnd\funcs\wnd_fps.h" />
     <ClInclude Include="src\wnd\funcs\wnd_includes.h" />
     <ClInclude Include="src\wnd\funcs\edit\wnd_edit.h" />
     <ClInclude Include="src\wnd\wincludes.h" />
