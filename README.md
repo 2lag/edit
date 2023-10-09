@@ -1,4 +1,5 @@
 todo :
+- make fps update in realtime instead of only while hovering ( issue with peekmessage loop fml )
 - run another performance profile for instrumentation and reduce calls with extra logic if possible
 - - also find a way to see what functions are called where "[External Code]" is to change to lower-level or different call
 - add menu bar & functionality + keybinds ( wnd_type -> editproc -> wm_keydown )
