@@ -1,5 +1,6 @@
 #include "wnd_fps.h"
 
+#define UPDATE_INTERVAL 64
 u64 prev_time = GetTickCount64(), frames{}, fps{};
 bool hide_fps = false;
 
@@ -12,7 +13,7 @@ void wnd_fps_calc() {
 
   frames++;
 
-  if( fin_time < 64 )
+  if( fin_time < UPDATE_INTERVAL )
     return;
 
   fps = ( frames / fin_time );
@@ -40,9 +41,13 @@ void wnd_fps_draw( const HWND hwnd, const RECT wnd_sz ) {
     wnd_sz.right - 5, wnd_sz.bottom - 5
   };
 
+  HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
+  FillRect( hdc, &fps_rect, dbrush );
+
   if( caret_rect.right > fps_rect.left + 15 ) {
     hide_fps = true;
     ReleaseDC( hwnd, hdc );
+    DeleteObject( dbrush );
     return;
   } else if( hide_fps )
     hide_fps = false;
@@ -56,4 +61,5 @@ void wnd_fps_draw( const HWND hwnd, const RECT wnd_sz ) {
   );
 
   ReleaseDC( hwnd, hdc );
+  DeleteObject( dbrush );
 }

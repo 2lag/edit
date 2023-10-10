@@ -3,15 +3,15 @@
 
 LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   RECT wnd_sz = get_wnd_sz( hwnd );
-  POINT pwnd_sz = to_sz_point( wnd_sz ),
-        m_pos{};
+  POINT pwnd_sz = to_sz_point( wnd_sz );
+  POINT m_pos{};
   GetCursorPos( &m_pos );
   ScreenToClient( hwnd, &m_pos );
 
-  RECT drag {                 0, 6, wnd_sz.right - 75, 25 },
-        cls { wnd_sz.right - 25, 5, wnd_sz.right -  5, 25 },
-        max { wnd_sz.right - 50, 5, wnd_sz.right - 25, 25 },
-        min { wnd_sz.right - 75, 5, wnd_sz.right - 50, 25 };
+  const RECT drag {                 0, 6, wnd_sz.right - 75, 25 },
+              cls { wnd_sz.right - 25, 5, wnd_sz.right -  5, 25 },
+              max { wnd_sz.right - 50, 5, wnd_sz.right - 25, 25 },
+              min { wnd_sz.right - 75, 5, wnd_sz.right - 50, 25 };
 
   vscroll.cscroll_update();
   wnd_type_line_count( hwnd, wnd_sz );

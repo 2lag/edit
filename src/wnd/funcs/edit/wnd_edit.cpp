@@ -53,6 +53,9 @@ LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
         vscroll.cscroll_drag( m_pos );
       }
     } break;
+    case WM_MBUTTONDOWN: {
+      vscroll.cscroll_mbutton_scroll( p_mouse );
+    } break;
     case WM_MOUSEWHEEL: {
       vscroll.cscroll_hover_scroll( p_mouse );
       vscroll.cscroll_update();
@@ -67,7 +70,8 @@ void wnd_type_create( const HWND hwnd ) {
   txt_box = CreateWindowExW( WS_EX_TRANSPARENT,
     L"EDIT", 0,
     WS_CHILD | WS_VISIBLE | ES_MULTILINE |
-    ES_WANTRETURN | ES_NOHIDESEL | ES_AUTOVSCROLL,
+    ES_WANTRETURN | ES_NOHIDESEL |
+    ES_AUTOVSCROLL | ES_AUTOHSCROLL,
     0, 0, 0, 0, hwnd, 0,
     (HINSTANCE)GetWindowLongPtrW( hwnd, GWLP_HINSTANCE ), 0
   );

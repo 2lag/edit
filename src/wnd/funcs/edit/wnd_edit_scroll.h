@@ -134,6 +134,18 @@ public:
 
     cscroll_draw();
   }
+  void cscroll_mbutton_scroll( MSLLHOOKSTRUCT* p_mouse ) {
+    if( !parent )
+      return;
+
+    POINT cm_pos = p_mouse->pt;
+    ScreenToClient( parent, &cm_pos );
+    if( !PtInRect( &txt_rect, cm_pos ) )
+      return;
+
+    // track mouse delta and scroll x and y by that amount in characters
+    // use line_sz cx and cy for boundaries to init/do scrolling
+  }
   bool cscroll_ishovered( POINT m_pos ) {
     if( dragging )
       return false;

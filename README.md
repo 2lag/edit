@@ -1,7 +1,8 @@
 todo :
-- make fps update in realtime instead of only while hovering ( issue with peekmessage loop fml )
+- finish middle button drag scrolling, x and y ( cscroll_mbutton_scroll )
+- make fps update in realtime instead of only while hovering ( issue with drawing being in window procedure )
 - run another performance profile for instrumentation and reduce calls with extra logic if possible
-- - also find a way to see what functions are called where "[External Code]" is to change to lower-level or different call
+- - extern wnd_sz and pwnd_sz and reduce calculation to : wm_size message, on first loop to set, any resizing event in wnd_resize & wnd_drag
 - add menu bar & functionality + keybinds ( wnd_type -> editproc -> wm_keydown )
 - - make "one time renderer" so you pass info and it draws itself
 - - - file
@@ -12,5 +13,5 @@ todo :
 - - - - hide fps
 - - - - hide caret pos
 - - - - hide line count
-- minimize var scope | const vars | clean, optimize, and create files ( make file checklist ) |
-- add picture and documentation here
+- minimize var scope | const vars | clean, optimize, and create files ( make file checklist )
+- add ss and make documentation
