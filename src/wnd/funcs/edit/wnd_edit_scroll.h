@@ -145,6 +145,7 @@ public:
 
     // track mouse delta and scroll x and y by that amount in characters
     // use line_sz cx and cy for boundaries to init/do scrolling
+    // scrollwindowex orrrr ?? idefk this shit is fucking dumb
   }
   bool cscroll_ishovered( POINT m_pos ) {
     if( dragging )
