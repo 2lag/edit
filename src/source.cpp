@@ -33,6 +33,9 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
 
   run_debug_console();
 
+  std::thread draw_fps( wnd_fps_draw );
+  draw_fps.detach();
+
   MSG msg;
   while( true ) {
     while( PeekMessageW( &msg, nullptr, 0, 0, PM_REMOVE ) ) {

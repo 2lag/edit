@@ -21,45 +21,54 @@ void wnd_fps_calc() {
   prev_time = cur_time;
 }
 
-void wnd_fps_draw( const HWND hwnd, const RECT wnd_sz ) {
-  wchar_t fps_txt[32];
-  swprintf_s( fps_txt,
-    sizeof( fps_txt ) / sizeof( wchar_t ),
-    L"FPS : %llu\0", fps
-  );
-
-  HDC hdc = GetDC( hwnd );
+void wnd_fps_draw() {
+  while( true ) {
+    if( !global_wnd )
+      continue;
   
-  SIZE txt_sz;
-  GetTextExtentPoint32W( hdc, fps_txt,
-    (s32)wcslen( fps_txt ), &txt_sz
-  );
+    wchar_t fps_txt[32];
+    swprintf_s( fps_txt,
+      sizeof( fps_txt ) / sizeof( wchar_t ),
+      L"FPS : %llu\0", fps
+    );
 
-  const RECT fps_rect {
-    wnd_sz.right  - txt_sz.cx - 20,
-    wnd_sz.bottom - txt_sz.cy -  5,
-    wnd_sz.right - 5, wnd_sz.bottom - 5
-  };
+    RECT wnd_sz = get_wnd_sz( global_wnd );
 
-  HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
-  FillRect( hdc, &fps_rect, dbrush );
+    HDC hdc = GetDC( global_wnd );
 
-  if( caret_rect.right > fps_rect.left + 15 ) {
-    hide_fps = true;
-    ReleaseDC( hwnd, hdc );
+    SIZE txt_sz;
+    GetTextExtentPoint32W( hdc, fps_txt,
+      (s32)wcslen( fps_txt ), &txt_sz
+    );
+
+    const RECT fps_rect {
+      wnd_sz.right  - txt_sz.cx - 20,
+      wnd_sz.bottom - txt_sz.cy -  5,
+      wnd_sz.right - 5, wnd_sz.bottom - 5
+    };
+
+    HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
+    FillRect( hdc, &fps_rect, dbrush );
+
+    if( caret_rect.right > fps_rect.left + 15 ) {
+      hide_fps = true;
+      ReleaseDC( global_wnd, hdc );
+      DeleteObject( dbrush );
+      return;
+    } else if( hide_fps )
+      hide_fps = false;
+
+    SetBkColor( hdc, COL_D_GRY );
+    SetTextColor( hdc, COL_M_GRY );
+    TextOutW( hdc,
+      wnd_sz.right  - txt_sz.cx - 5,
+      wnd_sz.bottom - txt_sz.cy - 5,
+      fps_txt, (s32)wcslen( fps_txt )
+    );
+
+    ReleaseDC( global_wnd, hdc );
     DeleteObject( dbrush );
-    return;
-  } else if( hide_fps )
-    hide_fps = false;
 
-  SetBkColor( hdc, COL_D_GRY );
-  SetTextColor( hdc, COL_M_GRY );
-  TextOutW( hdc,
-    wnd_sz.right  - txt_sz.cx - 5,
-    wnd_sz.bottom - txt_sz.cy - 5,
-    fps_txt, (s32)wcslen( fps_txt )
-  );
-
-  ReleaseDC( hwnd, hdc );
-  DeleteObject( dbrush );
+    Sleep( 10 );
+  }
 }

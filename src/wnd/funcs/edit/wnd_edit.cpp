@@ -52,9 +52,14 @@ LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
 
         vscroll.cscroll_drag( m_pos );
       }
+      if( vscroll.mdragging )
+        vscroll.cscroll_mbutton_scroll( p_mouse );
     } break;
     case WM_MBUTTONDOWN: {
-      vscroll.cscroll_mbutton_scroll( p_mouse );
+      vscroll.cscroll_mbutton_on( p_mouse );
+    } break;
+    case WM_MBUTTONUP: {
+      vscroll.cscroll_mbutton_off();
     } break;
     case WM_MOUSEWHEEL: {
       vscroll.cscroll_hover_scroll( p_mouse );

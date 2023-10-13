@@ -17,8 +17,11 @@ public:
   RECT txt_rect;
   RECT rect;
   bool hovered;
+public:
   bool dragging;
   POINT duser_start;
+  bool mdragging;
+  POINT mduser_start;
 
 public:
   void cscroll_create( HWND hwnd ) {
@@ -134,18 +137,41 @@ public:
 
     cscroll_draw();
   }
+  void cscroll_mbutton_off() {
+    if( mdragging ) {
+      mdragging = false;
+      m_delta = 0;
+    }
+  }
+  void cscroll_mbutton_on( MSLLHOOKSTRUCT* p_mouse ) {
+    POINT cm_pos = p_mouse->pt;
+    ScreenToClient( parent, &cm_pos );
+    if( PtInRect( &txt_rect, cm_pos ) ) {
+      mdragging = true;
+      mduser_start = cm_pos;
+    }
+  }
   void cscroll_mbutton_scroll( MSLLHOOKSTRUCT* p_mouse ) {
     if( !parent )
       return;
 
     POINT cm_pos = p_mouse->pt;
     ScreenToClient( parent, &cm_pos );
-    if( !PtInRect( &txt_rect, cm_pos ) )
-      return;
 
-    // track mouse delta and scroll x and y by that amount in characters
-    // use line_sz cx and cy for boundaries to init/do scrolling
-    // scrollwindowex orrrr ?? idefk this shit is fucking dumb
+    POINT md_delta = cm_pos - mduser_start;
+    /*
+        MAKE SURE TO ADD CHECKS FOR BOTH THAT WE AREN'T GOING OFF-SCREEN (Y) OR INTO THE NEXT LINE (X)
+        LOOK @ CARET POS FOR REMINDERS
+    */
+    if( md_delta.x >= line_sz.cx || md_delta.x <= -line_sz.cx ) {
+      // scroll left or right by 1 char depending on if negative or positive
+
+      mduser_start = cm_pos;
+    } else if( md_delta.y >= line_sz.cy || md_delta.y <= -line_sz.cy ) {
+      // scroll by line up or down depending on if negative or positive
+
+      mduser_start = cm_pos;
+    }
   }
   bool cscroll_ishovered( POINT m_pos ) {
     if( dragging )

@@ -10,6 +10,8 @@
 #include <unordered_map>
 #include <functional>
 
+#include <thread>
+
 #ifdef _DEBUG
 #include <stdio.h>
 #endif

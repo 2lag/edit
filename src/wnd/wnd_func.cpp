@@ -16,7 +16,6 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   vscroll.cscroll_update();
   wnd_type_line_count( hwnd, wnd_sz );
   wnd_type_caret_pos( hwnd, wnd_sz );
-  wnd_fps_draw( hwnd, wnd_sz );
 
   switch( msg ) {
   case WM_CREATE: {
