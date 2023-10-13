@@ -1,5 +1,6 @@
 todo :
 - finish middle button drag scrolling, x and y ( cscroll_mbutton_scroll )
+- add horizontal scrolling if scroll is pressed down
 - make fps update in realtime instead of only while hovering ( issue with drawing being in window procedure )
 - run another performance profile for instrumentation and reduce calls with extra logic if possible
 - - extern wnd_sz and pwnd_sz and reduce calculation to : wm_size message, on first loop to set, any resizing event in wnd_resize & wnd_drag
