@@ -2,26 +2,28 @@
 
 class CSCROLL {
 public:
-  s32 curr_line;
   s32 line_count;
   s32 line_first;
+  s32 curr_line;
   s32 line_last;
   s32 lines_vis;
   SIZE line_sz;
+public:
   s32 scroll_h;
   s32 scroll_y;
+public:
   s32 m_delta;
 public:
+  RECT txt_rect;
+  bool hovered;
   HWND parent;
   RECT bkrect;
-  RECT txt_rect;
   RECT rect;
-  bool hovered;
 public:
-  bool dragging;
+  POINT mduser_start;
   POINT duser_start;
   bool mdragging;
-  POINT mduser_start;
+  bool dragging;
 
 public:
   void cscroll_create( HWND hwnd ) {
@@ -110,11 +112,11 @@ public:
     cscroll_draw();
   }
   void cscroll_hover_scroll( MSLLHOOKSTRUCT* p_mouse ) {
-    if( !txt_box )
+    if( !parent )
       return;
 
     POINT cm_pos = p_mouse->pt;
-    ScreenToClient( txt_box, &cm_pos );
+    ScreenToClient( parent, &cm_pos );
     if( !PtInRect( &txt_rect, cm_pos ) )
       return;
 
@@ -138,40 +140,67 @@ public:
     cscroll_draw();
   }
   void cscroll_mbutton_off() {
-    if( mdragging ) {
-      mdragging = false;
-      m_delta = 0;
-    }
+    mdragging = false;
+    m_delta = 0;
   }
-  void cscroll_mbutton_on( MSLLHOOKSTRUCT* p_mouse ) {
-    POINT cm_pos = p_mouse->pt;
-    ScreenToClient( parent, &cm_pos );
-    if( PtInRect( &txt_rect, cm_pos ) ) {
+  void cscroll_mbutton_on( POINT m_pos ) {
+    if( PtInRect( &txt_rect, m_pos ) ) {
       mdragging = true;
-      mduser_start = cm_pos;
+      mduser_start = m_pos;
     }
   }
-  void cscroll_mbutton_scroll( MSLLHOOKSTRUCT* p_mouse ) {
-    if( !parent )
+  void cscroll_mbutton_scroll( POINT m_pos ) {
+    POINT md_delta = m_pos - mduser_start;
+    s32 char_idx = (s32)HIWORD( SendMessageW( parent, EM_GETSEL, 0, 0 ) );
+
+    if( md_delta.x >= line_sz.cx || md_delta.x <= -line_sz.cx ) {
+      s32 curr_caret_idx = (s32)HIWORD( SendMessageW( parent, EM_GETSEL, 0, 0 ) ) + 1;
+      if( md_delta.x < 0 ) {
+        s32 curr_line_start_idx = (s32)SendMessageW( parent, EM_LINEINDEX, -1, 0 ) + 1;
+
+        if( curr_caret_idx - curr_line_start_idx <= 0 ) {
+          mduser_start = m_pos;
+          return;
+        }
+        char_idx--;
+      } else {
+        s32 curr_line_start_idx = (s32)SendMessageW( parent, EM_LINEINDEX, -1, 0 ) + 1;
+        s32 line_len = (s32)SendMessageW( parent, EM_LINELENGTH, curr_caret_idx, 0 );
+        if( curr_caret_idx >= curr_line_start_idx + line_len ) {
+          mduser_start = m_pos;
+          return;
+        }
+        char_idx++;
+      }
+      mduser_start = m_pos;
+    } else if( md_delta.y >= line_sz.cy || md_delta.y <= -line_sz.cy ) {
+      s32 caret_line_offset = (s32)HIWORD( SendMessageW( parent, EM_GETSEL, 0, 0 ) ) - (s32)SendMessageW( parent, EM_LINEINDEX, -1, 0 );
+      printf( "caret line offset: %d\n", caret_line_offset );
+      if( md_delta.y < 0 && curr_line > 1 ) {
+        if( curr_line >= lines_vis ) {
+          SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
+          curr_line = line_first + lines_vis - 2;
+        } else
+          curr_line--;
+      } else if( md_delta.y > 0 && curr_line < line_count ) {
+        if( curr_line == line_last ) {
+          SendMessageW( parent, EM_SCROLL, SB_LINEDOWN, 0 );
+          curr_line = line_first + lines_vis;
+        } else
+          curr_line++;
+      } else
+        return;
+
+      char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, (u64)curr_line - 1, 0 ) + caret_line_offset;
+      mduser_start = m_pos;
+    } else
       return;
 
-    POINT cm_pos = p_mouse->pt;
-    ScreenToClient( parent, &cm_pos );
+    SendMessageW( parent, EM_SETSEL, char_idx, char_idx );
 
-    POINT md_delta = cm_pos - mduser_start;
-    /*
-        MAKE SURE TO ADD CHECKS FOR BOTH THAT WE AREN'T GOING OFF-SCREEN (Y) OR INTO THE NEXT LINE (X)
-        LOOK @ CARET POS FOR REMINDERS
-    */
-    if( md_delta.x >= line_sz.cx || md_delta.x <= -line_sz.cx ) {
-      // scroll left or right by 1 char depending on if negative or positive
+    SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
 
-      mduser_start = cm_pos;
-    } else if( md_delta.y >= line_sz.cy || md_delta.y <= -line_sz.cy ) {
-      // scroll by line up or down depending on if negative or positive
-
-      mduser_start = cm_pos;
-    }
+    cscroll_draw();
   }
   bool cscroll_ishovered( POINT m_pos ) {
     if( dragging )

@@ -1,6 +1,5 @@
 todo :
-- finish middle button drag scrolling, x and y ( cscroll_mbutton_scroll )
-- add horizontal scrolling if scroll/ctrl is pressed down
+- add horizontal scrolling in current line if scroll/ctrl is pressed down while scrolling to cscroll_hover_scroll
 - run another performance profile for instrumentation and reduce calls with extra logic if possible
 - - change ifs to switches for common/highly called functions
 - - extern wnd_sz and pwnd_sz and reduce calculation to : wm_size message, on first loop to set, any resizing event in wnd_resize & wnd_drag
