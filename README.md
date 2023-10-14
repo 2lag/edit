@@ -9,8 +9,14 @@ todo :
 - - - file
 - - - tools
 - - - - macro
+- - - - - clear
+- - - - - - wipes macro storage
+- - - - - record
+- - - - - - store keypresses in array/vector ?
+- - - - - playback
+- - - - - - plays back keypresses
 - - - - mutli-cursor
-- - - style cfg controller
+- - - style cfg controller ( extern globalize these settings )
 - - - - hide fps
 - - - - hide caret pos
 - - - - hide line count
