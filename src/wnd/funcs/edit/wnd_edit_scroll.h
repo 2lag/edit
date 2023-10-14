@@ -112,27 +112,39 @@ public:
     cscroll_draw();
   }
   void cscroll_hover_scroll( MSLLHOOKSTRUCT* p_mouse ) {
-    if( !parent )
-      return;
-
     POINT cm_pos = p_mouse->pt;
     ScreenToClient( parent, &cm_pos );
     if( !PtInRect( &txt_rect, cm_pos ) )
       return;
 
-    if( HIWORD( p_mouse->mouseData ) == 120 ) {
-      if( curr_line > lines_vis )
-        SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
-      if( curr_line != 1 )
-        curr_line--;
+    s32 char_idx = (s32)HIWORD( SendMessageW( parent, EM_GETSEL, 0, 0 ) );
+
+    if( GetAsyncKeyState( VK_MBUTTON ) || GetAsyncKeyState( VK_CONTROL ) ) {
+      s32 line_len = (s32)SendMessageW( parent, EM_LINELENGTH, char_idx, 0 );
+      s32 curr_line_start_idx = (s32)SendMessageW( parent, EM_LINEINDEX, -1, 0 );
+      if( HIWORD( p_mouse->mouseData ) == WHEEL_DELTA && char_idx - curr_line_start_idx > 0 )
+        char_idx--;
+      else if( HIWORD( p_mouse->mouseData ) == 0xFF88 && char_idx < curr_line_start_idx + line_len )
+        char_idx++;
     } else {
-      if( curr_line < line_last )
-        SendMessageW( parent, EM_SCROLL, SB_LINEDOWN, 0 );
-      if( curr_line != line_count )
-        curr_line++;
+      if( HIWORD( p_mouse->mouseData ) == WHEEL_DELTA && curr_line != 1 ) {
+        if( curr_line >= lines_vis ) {
+          SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
+          curr_line = line_first + lines_vis - 2;
+        } else
+          curr_line--;
+      } else if( HIWORD( p_mouse->mouseData ) == 0xFF88 && curr_line < line_count ) {
+        if( curr_line == line_last ) {
+          SendMessageW( parent, EM_SCROLL, SB_LINEDOWN, 0 );
+          curr_line = line_first + lines_vis;
+        } else
+          curr_line++;
+      } else
+        return;
+
+      char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, curr_line - 1, 0 );
     }
 
-    s32 char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, (u64)curr_line - 1, 0 );
     SendMessageW( parent, EM_SETSEL, char_idx, char_idx );
 
     SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
@@ -175,7 +187,6 @@ public:
       mduser_start = m_pos;
     } else if( md_delta.y >= line_sz.cy || md_delta.y <= -line_sz.cy ) {
       s32 caret_line_offset = (s32)HIWORD( SendMessageW( parent, EM_GETSEL, 0, 0 ) ) - (s32)SendMessageW( parent, EM_LINEINDEX, -1, 0 );
-      printf( "caret line offset: %d\n", caret_line_offset );
       if( md_delta.y < 0 && curr_line > 1 ) {
         if( curr_line >= lines_vis ) {
           SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
