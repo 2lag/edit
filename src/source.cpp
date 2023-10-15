@@ -31,10 +31,10 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
   ShowWindow( hwnd, cmdshow );
   UpdateWindow( hwnd );
 
-  run_debug_console();
-
   std::thread draw_fps( wnd_fps_draw );
   draw_fps.detach();
+
+  run_debug_console();
 
   MSG msg;
   while( true ) {

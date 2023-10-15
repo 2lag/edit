@@ -25,7 +25,7 @@ void wnd_fps_draw() {
   while( true ) {
     if( !global_wnd )
       continue;
-  
+
     wchar_t fps_txt[32];
     swprintf_s( fps_txt,
       sizeof( fps_txt ) / sizeof( wchar_t ),
@@ -44,19 +44,20 @@ void wnd_fps_draw() {
     const RECT fps_rect {
       wnd_sz.right  - txt_sz.cx - 20,
       wnd_sz.bottom - txt_sz.cy -  5,
-      wnd_sz.right - 5, wnd_sz.bottom - 5
+      wnd_sz.right - 5,
+      wnd_sz.bottom - 5
     };
-
-    HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
-    FillRect( hdc, &fps_rect, dbrush );
 
     if( caret_rect.right > fps_rect.left + 15 ) {
       hide_fps = true;
       ReleaseDC( global_wnd, hdc );
-      DeleteObject( dbrush );
-      return;
+      Sleep( 1000 );
+      continue;
     } else if( hide_fps )
       hide_fps = false;
+
+    HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
+    FillRect( hdc, &fps_rect, dbrush );
 
     SetBkColor( hdc, COL_D_GRY );
     SetTextColor( hdc, COL_M_GRY );

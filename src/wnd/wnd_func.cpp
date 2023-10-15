@@ -3,7 +3,6 @@
 
 LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   RECT wnd_sz = get_wnd_sz( hwnd );
-  POINT pwnd_sz = to_sz_point( wnd_sz );
   POINT m_pos{};
   GetCursorPos( &m_pos );
   ScreenToClient( hwnd, &m_pos );
@@ -66,13 +65,15 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     HDC hdc = BeginPaint( hwnd, &ps );
 
     wnd_title_draw( hdc, wnd_sz );
-    wnd_type_outline( hwnd, pwnd_sz );
+    wnd_type_outline( hwnd, to_sz_point( wnd_sz ) );
 
     EndPaint( hwnd, &ps );
   } break;
   case WM_SIZE: {
     MoveWindow( txt_box, 25, 50,
-      pwnd_sz.x - 50, pwnd_sz.y - 75, TRUE
+      wnd_sz.right - 50,
+      wnd_sz.bottom - 75,
+      TRUE
     );
 
     wnd_type_line_count( hwnd, wnd_sz, true );

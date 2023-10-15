@@ -1,6 +1,11 @@
 todo :
-- extern wnd_sz and pwnd_sz and reduce calculation to : wm_size message, on first loop to set, any resizing event in wnd_resize & wnd_drag
-- - goal is to reduce total GetClientRect calls, get amount in 2 mins of making a c++ square program, then set target for half, or less...
+- from performance profiler, focus on reducing the following calls :
+- - gettextextentpoint
+- - - save to static unless for variable word size usage
+- - textoutw
+- - - between line count and fps, this actually seems the most reasonable
+- - fillrect/get|releaseDC/settxt|setbk/line_count/load_cursor
+- - - make sure theyre only called when needed, 100% extra logic can be added to reduce the amount of calls
 - add menu bar & functionality + keybinds ( wnd_type -> editproc -> wm_keydown )
 - - make "one time renderer" so you pass info and it draws itself
 - - - file
