@@ -122,27 +122,47 @@ public:
     if( GetAsyncKeyState( VK_MBUTTON ) || GetAsyncKeyState( VK_CONTROL ) ) {
       s32 line_len = (s32)SendMessageW( parent, EM_LINELENGTH, char_idx, 0 );
       s32 curr_line_start_idx = (s32)SendMessageW( parent, EM_LINEINDEX, -1, 0 );
-      if( HIWORD( p_mouse->mouseData ) == WHEEL_DELTA && char_idx - curr_line_start_idx > 0 )
-        char_idx--;
-      else if( HIWORD( p_mouse->mouseData ) == 0xFF88 && char_idx < curr_line_start_idx + line_len )
-        char_idx++;
-    } else {
-      if( HIWORD( p_mouse->mouseData ) == WHEEL_DELTA && curr_line != 1 ) {
-        if( curr_line >= lines_vis ) {
-          SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
-          curr_line = line_first + lines_vis - 2;
-        } else
-          curr_line--;
-      } else if( HIWORD( p_mouse->mouseData ) == 0xFF88 && curr_line < line_count ) {
-        if( curr_line == line_last ) {
-          SendMessageW( parent, EM_SCROLL, SB_LINEDOWN, 0 );
-          curr_line = line_first + lines_vis;
-        } else
-          curr_line++;
-      } else
-        return;
 
-      char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, curr_line - 1, 0 );
+#define WHEEL_DDELTA 0x0078
+#define WHEEL_UDELTA 0xFF88
+
+      switch( HIWORD( p_mouse->mouseData ) ) {
+      case WHEEL_DDELTA: {
+        if( char_idx - curr_line_start_idx > 0 )
+          char_idx--;
+      } break;
+      case WHEEL_UDELTA: {
+        if( char_idx < curr_line_start_idx + line_len )
+          char_idx++;
+      } break;
+      default:
+        return;
+      }
+    } else {
+      switch( HIWORD( p_mouse->mouseData ) ) {
+      case WHEEL_DDELTA: {
+        if( curr_line != 1 ) {
+          if( curr_line >= lines_vis ) {
+            SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
+            curr_line = line_first + lines_vis - 2;
+          } else
+            curr_line--;
+          char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, (u64)curr_line - 1, 0 );
+        }
+      } break;
+      case WHEEL_UDELTA: {
+        if( curr_line < line_count ) {
+          if( curr_line == line_last ) {
+            SendMessageW( parent, EM_SCROLL, SB_LINEDOWN, 0 );
+            curr_line = line_first + lines_vis;
+          } else
+            curr_line++;
+          char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, (u64)curr_line - 1, 0 );
+        }
+      } break;
+      default:
+        return;
+      }
     }
 
     SendMessageW( parent, EM_SETSEL, char_idx, char_idx );

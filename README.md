@@ -1,7 +1,6 @@
 todo :
-- run another performance profile for instrumentation and reduce calls with extra logic if possible
-- - change ifs to switches for common/highly called functions
-- - extern wnd_sz and pwnd_sz and reduce calculation to : wm_size message, on first loop to set, any resizing event in wnd_resize & wnd_drag
+- extern wnd_sz and pwnd_sz and reduce calculation to : wm_size message, on first loop to set, any resizing event in wnd_resize & wnd_drag
+- - goal is to reduce total GetClientRect calls, get amount in 2 mins of making a c++ square program, then set target for half, or less...
 - add menu bar & functionality + keybinds ( wnd_type -> editproc -> wm_keydown )
 - - make "one time renderer" so you pass info and it draws itself
 - - - file
