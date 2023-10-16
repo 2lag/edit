@@ -22,7 +22,10 @@ void wnd_type_line_count( const HWND hwnd, const RECT wnd_sz, const bool force_r
       vscroll.line_first == vscroll.line_last  - vscroll.lines_vis + 1 )
     vscroll.line_first++;
 
-  for( s32 curr_line = vscroll.line_first; curr_line < vscroll.line_first + vscroll.lines_vis && curr_line <= vscroll.line_count; curr_line++ ) {
+  for( s32 curr_line = vscroll.line_first;
+           curr_line < vscroll.line_first + vscroll.lines_vis &&
+           curr_line <= vscroll.line_count;
+           curr_line++ ) {
     SIZE txt_sz;
     wchar_t line[32];
     swprintf_s( line,

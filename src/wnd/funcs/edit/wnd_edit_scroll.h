@@ -63,7 +63,7 @@ public:
     }
   }
   void cscroll_drag_on( POINT m_pos ) {
-    if( cscroll_ishovered( m_pos ) ) {
+    if( hovered ) {
       duser_start = m_pos;
       dragging = true;
     }
@@ -92,7 +92,7 @@ public:
       m_delta = 0;
       duser_start = m_pos;
       curr_line += scroll_dir;
-      line_first = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 ) + 1;
+      line_first = Edit_GetFirstVisibleLine( parent ) + 1;
       
       if( scroll_dir == 1 && curr_line <= line_last ) {
         if( curr_line == line_last )
@@ -107,12 +107,12 @@ public:
           curr_line--;
       }
 
-      s32 char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, (u64)curr_line - 1, 0 );
-      SendMessageW( parent, EM_SETSEL, char_idx, char_idx );
+      s32 char_idx = Edit_LineIndex( parent, (u64)curr_line - 1 );
+      Edit_SetSel( parent, char_idx, char_idx );
     }
 
-    SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
-      
+    Edit_ScrollCaret( parent );
+
     cscroll_draw();
   }
   void cscroll_hover_scroll( MSLLHOOKSTRUCT* p_mouse ) {
@@ -121,11 +121,11 @@ public:
     if( !PtInRect( &txt_rect, cm_pos ) )
       return;
 
-    s32 char_idx = (s32)HIWORD( SendMessageW( parent, EM_GETSEL, 0, 0 ) );
+    s32 char_idx = (s32)HIWORD( Edit_GetSel( parent ) );
 
     if( GetAsyncKeyState( VK_MBUTTON ) || GetAsyncKeyState( VK_CONTROL ) ) {
-      s32 line_len = (s32)SendMessageW( parent, EM_LINELENGTH, char_idx, 0 );
-      s32 curr_line_start_idx = (s32)SendMessageW( parent, EM_LINEINDEX, -1, 0 );
+      s32 line_len = Edit_LineLength( parent, char_idx );
+      s32 curr_line_start_idx = Edit_LineIndex( parent, -1 );
 
 #define WHEEL_DDELTA 0x0078
 #define WHEEL_UDELTA 0xFF88
@@ -151,7 +151,7 @@ public:
             curr_line = line_first + lines_vis - 2;
           } else
             curr_line--;
-          char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, (u64)curr_line - 1, 0 );
+          char_idx = Edit_LineIndex( parent, (u64)curr_line - 1 );
         }
       } break;
       case WHEEL_UDELTA: {
@@ -161,7 +161,7 @@ public:
             curr_line = line_first + lines_vis;
           } else
             curr_line++;
-          char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, (u64)curr_line - 1, 0 );
+          char_idx = Edit_LineIndex( parent, (u64)curr_line - 1 );
         }
       } break;
       default:
@@ -169,9 +169,8 @@ public:
       }
     }
 
-    SendMessageW( parent, EM_SETSEL, char_idx, char_idx );
-
-    SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
+    Edit_SetSel( parent, char_idx, char_idx );
+    Edit_ScrollCaret( parent );
 
     cscroll_draw();
   }
@@ -193,21 +192,20 @@ public:
     ScreenToClient( parent, &m_pos );
 
     POINT md_delta = m_pos - mduser_start;
-    s32 char_idx = (s32)HIWORD( SendMessageW( parent, EM_GETSEL, 0, 0 ) );
+    s32 char_idx = (s32)HIWORD( Edit_GetSel( parent ) );
 
     if( md_delta.x >= line_sz.cx || md_delta.x <= -line_sz.cx ) {
-      s32 curr_caret_idx = (s32)HIWORD( SendMessageW( parent, EM_GETSEL, 0, 0 ) ) + 1;
+      s32 curr_caret_idx = char_idx + 1;
       if( md_delta.x < 0 ) {
-        s32 curr_line_start_idx = (s32)SendMessageW( parent, EM_LINEINDEX, -1, 0 ) + 1;
-
+        s32 curr_line_start_idx = Edit_LineIndex( parent, -1 ) + 1;
         if( curr_caret_idx - curr_line_start_idx <= 0 ) {
           mduser_start = m_pos;
           return;
         }
         char_idx--;
       } else {
-        s32 curr_line_start_idx = (s32)SendMessageW( parent, EM_LINEINDEX, -1, 0 ) + 1;
-        s32 line_len = (s32)SendMessageW( parent, EM_LINELENGTH, curr_caret_idx, 0 );
+        s32 curr_line_start_idx = Edit_LineIndex( parent, -1 ) + 1;
+        s32 line_len = Edit_LineLength( parent, curr_caret_idx );
         if( curr_caret_idx >= curr_line_start_idx + line_len ) {
           mduser_start = m_pos;
           return;
@@ -216,7 +214,7 @@ public:
       }
       mduser_start = m_pos;
     } else if( md_delta.y >= line_sz.cy || md_delta.y <= -line_sz.cy ) {
-      s32 caret_line_offset = (s32)HIWORD( SendMessageW( parent, EM_GETSEL, 0, 0 ) ) - (s32)SendMessageW( parent, EM_LINEINDEX, -1, 0 );
+      s32 caret_line_offset = (s32)HIWORD( Edit_GetSel( parent ) ) - Edit_LineIndex( parent, -1 );
       if( md_delta.y < 0 && curr_line > 1 ) {
         if( curr_line >= lines_vis ) {
           SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
@@ -232,32 +230,30 @@ public:
       } else
         return;
 
-      char_idx = (s32)SendMessageW( parent, EM_LINEINDEX, (u64)curr_line - 1, 0 ) + caret_line_offset;
+      char_idx = Edit_LineIndex( parent, (u64)curr_line - 1 ) + caret_line_offset;
       mduser_start = m_pos;
     } else
       return;
 
-    SendMessageW( parent, EM_SETSEL, char_idx, char_idx );
-
-    SendMessageW( parent, EM_SCROLLCARET, 0, 0 );
+    Edit_SetSel( parent, char_idx, char_idx );
+    Edit_ScrollCaret( parent );
 
     cscroll_draw();
   }
-  bool cscroll_ishovered( POINT m_pos ) {
+  void cscroll_ishovered( POINT m_pos ) {
     if( dragging )
-      return false;
+      return;
 
     m_pos.x -= 25; m_pos.y -= 50;
     hovered = PtInRect( &rect, m_pos );
     cscroll_draw( false, false );
-    return hovered;
   }
 public:
   void cscroll_setinfo( bool update_info, bool redraw ) {
     if( update_info ) {
-      curr_line  = (s32)SendMessageW( parent, EM_LINEFROMCHAR, -1, 0 ) + 1;
-      line_count = (s32)SendMessageW( parent, EM_GETLINECOUNT, 0, 0 );
-      line_first = (s32)SendMessageW( parent, EM_GETFIRSTVISIBLELINE, 0, 0 ) + 1;
+      curr_line  = Edit_LineFromChar( parent, -1 ) + 1;
+      line_count = Edit_GetLineCount( parent );
+      line_first = Edit_GetFirstVisibleLine( parent ) + 1;
 
       txt_rect = get_wnd_sz( parent );
       lines_vis = (s32)( to_sz_point( txt_rect ).y / line_sz.cy );
@@ -291,7 +287,7 @@ public:
   void cscroll_update() {
     if( parent ) {
       static s64 prev_sel = 0;
-      s64 sel = SendMessageW( parent, EM_GETSEL, 0, 0 );
+      s64 sel = Edit_GetSel( parent );
 
       if( sel != prev_sel ) {
         cscroll_draw( true, true );

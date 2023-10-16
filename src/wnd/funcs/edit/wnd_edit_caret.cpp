@@ -2,12 +2,20 @@
 
 RECT caret_rect;
 
-void wnd_type_caret_pos( const HWND hwnd, const RECT wnd_sz ) {
+void wnd_type_caret_pos( const HWND hwnd, const RECT wnd_sz, bool force_redraw ) {
   if( !txt_box )
     return;
 
-  s32 curr_line_start_idx = (s32)SendMessageW( txt_box, EM_LINEINDEX, -1, 0 ) + 1;
-  s32 curr_caret_idx = (s32)HIWORD( SendMessageW( txt_box, EM_GETSEL, 0, 0 ) ) + 1;
+  static s64 prev_sel = 0;
+  s64 sel = Edit_GetSel( txt_box );
+
+  if( sel != prev_sel )
+    prev_sel = sel;
+  else if( !force_redraw )
+    return;
+
+  s32 curr_line_start_idx = Edit_LineIndex( txt_box, -1 ) + 1;
+  s32 curr_caret_idx = (s32)HIWORD( Edit_GetSel( txt_box ) ) + 1;
   s32 line_idx_x = curr_caret_idx - curr_line_start_idx;
 
   wchar_t caret_pos[32];

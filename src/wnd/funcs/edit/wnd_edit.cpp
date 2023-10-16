@@ -11,8 +11,8 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
   switch( msg ) {
   case WM_CHAR: {
     if( wp == VK_TAB ) {
-      SendMessageW( hwnd, EM_REPLACESEL, FALSE, (LPARAM)L"  \0" );
-      return 0;
+      Edit_ReplaceSel( hwnd,(LPARAM)L"  \0" );
+      return 0; 
     }
   } break;
   case WM_ERASEBKGND: {
@@ -31,7 +31,7 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
   case WM_KEYDOWN: {
     if( wp == 0x41 ) {
       if( GetAsyncKeyState( VK_CONTROL ) )
-        SendMessageW( txt_box, EM_SETSEL, 0, -1 );
+        Edit_SetSel( txt_box, 0, -1 );
     }
     vscroll.cscroll_draw( true, true );
   } break;

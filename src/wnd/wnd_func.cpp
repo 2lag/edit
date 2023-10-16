@@ -77,6 +77,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     );
 
     wnd_type_line_count( hwnd, wnd_sz, true );
+    wnd_type_caret_pos( hwnd, wnd_sz, true );
 
     if( !vscroll.parent )
       break;

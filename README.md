@@ -1,8 +1,7 @@
 todo :
-- check textoutw calls make sure its justified
-- - between line count and fps, this actually seems the most reasonable
-- check getclientrect/fillrect/get|releaseDC/settxt|setbk/line_count/load_cursor individually for each section
+- check setcursor/cscroll_ishovered/line_count's getclientrect/getclientrect in general
 - - make sure theyre only called when needed, 100% extra logic can be added to reduce the amount of calls
+- fix not being able to full screen drag on vert monitor
 - add menu bar & functionality + keybinds ( wnd_type -> editproc -> wm_keydown )
 - - make "one time renderer" so you pass info and it draws itself
 - - - file
