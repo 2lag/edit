@@ -44,18 +44,15 @@ LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
   if( ncode == HC_ACTION ) {
     MSLLHOOKSTRUCT* p_mouse = reinterpret_cast<MSLLHOOKSTRUCT*>( lp );
 
-    POINT m_pos = p_mouse->pt;
-    ScreenToClient( global_wnd, &m_pos );
-
     switch( wp ) {
     case WM_MOUSEMOVE: {
       if( vscroll.dragging )
-        vscroll.cscroll_drag( m_pos );
+        vscroll.cscroll_drag( p_mouse );
       else if( vscroll.mdragging )
-        vscroll.cscroll_mbutton_scroll( m_pos );
+        vscroll.cscroll_mbutton_scroll( p_mouse );
     } break;
     case WM_MBUTTONDOWN: {
-      vscroll.cscroll_mbutton_on( m_pos );
+      vscroll.cscroll_mbutton_on( p_mouse );
     } break;
     case WM_MBUTTONUP: {
       vscroll.cscroll_mbutton_off();

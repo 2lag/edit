@@ -36,14 +36,15 @@ public:
       txt_rect.bottom + 1
     };
 
-    cscroll_draw();
+    cscroll_draw( true, true );
   }
   void cscroll_draw( bool update_info = true, bool redraw = false ) {
     HDC hdc = GetDC( parent );
     HBRUSH dbrush = CreateSolidBrush( COL_D_GRY ),
            lbrush = CreateSolidBrush( hovered ? COL_L_GRY : COL_M_GRY );
 
-    GetTextExtentPoint32W( hdc, L"A", 1, &line_sz );
+    if( redraw )
+      GetTextExtentPoint32W( hdc, L"A", 1, &line_sz );
     cscroll_setinfo( update_info, redraw );
 
     FillRect( hdc, &bkrect, dbrush );
@@ -67,7 +68,10 @@ public:
       dragging = true;
     }
   }
-  void cscroll_drag( POINT m_pos ) {
+  void cscroll_drag( MSLLHOOKSTRUCT* p_mouse ) {
+    POINT m_pos = p_mouse->pt;
+    ScreenToClient( parent, &m_pos );
+
     if( !GetAsyncKeyState( MK_LBUTTON ) || !dragging ) {
       duser_start = m_pos;
       dragging = false;
@@ -175,13 +179,19 @@ public:
     mdragging = false;
     m_delta = 0;
   }
-  void cscroll_mbutton_on( POINT m_pos ) {
+  void cscroll_mbutton_on( MSLLHOOKSTRUCT* p_mouse ) {
+    POINT m_pos = p_mouse->pt;
+    ScreenToClient( parent, &m_pos );
+
     if( PtInRect( &txt_rect, m_pos ) ) {
       mdragging = true;
       mduser_start = m_pos;
     }
   }
-  void cscroll_mbutton_scroll( POINT m_pos ) {
+  void cscroll_mbutton_scroll( MSLLHOOKSTRUCT* p_mouse ) {
+    POINT m_pos = p_mouse->pt;
+    ScreenToClient( parent, &m_pos );
+
     POINT md_delta = m_pos - mduser_start;
     s32 char_idx = (s32)HIWORD( SendMessageW( parent, EM_GETSEL, 0, 0 ) );
 

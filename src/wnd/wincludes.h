@@ -28,7 +28,6 @@ enum WND_COL {
 #include "funcs/util/util.h"
 #include "funcs/util/overloads.h"
 
-extern HWND global_wnd;
 extern HWND txt_box;
 
 #include "funcs/edit/wnd_edit_scroll.h"

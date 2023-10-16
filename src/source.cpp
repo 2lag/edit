@@ -1,8 +1,6 @@
 #include "wnd/wnd_func.h"
 #include "wnd/funcs/wnd_fps.h"
 
-HWND global_wnd;
-
 s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
                     _In_opt_ HINSTANCE         ,
                     _In_     LPSTR             ,
@@ -26,12 +24,10 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
     0, 0, inst, 0
   );
 
-  global_wnd = hwnd;
-
   ShowWindow( hwnd, cmdshow );
   UpdateWindow( hwnd );
 
-  std::thread draw_fps( wnd_fps_draw );
+  std::thread draw_fps( wnd_fps_draw, std::ref( hwnd ) );
   draw_fps.detach();
 
   run_debug_console();
