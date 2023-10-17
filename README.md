@@ -1,6 +1,6 @@
 todo :
 - check setcursor/cscroll_ishovered/line_count's getclientrect/getclientrect in general
-- - make sure theyre only called when needed, 100% extra logic can be added to reduce the amount of calls
+- - make sure theyre only called when needed
 - fix not being able to full screen drag on vert monitor
 - add menu bar & functionality + keybinds ( wnd_type -> editproc -> wm_keydown )
 - - make "one time renderer" so you pass info and it draws itself
