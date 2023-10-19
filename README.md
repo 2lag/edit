@@ -1,5 +1,5 @@
 todo :
-- check setcursor/cscroll_ishovered/line_count's getclientrect/getclientrect in general
+- fix setcursor/getclientrect
 - - make sure theyre only called when needed
 - fix not being able to full screen drag on vert monitor ( wnd_drag.cpp )
 - add menu bar & functionality + keybinds in new file ( wnd_type -> editproc -> wm_keydown )
