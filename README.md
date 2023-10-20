@@ -2,7 +2,7 @@ todo :
 - fix setcursor/getclientrect
 - - make sure theyre only called when needed
 - fix not being able to full screen drag on vert monitor ( wnd_drag.cpp )
-- add menu bar & functionality + keybinds in new file ( wnd_type -> editproc -> wm_keydown )
+- start menu bar plan & drawing then how to do functionality + keybinds in new file ( wnd_type -> editproc -> wm_keydown )
 - - make "one time renderer" so you pass info and it draws itself
 - - - file
 - - - - new
