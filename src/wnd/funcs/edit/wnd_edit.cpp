@@ -6,7 +6,7 @@ CSCROLL vscroll;
 
 LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
   static bool once = false;
-  RECT text_sz = get_wnd_sz( hwnd );
+  vscroll.txt_rect = get_wnd_sz( hwnd );
 
   switch( msg ) {
   case WM_CHAR: {
@@ -18,7 +18,7 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
   case WM_ERASEBKGND: {
     HDC hdc = (HDC)wp;
     HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
-    FillRect( hdc, &text_sz, dbrush );
+    FillRect( hdc, &vscroll.txt_rect, dbrush );
     DeleteObject( dbrush );
 
     if( !once ) {

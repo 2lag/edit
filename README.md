@@ -1,7 +1,4 @@
 todo :
-- fix setcursor/getclientrect
-- - make sure theyre only called when needed
-- fix not being able to full screen drag on vert monitor ( wnd_drag.cpp )
 - start menu bar plan & drawing then how to do functionality + keybinds in new file ( wnd_type -> editproc -> wm_keydown )
 - - make "one time renderer" so you pass info and it draws itself
 - - - file
@@ -21,5 +18,6 @@ todo :
 - - - - hide fps
 - - - - hide caret pos
 - - - - hide line count
+- fix not being able to full screen drag on vert monitor ( wnd_drag.cpp )
 - minimize var scope | const vars | clean, optimize, and create files ( make file checklist )
 - add ss and make documentation

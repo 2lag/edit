@@ -255,7 +255,6 @@ public:
       line_count = Edit_GetLineCount( parent );
       line_first = Edit_GetFirstVisibleLine( parent ) + 1;
 
-      txt_rect = get_wnd_sz( parent );
       lines_vis = (s32)( to_sz_point( txt_rect ).y / line_sz.cy );
       line_last = line_first + lines_vis - 1;
 
