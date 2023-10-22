@@ -1,23 +1,23 @@
 todo :
-- start menu bar plan & drawing then how to do functionality + keybinds in new file ( wnd_type -> editproc -> wm_keydown )
-- - make "one time renderer" so you pass info and it draws itself
-- - - file
-- - - - new
-- - - - open
-- - - - exit
-- - - tools
-- - - - macro
-- - - - - clear
-- - - - - - wipes macro storage
-- - - - - record
-- - - - - - store keypresses in array/vector ?
-- - - - - playback
-- - - - - - plays back keypresses
-- - - - mutli-cursor
-- - - style cfg controller ( extern globalize these settings )
-- - - - hide fps
-- - - - hide caret pos
-- - - - hide line count
+- make functionality for dropdowns then clicking
+- - file
+- - - new
+- - - open
+- - - exit
+- - tools
+- - - macro
+- - - - clear
+- - - - - wipes macro storage
+- - - - record
+- - - - - store keypresses in array/vector ?
+- - - - playback
+- - - - - plays back keypresses
+- - - mutli-cursor
+- - style
+- - - hide fps
+- - - hide caret pos
+- - - hide line count
+- make keybinds for menu ( wnd_type -> editproc -> wm_keydown )
 - fix not being able to full screen drag on vert monitor ( wnd_drag.cpp )
 - minimize var scope | const vars | clean, optimize, and create files ( make file checklist )
 - add ss and make documentation

@@ -25,9 +25,20 @@ enum WND_COL {
   COL_D_RED = RGB(  64,  32,  32 ),
 };
 
+struct WND_OBJ {
+  RECT r;
+  HBRUSH col;
+  bool next;
+};
+
+inline WND_OBJ wnd_obj_create( RECT r, COLORREF col, bool next ) {
+  return { r, CreateSolidBrush( col ), next };
+}
+
 #include "funcs/util/util.h"
 #include "funcs/util/overloads.h"
 
+extern HWND h_global;
 extern HWND txt_box;
 
 #include "funcs/edit/wnd_edit_scroll.h"

@@ -1,5 +1,7 @@
 #include "wnd_edit.h"
 
+#include "../wnd_menu.h"
+
 HWND txt_box;
 HHOOK mouse_hook;
 CSCROLL vscroll;
@@ -46,10 +48,14 @@ LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
 
     switch( wp ) {
     case WM_MOUSEMOVE: {
+      vscroll.cscroll_ishovered( p_mouse );
+
       if( vscroll.dragging )
         vscroll.cscroll_drag( p_mouse );
       else if( vscroll.mdragging )
         vscroll.cscroll_mbutton_scroll( p_mouse );
+
+      wnd_menu_hovered( p_mouse );
     } break;
     case WM_MBUTTONDOWN: {
       vscroll.cscroll_mbutton_on( p_mouse );

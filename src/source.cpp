@@ -1,6 +1,8 @@
 #include "wnd/wnd_func.h"
 #include "wnd/funcs/wnd_fps.h"
 
+HWND h_global;
+
 s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
                     _In_opt_ HINSTANCE         ,
                     _In_     LPSTR             ,
@@ -16,7 +18,7 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
 
   RegisterClassExW( &wnd_cls );
 
-  HWND hwnd = CreateWindowExW( 0,
+  HWND hwnd = h_global = CreateWindowExW( 0,
     L"edit_class", L"edit",
     WS_POPUPWINDOW,
     100, 100,

@@ -3,6 +3,7 @@
 #include "wnd_resize.h"
 #include "wnd_title.h"
 #include "wnd_drag.h"
+#include "wnd_menu.h"
 #include "wnd_fps.h"
 
 #include "edit/wnd_edit_line_count.h"

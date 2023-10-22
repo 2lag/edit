@@ -41,6 +41,8 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     wnd_title_cls( PtInRect( &cls, m_pos ) );
     wnd_title_max( hwnd, PtInRect( &max, m_pos ) );
     wnd_title_min( hwnd, PtInRect( &min, m_pos ) );
+
+    wnd_menu_clicked( m_pos );
   } break;
   case WM_LBUTTONUP: {
     wnd_drag_resize( hwnd, m_pos );
@@ -53,8 +55,6 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   case WM_MOUSEMOVE: {
     wnd_drag( hwnd, m_pos );
 
-    vscroll.cscroll_ishovered( m_pos );
-
     if( is_maxd ) break;
 
     wnd_resize_get_cursor( m_pos, wnd_sz );
@@ -66,6 +66,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
 
     wnd_title_draw( hdc, wnd_sz );
     wnd_type_outline( hwnd, to_sz_point( wnd_sz ) );
+    wnd_menu_draw( hdc, wnd_sz );
 
     EndPaint( hwnd, &ps );
   } break;

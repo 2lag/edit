@@ -240,7 +240,10 @@ public:
 
     cscroll_draw();
   }
-  void cscroll_ishovered( POINT m_pos ) {
+  void cscroll_ishovered( MSLLHOOKSTRUCT* p_mouse ) {
+    POINT m_pos = p_mouse->pt;
+    ScreenToClient( h_global, &m_pos );
+
     if( dragging )
       return;
 
