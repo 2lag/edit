@@ -1,5 +1,5 @@
 todo :
-- make functionality for dropdowns then clicking
+- make functionality for clicking then dropdowns
 - - file
 - - - new | open | exit
 - - tools
