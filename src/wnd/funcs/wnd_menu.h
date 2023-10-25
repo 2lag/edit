@@ -12,4 +12,4 @@ inline WND_MENU wnd_menu_create( RECT r, COLORREF col, bool next, LPCWSTR txt, P
 
 void wnd_menu_draw( HDC hdc, RECT wnd_sz );
 void wnd_menu_hovered( MSLLHOOKSTRUCT* p_mouse );
-void wnd_menu_clicked( POINT m_pos );
+void wnd_menu_clicked( HWND hwnd, POINT m_pos );

@@ -38,11 +38,11 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     
     vscroll.cscroll_drag_on( m_pos );
 
+    wnd_menu_clicked( hwnd, m_pos );
+
     wnd_title_cls( PtInRect( &cls, m_pos ) );
     wnd_title_max( hwnd, PtInRect( &max, m_pos ) );
     wnd_title_min( hwnd, PtInRect( &min, m_pos ) );
-
-    wnd_menu_clicked( m_pos );
   } break;
   case WM_LBUTTONUP: {
     wnd_drag_resize( hwnd, m_pos );

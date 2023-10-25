@@ -1,5 +1,7 @@
 todo :
-- make functionality for clicking then dropdowns
+- reduce setcursor calls
+- find better spot for line count and caret pos calls
+- fix then finish dropdown
 - - file
 - - - new | open | exit
 - - tools
