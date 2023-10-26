@@ -90,45 +90,57 @@ void wnd_menu_draw_dropdown( HWND hwnd, s8 idx ) {
 
   switch( idx ) {
   case 1: {
-    obj[0] = wnd_menu_create( { -1, 51, 50, 77 }, COL_L_GRY, true , L""    , {        } );
-    obj[1] = wnd_menu_create( {  0, 52, 49, 76 }, COL_D_GRY, false, L"New" , { 16,  4 } );
-  } break;
-  case 2: {
-    return;
+    obj[0] = wnd_menu_create( {   0,  49,  50,  76 }, COL_L_GRY, true , L""               , {        } );
+    obj[1] = wnd_menu_create( {   0,  50,  49,  75 }, COL_D_GRY, false, L"New"            , { 10,  4 } );
+    obj[2] = wnd_menu_create( {   0,  75,  50, 101 }, COL_L_GRY, true , L""               , {        } );
+    obj[3] = wnd_menu_create( {   0,  76,  49, 100 }, COL_D_GRY, false, L"Open"           , {  8,  4 } );
+    obj[4] = wnd_menu_create( {   0, 100,  50, 126 }, COL_L_GRY, true , L""               , {        } );
+    obj[5] = wnd_menu_create( {   0, 101,  49, 125 }, COL_D_GRY, false, L"Exit"           , { 11,  4 } );
   } break;
   case 3: {
-    return;
+    obj[0] = wnd_menu_create( {  49,  49, 150,  76 }, COL_L_GRY, true , L""               , {        } );
+    obj[1] = wnd_menu_create( {  50,  50, 149,  75 }, COL_D_GRY, false, L"Macro"          , { 28,  4 } );
+    obj[2] = wnd_menu_create( {  49,  75, 150, 101 }, COL_L_GRY, true , L""               , {        } );
+    obj[3] = wnd_menu_create( {  50,  76, 149, 100 }, COL_D_GRY, false, L"Multi-Cursor"   , { 10,  4 } );
+    obj[4] = wnd_menu_create( {  49, 100, 150, 126 }, COL_L_GRY, true , L""               , {        } );
+    obj[5] = wnd_menu_create( {  50, 101, 149, 125 }, COL_D_GRY, false, L"Plugins(?)"     , { 16,  4 } );
+  } break;
+  case 5: {
+    obj[0] = wnd_menu_create( { 101,  49, 216,  76 }, COL_L_GRY, true , L""               , {        } );
+    obj[1] = wnd_menu_create( { 102,  50, 215,  75 }, COL_D_GRY, false, L"Hide FPS"       , { 26,  4 } );
+    obj[2] = wnd_menu_create( { 101,  75, 216, 101 }, COL_L_GRY, true , L""               , {        } );
+    obj[3] = wnd_menu_create( { 102,  76, 215, 100 }, COL_D_GRY, false, L"Hide Caret Pos" , {  8,  4 } );
+    obj[4] = wnd_menu_create( { 101, 100, 216, 126 }, COL_L_GRY, true , L""               , {        } );
+    obj[5] = wnd_menu_create( { 102, 101, 215, 125 }, COL_D_GRY, false, L"Hide Line Count", {  5,  4 } );
   } break;
   default:
     return;
   }
 
-#ifdef _DEBUG
-  printf( "index   : %d\nobj pos : %d %d %d %d\narr sz  : %zd", idx, obj[ 1 ].r.left, obj[ 1 ].r.top, obj[ 1 ].r.right, obj[ 1 ].r.bottom, sizeof( obj ) );
-#endif
-
   SetBkMode( hdc, TRANSPARENT );
 
   for( s8 idx = 0; idx < 6; ++idx ) {
-    FillRect( hdc, &obj[ 1 ].r, obj[ 1 ].col );
-    if( obj[ 1 ].next ) {
+    FillRect( hdc, &obj[ idx ].r, obj[ idx ].col );
+    if( obj[ idx ].next ) {
       ++idx;
-      FillRect( hdc, &obj[ 1 ].r, obj[ 1 ].col );
+      FillRect( hdc, &obj[ idx ].r, obj[ idx ].col );
     }
 
     SetTextColor( hdc, COL_M_GRY );  // add hovering
 
     TextOutW( hdc,
-      obj[ 1 ].r.left + obj[ 1 ].offset.x,
-      obj[ 1 ].r.top  + obj[ 1 ].offset.y,
-      obj[ 1 ].txt,
-      lstrlenW( obj[ 1 ].txt )
+      obj[ idx ].r.left + obj[ idx ].offset.x,
+      obj[ idx ].r.top  + obj[ idx ].offset.y,
+      obj[ idx ].txt,
+      lstrlenW( obj[ idx ].txt )
     );
 
-    DeleteObject( obj[ 1 ].col );
   }
 
   ReleaseDC( hwnd, hdc );
+
+  for( auto& it : obj )
+    DeleteObject( obj[ idx ].col );
 }
 
 void wnd_menu_clicked( HWND hwnd, POINT m_pos ) {
@@ -136,10 +148,6 @@ void wnd_menu_clicked( HWND hwnd, POINT m_pos ) {
   for( s8 idx = 1; idx < OBJ_BASE_COUNT; idx+=2 ) {
     if( !m_base_hovered[ idx ] )
       continue;
-
-#ifdef _DEBUG
-    printf( "found : %d\n", idx );
-#endif
 
     menu_clicked = idx;
     break;
