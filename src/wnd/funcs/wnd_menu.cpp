@@ -99,7 +99,7 @@ void wnd_menu_draw_dropdown( HWND hwnd, s8 idx ) {
   } break;
   case 3: {
     obj[0] = wnd_menu_create( {  49,  49, 150,  76 }, COL_L_GRY, true , L""               , {        } );
-    obj[1] = wnd_menu_create( {  50,  50, 149,  75 }, COL_D_GRY, false, L"Macro"          , { 28,  4 } );
+    obj[1] = wnd_menu_create( {  50,  50, 149,  75 }, COL_D_GRY, false, L"Macro     >"    , { 28,  4 } );
     obj[2] = wnd_menu_create( {  49,  75, 150, 101 }, COL_L_GRY, true , L""               , {        } );
     obj[3] = wnd_menu_create( {  50,  76, 149, 100 }, COL_D_GRY, false, L"Multi-Cursor"   , { 10,  4 } );
     obj[4] = wnd_menu_create( {  49, 100, 150, 126 }, COL_L_GRY, true , L""               , {        } );
