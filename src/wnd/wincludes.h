@@ -41,6 +41,9 @@ inline WND_OBJ wnd_obj_create( RECT r, COLORREF col, bool next ) {
 extern HWND h_global;
 extern HWND txt_box;
 
+#define OBJ_BASE_COUNT 6
+extern bool m_base_open[ OBJ_BASE_COUNT / 2 ];
+
 #include "funcs/edit/wnd_edit_scroll.h"
 extern CSCROLL vscroll;
 
