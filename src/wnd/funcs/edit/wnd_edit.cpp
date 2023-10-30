@@ -43,13 +43,16 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
       }
     }
 
+    if( !GetAsyncKeyState( VK_CONTROL ) )
+      break;
+
     switch( wp ) {
     case 0x41: {
       Edit_SetSel( txt_box, 0, -1 );
     } break;
     case 0x46: {
       m_base_open[0] = !m_base_open[0];
-      if( !m_base_open[0] )
+      if( m_base_open[0] )
         wnd_menu_draw_dropdown( h_global, 0 );
       else {
         vscroll.cscroll_draw( true, true );
@@ -60,14 +63,14 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     } break;
     case 0x54: {
       m_base_open[1] = !m_base_open[1];
-      if( !m_base_open[1] )
+      if( m_base_open[1] )
         wnd_menu_draw_dropdown( h_global, 1 );
       else
         vscroll.cscroll_draw( true, true );
     } break;
     case 0x53: {
       m_base_open[2] = !m_base_open[2];
-      if( !m_base_open[2] )
+      if( m_base_open[2] )
         wnd_menu_draw_dropdown( h_global, 2 );
       else
         vscroll.cscroll_draw( true, true );
