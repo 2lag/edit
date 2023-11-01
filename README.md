@@ -1,7 +1,7 @@
 todo :
 - fix opening bugs ( overlapping, not clearing, etc )
-- finish menu keybind functionality for drop downs ( underline letter that matches key 4 keybind )
-- do macro sub-drop down ( clear | record | playback )
+- finish submenu keybind functionality ( & do underlines )
+- then macro subsubmenu ( clear | record | playback )
 - make keybinds for menu ( wnd_type -> editproc -> wm_keydown )
 - fix not being able to full screen drag on vert monitor ( wnd_drag.cpp )
 - minimize var scope | const vars | clean, optimize, and create files ( make file checklist )
