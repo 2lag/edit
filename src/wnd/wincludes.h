@@ -31,6 +31,10 @@ struct WND_OBJ {
   bool next;
 };
 
+struct VEC3 {
+  s32 x, y, w;
+};
+
 inline WND_OBJ wnd_obj_create( RECT r, COLORREF col, bool next ) {
   return { r, CreateSolidBrush( col ), next };
 }

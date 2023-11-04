@@ -35,16 +35,21 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
   } break;
   case WM_KEYDOWN: {
     for( s8 idx = 0; idx < OBJ_BASE_COUNT / 2; idx++ ) {
-      if( !GetAsyncKeyState( VK_CONTROL ) ) {
-        if( m_base_open[ idx ] )
-          m_base_open[ idx ] = false;
-        vscroll.cscroll_draw( true, true );
-        break;
-      }
+      if( !m_base_open[ idx ] )
+        continue;
+
+      m_base_open[ idx ] = !m_base_open[ idx ];
+      vscroll.cscroll_draw( true, true );
+
+      if( idx != 0 )
+        continue;
+
+      RECT wnd_sz = get_wnd_sz( h_global );
+      wnd_type_line_count( h_global, wnd_sz, true );
+      wnd_type_outline( h_global, to_sz_point( wnd_sz ) );
     }
 
-    if( !GetAsyncKeyState( VK_CONTROL ) )
-      break;
+    if( !GetAsyncKeyState( VK_CONTROL ) ) break;
 
     switch( wp ) {
     case 0x41: {
@@ -52,17 +57,20 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     } break;
     case 0x46: {
       m_base_open[0] = !m_base_open[0];
-      if( m_base_open[0] )
+
+      if( m_base_open[0] ) {
         wnd_menu_draw_dropdown( h_global, 0 );
-      else {
-        vscroll.cscroll_draw( true, true );
-        RECT wnd_sz = get_wnd_sz( h_global );
-        wnd_type_line_count( h_global, wnd_sz, true );
-        wnd_type_outline( h_global, to_sz_point( wnd_sz ) );
+        break;
       }
+
+      vscroll.cscroll_draw( true, true );
+      RECT wnd_sz = get_wnd_sz( h_global );
+      wnd_type_line_count( h_global, wnd_sz, true );
+      wnd_type_outline( h_global, to_sz_point( wnd_sz ) );
     } break;
     case 0x54: {
       m_base_open[1] = !m_base_open[1];
+      
       if( m_base_open[1] )
         wnd_menu_draw_dropdown( h_global, 1 );
       else
@@ -70,6 +78,7 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     } break;
     case 0x53: {
       m_base_open[2] = !m_base_open[2];
+
       if( m_base_open[2] )
         wnd_menu_draw_dropdown( h_global, 2 );
       else
