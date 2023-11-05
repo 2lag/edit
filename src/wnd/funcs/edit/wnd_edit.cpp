@@ -9,6 +9,23 @@ CSCROLL vscroll;
 
 bool m_base_open[ OBJ_BASE_COUNT / 2 ] = { false };
 
+void wnd_clear_menus() {
+  for( s8 idx = 0; idx < OBJ_BASE_COUNT / 2; idx++ ) {
+    if( !m_base_open[ idx ] )
+      continue;
+
+    m_base_open[ idx ] = !m_base_open[ idx ];
+    vscroll.cscroll_draw( true, true );
+
+    if( idx != 0 )
+      continue;
+
+    RECT wnd_sz = get_wnd_sz( h_global );
+    wnd_type_line_count( h_global, wnd_sz, true );
+    wnd_type_outline( h_global, to_sz_point( wnd_sz ) );
+  }
+}
+
 LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
   static bool once = false;
   vscroll.txt_rect = get_wnd_sz( hwnd );
@@ -34,28 +51,17 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     return 1;
   } break;
   case WM_KEYDOWN: {
-    for( s8 idx = 0; idx < OBJ_BASE_COUNT / 2; idx++ ) {
-      if( !m_base_open[ idx ] )
-        continue;
-
-      m_base_open[ idx ] = !m_base_open[ idx ];
-      vscroll.cscroll_draw( true, true );
-
-      if( idx != 0 )
-        continue;
-
-      RECT wnd_sz = get_wnd_sz( h_global );
-      wnd_type_line_count( h_global, wnd_sz, true );
-      wnd_type_outline( h_global, to_sz_point( wnd_sz ) );
-    }
-
-    if( !GetAsyncKeyState( VK_CONTROL ) ) break;
-
     switch( wp ) {
     case 0x41: {
+      if( !GetAsyncKeyState( VK_CONTROL ) )
+        break;
+
       Edit_SetSel( txt_box, 0, -1 );
     } break;
     case 0x46: {
+      if( !GetAsyncKeyState( VK_CONTROL ) )
+        break;
+
       m_base_open[0] = !m_base_open[0];
 
       if( m_base_open[0] ) {
@@ -69,22 +75,33 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
       wnd_type_outline( h_global, to_sz_point( wnd_sz ) );
     } break;
     case 0x54: {
+      if( !GetAsyncKeyState( VK_CONTROL ) )
+        break;
+
       m_base_open[1] = !m_base_open[1];
       
-      if( m_base_open[1] )
+      if( m_base_open[1] ) {
         wnd_menu_draw_dropdown( h_global, 1 );
-      else
-        vscroll.cscroll_draw( true, true );
+        break;
+      }
+
+      vscroll.cscroll_draw( true, true );
     } break;
     case 0x53: {
+      if( !GetAsyncKeyState( VK_CONTROL ) )
+        break;
+
       m_base_open[2] = !m_base_open[2];
 
-      if( m_base_open[2] )
+      if( m_base_open[2] ) {
         wnd_menu_draw_dropdown( h_global, 2 );
-      else
-        vscroll.cscroll_draw( true, true );
+        break;
+      }
+
+      vscroll.cscroll_draw( true, true );
     } break;
     default:
+      wnd_clear_menus();
       break;
     }
   } break;
