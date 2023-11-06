@@ -1,5 +1,6 @@
 todo :
-- fix dropdown overlap cuz old not closing when new one opened
+- fix dropdown weird behavior
+- - pass bool of index to draw dropdown in wnd_menu to toggle drawing/hiding instead of how we currently do it
 - make macro subsubmenu ( clear | record | playback )
 - do submenu keybinds
 - code out functionality of each menu option

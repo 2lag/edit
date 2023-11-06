@@ -51,6 +51,7 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     return 1;
   } break;
   case WM_KEYDOWN: {
+
     switch( wp ) {
     case 0x41: {
       if( !GetAsyncKeyState( VK_CONTROL ) )
@@ -101,6 +102,9 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
       vscroll.cscroll_draw( true, true );
     } break;
     default:
+      if( GetAsyncKeyState( VK_CONTROL ) )
+        break;
+
       wnd_clear_menus();
       break;
     }
