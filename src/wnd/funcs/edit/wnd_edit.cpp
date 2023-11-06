@@ -5,19 +5,20 @@
 
 HWND txt_box;
 HHOOK mouse_hook;
+HHOOK key_hook;
 CSCROLL vscroll;
 
 bool m_base_open[ OBJ_BASE_COUNT / 2 ] = { false };
 
-void wnd_clear_menus() {
+void wnd_clear_menus( s32 exclude = -1 ) {
   for( s8 idx = 0; idx < OBJ_BASE_COUNT / 2; idx++ ) {
-    if( !m_base_open[ idx ] )
+    if( !m_base_open[ idx ] || idx == exclude )
       continue;
 
     m_base_open[ idx ] = !m_base_open[ idx ];
     vscroll.cscroll_draw( true, true );
 
-    if( idx != 0 )
+    if( idx )
       continue;
 
     RECT wnd_sz = get_wnd_sz( h_global );
@@ -50,71 +51,12 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     
     return 1;
   } break;
-  case WM_KEYDOWN: {
-
-    switch( wp ) {
-    case 0x41: {
-      if( !GetAsyncKeyState( VK_CONTROL ) )
-        break;
-
-      Edit_SetSel( txt_box, 0, -1 );
-    } break;
-    case 0x46: {
-      if( !GetAsyncKeyState( VK_CONTROL ) )
-        break;
-
-      m_base_open[0] = !m_base_open[0];
-
-      if( m_base_open[0] ) {
-        wnd_menu_draw_dropdown( h_global, 0 );
-        break;
-      }
-
-      vscroll.cscroll_draw( true, true );
-      RECT wnd_sz = get_wnd_sz( h_global );
-      wnd_type_line_count( h_global, wnd_sz, true );
-      wnd_type_outline( h_global, to_sz_point( wnd_sz ) );
-    } break;
-    case 0x54: {
-      if( !GetAsyncKeyState( VK_CONTROL ) )
-        break;
-
-      m_base_open[1] = !m_base_open[1];
-      
-      if( m_base_open[1] ) {
-        wnd_menu_draw_dropdown( h_global, 1 );
-        break;
-      }
-
-      vscroll.cscroll_draw( true, true );
-    } break;
-    case 0x53: {
-      if( !GetAsyncKeyState( VK_CONTROL ) )
-        break;
-
-      m_base_open[2] = !m_base_open[2];
-
-      if( m_base_open[2] ) {
-        wnd_menu_draw_dropdown( h_global, 2 );
-        break;
-      }
-
-      vscroll.cscroll_draw( true, true );
-    } break;
-    default:
-      if( GetAsyncKeyState( VK_CONTROL ) )
-        break;
-
-      wnd_clear_menus();
-      break;
-    }
-  } break;
   }
 
   return DefSubclassProc( hwnd, msg, wp, lp );
 }
 
-LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
+LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) { // move me to own file
   if( ncode == HC_ACTION ) {
     MSLLHOOKSTRUCT* p_mouse = reinterpret_cast<MSLLHOOKSTRUCT*>( lp );
 
@@ -143,6 +85,77 @@ LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
   return CallNextHookEx( 0, ncode, wp, lp );
 }
 
+LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
+  if( ncode == HC_ACTION ) {
+    KBDLLHOOKSTRUCT* p_key = reinterpret_cast<KBDLLHOOKSTRUCT*>( lp );
+
+    if( wp == WM_KEYDOWN ) {
+
+#ifdef _DEBUG
+    printf( "%c\n", p_key->vkCode );
+#endif // _DEBUG
+
+      switch( p_key->vkCode ) {
+      case 0x41: { // CTRL + A
+        if( !GetAsyncKeyState( VK_CONTROL ) )
+          break;
+
+        Edit_SetSel( txt_box, 0, -1 );
+      } break;
+      case 0x46: { // CTRL + F
+        if( !GetAsyncKeyState( VK_CONTROL ) )
+          break;
+
+        m_base_open[0] = !m_base_open[0];
+
+        if( m_base_open[0] )
+          wnd_menu_draw_dropdown( h_global, 0 );
+        else {
+          vscroll.cscroll_draw( true, true );
+          RECT wnd_sz = get_wnd_sz( h_global );
+          wnd_type_line_count( h_global, wnd_sz, true );
+          wnd_type_outline( h_global, to_sz_point( wnd_sz ) );
+        }
+      } break;
+      case 0x54: { // CTRL + T
+        if( !GetAsyncKeyState( VK_CONTROL ) )
+          break;
+
+        m_base_open[1] = !m_base_open[1];
+
+        if( m_base_open[1] )
+          wnd_menu_draw_dropdown( h_global, 1 );
+        else
+          vscroll.cscroll_draw( true, true );
+      } break;
+      case 0x53: { // CTRL + S
+        if( !GetAsyncKeyState( VK_CONTROL ) )
+          break;
+
+        m_base_open[2] = !m_base_open[2];
+
+        if( m_base_open[2] )
+          wnd_menu_draw_dropdown( h_global, 2 );
+        else
+          vscroll.cscroll_draw( true, true );
+      } break;
+      default:
+        if( GetAsyncKeyState( VK_CONTROL ) )
+          break;
+        else
+          wnd_clear_menus();
+      }
+
+
+#ifdef _DEBUG
+      printf( "m1 open : %d\nm2 open : %d\nm3 open : %d\n\n\n\n\n\n\n\n\n\n\n\n\n", m_base_open[0], m_base_open[1], m_base_open[2] );
+#endif // _DEBUG
+    }
+  }
+
+  return CallNextHookEx( 0, ncode, wp, lp );
+}
+
 void wnd_type_create( const HWND hwnd ) {
   txt_box = CreateWindowExW( WS_EX_TRANSPARENT,
     L"EDIT", 0,
@@ -157,6 +170,11 @@ void wnd_type_create( const HWND hwnd ) {
 
   mouse_hook = SetWindowsHookExW(
     WH_MOUSE_LL, mouse_hook_proc,
+    GetModuleHandleW( NULL ), 0
+  );
+
+  key_hook = SetWindowsHookExW(
+    WH_KEYBOARD_LL, key_hook_proc,
     GetModuleHandleW( NULL ), 0
   );
 }

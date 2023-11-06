@@ -53,6 +53,8 @@ void wnd_menu_draw( HDC hdc, RECT wnd_sz ) {
 }
 
 void wnd_menu_draw_dropdown( HWND hwnd, s8 idx ) {
+  wnd_clear_menus( idx );
+
   HDC hdc = GetDC( hwnd );
 
   WND_MENU obj[6];

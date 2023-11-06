@@ -52,6 +52,7 @@ extern bool m_base_open[ OBJ_BASE_COUNT / 2 ];
 extern CSCROLL vscroll;
 
 extern HHOOK mouse_hook;
+extern HHOOK key_hook;
 
 extern RECT caret_rect;
 
