@@ -13,21 +13,18 @@ CSCROLL vscroll;
 
 bool m_base_open[ OBJ_BASE_COUNT / 2 ] = { false };
 
-void wnd_clear_menus( s32 exclude ) {
+void wnd_clear_menus( s32 exclude, bool overryde ) {
   for( s8 idx = 0; idx < OBJ_BASE_COUNT / 2; idx++ ) {
-    if( !m_base_open[ idx ] || idx == exclude )
+    if( !m_base_open[ idx ] || ( exclude == idx && !overryde ) )
       continue;
 
-    m_base_open[ idx ] = !m_base_open[ idx ];
-    vscroll.cscroll_draw( true, true );
-
-    if( idx )
-      continue;
-
-    RECT wnd_sz = get_wnd_sz( h_global );
-    wnd_type_line_count( h_global, wnd_sz, true );
-    wnd_type_outline( h_global, to_sz_point( wnd_sz ) );
+    m_base_open[ idx ] = false;
   }
+  vscroll.cscroll_draw( true, true );
+
+  RECT wnd_sz = get_wnd_sz( h_global );
+  wnd_type_line_count( h_global, wnd_sz, true );
+  wnd_type_outline( h_global, to_sz_point( wnd_sz ) );
 }
 
 LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
