@@ -1,5 +1,4 @@
 todo :
-- fix submenu bools not properly toggling off
 - remove magic numbers where functions/code can be used
 - - text offset in rect ( calculate text size ) & more
 - code out functionality of each menu option

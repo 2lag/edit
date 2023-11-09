@@ -12,10 +12,6 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
     if( wp != WM_KEYDOWN )
       return CallNextHookEx( 0, ncode, wp, lp );
 
-#ifdef _DEBUG // maybe split this up between statements so we can see each before/after the nested if/elses
-    printf( "m1 open : %d\nm2 open : %d\nm3 open : %d\n\n\n\n\n\n\n\n\n\n\n\n\n", m_base_open[0], m_base_open[1], m_base_open[2] );
-#endif // _DEBUG
-
     switch( p_key->vkCode ) {
 
     p_key->flags |= LLKHF_INJECTED;
