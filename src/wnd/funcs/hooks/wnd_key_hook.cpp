@@ -6,11 +6,16 @@
 
 
 LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
+  static bool m_sub_open = false;
+
   if( ncode == HC_ACTION ) {
     KBDLLHOOKSTRUCT* p_key = reinterpret_cast<KBDLLHOOKSTRUCT*>( lp );
 
     if( wp != WM_KEYDOWN )
       return CallNextHookEx( 0, ncode, wp, lp );
+    else if( p_key->vkCode != 0x4D )
+        m_sub_open = false;
+
 
     switch( p_key->vkCode ) {
 
@@ -44,13 +49,14 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
       if( !m_base_open[1] )
         return 1;
 
-      static bool m_sub_open = false;
       m_sub_open = !m_sub_open;
 
       if( m_sub_open )
         wnd_menu_draw_sub_dropdown( h_global );
-      else
+      else {
+        m_base_open[1] = false;
         wnd_clear_menus( true );
+      }
 
       return 1;
     } break;

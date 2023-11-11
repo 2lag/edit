@@ -4,12 +4,18 @@ void wnd_menu_draw( HDC hdc, RECT wnd_sz ) {
   SIZE txt_sz[ OBJ_BASE_COUNT ] = {};
 
   WND_MENU obj[ OBJ_BASE_COUNT ] = {
-    wnd_menu_create( {  -1, ( WND_BTN_SZ - 1 ),  50, 50 }, COL_M_GRY, true , L""      ),
-    wnd_menu_create( {   0,   WND_BTN_SZ      ,  49, 49 }, COL_D_GRY, false, L"File"  ),
-    wnd_menu_create( {  50, ( WND_BTN_SZ - 1 ), 102, 50 }, COL_M_GRY, true , L""      ),
-    wnd_menu_create( {  50,   WND_BTN_SZ      , 101, 49 }, COL_D_GRY, false, L"Tools" ),
-    wnd_menu_create( { 102, ( WND_BTN_SZ - 1 ), 152, 50 }, COL_M_GRY, true , L""      ),
-    wnd_menu_create( { 102,   WND_BTN_SZ      , 151, 49 }, COL_D_GRY, false, L"Style" )
+    wnd_menu_create( {                     -1, ( WND_BTN_SZ       - 1 ),
+                       ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 2 )     }, COL_M_GRY, true , L""      ),
+    wnd_menu_create( {                      0,   WND_BTN_SZ            ,
+                       ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 2 ) - 1 }, COL_D_GRY, false, L"File"  ),
+    wnd_menu_create( { ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ       - 1 ),
+                       ( WND_BTN_SZ * 4 ) + 2, ( WND_BTN_SZ * 2 )     }, COL_M_GRY, true , L""      ),
+    wnd_menu_create( { ( WND_BTN_SZ * 2 )    ,   WND_BTN_SZ            ,
+                       ( WND_BTN_SZ * 4 ) + 1, ( WND_BTN_SZ * 2 ) - 1 }, COL_D_GRY, false, L"Tools" ),
+    wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 2, ( WND_BTN_SZ       - 1 ),
+                       ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 2 )     }, COL_M_GRY, true , L""      ),
+    wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 2,   WND_BTN_SZ            ,
+                       ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 2 ) - 1 }, COL_D_GRY, false, L"Style" )
   };
 
   SetBkMode( hdc, TRANSPARENT );
@@ -37,20 +43,20 @@ void wnd_menu_draw( HDC hdc, RECT wnd_sz ) {
 
     switch( idx ) {
     case 1: {
-      underline_pos =  11;
+      underline_pos =  10;
     } break;
     case 3: {
-      underline_pos =  58;
+      underline_pos =  56;
     } break;
     case 5: {
-      underline_pos = 110;
+      underline_pos = 109;
     } break;
     default:
       break;
     }
 
-    for( s32 u_idx = 0; u_idx < 8; u_idx++ )
-      SetPixel( hdc, underline_pos + u_idx, 44, COL_M_GRY );
+    for( s32 u_idx = 0; u_idx < 10; u_idx++ )
+      SetPixel( hdc, underline_pos + u_idx, ( WND_BTN_SZ * 2 ) - 6, COL_M_GRY );
   }
 
   for( auto& it : obj )
@@ -64,13 +70,28 @@ void wnd_menu_draw_dropdown( HWND hwnd, s8 idx ) {
 
   switch( idx ) {
   case 0: {
-    menu_rect = {   0, 49,  50, 126 };
+    menu_rect = {
+      0,
+      ( WND_BTN_SZ * 2 ) - 1,
+      ( WND_BTN_SZ * 2 ),
+      ( WND_BTN_SZ * 5 ) + 1
+    };
   } break;
   case 1: {
-    menu_rect = {  49, 49, 152, 126 };
+    menu_rect = {
+      ( WND_BTN_SZ * 2 ) - 1,
+      ( WND_BTN_SZ * 2 ) - 1,
+      ( WND_BTN_SZ * 6 ) + 2,
+      ( WND_BTN_SZ * 5 ) + 1
+    };
   } break;
   case 2: {
-    menu_rect = { 101, 49, 216, 126 };
+    menu_rect = {
+      ( WND_BTN_SZ * 4 ) +  1,
+      ( WND_BTN_SZ * 2 ) -  1,
+      ( WND_BTN_SZ * 9 ),
+      ( WND_BTN_SZ * 5 ) +  1
+    };
   } break;
   default:
     return;
@@ -79,50 +100,71 @@ void wnd_menu_draw_dropdown( HWND hwnd, s8 idx ) {
   ValidateRect( h_global, &menu_rect );
 
   HDC hdc = GetDC( hwnd );
-
   WND_MENU obj[ OBJ_BASE_COUNT ] = {};
-  VEC3 underline_dim[ OBJ_BASE_COUNT / 2 ] = {};
+  VEC3 underline_dim[ OBJ_BASE_COUNT / 2 ] = {
+    { 0, ( WND_BTN_SZ * 3 ) - 5, 9 },
+    { 0, ( WND_BTN_SZ * 4 ) - 5, 9 },
+    { 0, ( WND_BTN_SZ * 5 ) - 5, 9 }
+  };
   SIZE txt_sz[ OBJ_BASE_COUNT ] = {};
 
   switch( idx ) {
   case 0: {
-    obj[0] = wnd_menu_create( {   0,  49,  50,  76 }, COL_M_GRY, true , L""               );
-    obj[1] = wnd_menu_create( {   0,  50,  49,  75 }, COL_D_GRY, false, L"New"            );
-    underline_dim[0] = { 10, 69, 9 };
-
-    obj[2] = wnd_menu_create( {   0,  75,  50, 101 }, COL_M_GRY, true , L""               );
-    obj[3] = wnd_menu_create( {   0,  76,  49, 100 }, COL_D_GRY, false, L"Open"           );
-    underline_dim[1] = { 8, 95, 9 };
-
-    obj[4] = wnd_menu_create( {   0, 100,  50, 126 }, COL_M_GRY, true , L""               );
-    obj[5] = wnd_menu_create( {   0, 101,  49, 125 }, COL_D_GRY, false, L"Exit"           );
-    underline_dim[2] = { 11, 120, 9 };
+    obj[0] = wnd_menu_create( {                      0, ( WND_BTN_SZ * 2 ) - 1  ,
+                                ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 3 ) + 1 }, COL_M_GRY, true , L""               );
+    obj[1] = wnd_menu_create( {                      0, ( WND_BTN_SZ * 2 )      ,
+                                ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 3 )     }, COL_D_GRY, false, L"New"            );
+    obj[2] = wnd_menu_create( {                      0, ( WND_BTN_SZ * 3 )      ,
+                                ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 4 ) + 1 }, COL_M_GRY, true , L""               );
+    obj[3] = wnd_menu_create( {                      0, ( WND_BTN_SZ * 3 ) + 1  ,
+                                ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 4 )     }, COL_D_GRY, false, L"Open"           );
+    obj[4] = wnd_menu_create( {                      0, ( WND_BTN_SZ * 4 )      ,
+                                ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 5 ) + 1 }, COL_M_GRY, true , L""               );
+    obj[5] = wnd_menu_create( {                      0, ( WND_BTN_SZ * 4 ) + 1  ,
+                                ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, L"Exit"           );
+    
+    underline_dim[0].x = 10;
+    underline_dim[1].x = 7;
+    underline_dim[2].x = 11,
+    underline_dim[2].w = 10;
   } break;
   case 1: {
-    obj[0] = wnd_menu_create( {  49,  49, 152,  76 }, COL_M_GRY, true , L""               );
-    obj[1] = wnd_menu_create( {  50,  50, 151,  75 }, COL_D_GRY, false, L"Macro"    );
-    underline_dim[0] = { 78, 69, 11 };
+    obj[0] = wnd_menu_create( { ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 2 ) - 1  ,
+                                ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 3 ) + 1 }, COL_M_GRY, true , L""               );
+    obj[1] = wnd_menu_create( { ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 2 )      ,
+                                ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 3 )     }, COL_D_GRY, false, L"Macro"          );
+    obj[2] = wnd_menu_create( { ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 3 )      ,
+                                ( WND_BTN_SZ * 2 ) + 2, ( WND_BTN_SZ * 4 ) + 1 }, COL_M_GRY, true , L""               );
+    obj[3] = wnd_menu_create( { ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 3 ) + 1  ,
+                                ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 4 )     }, COL_D_GRY, false, L"Multi-Cursor"   );
+    obj[4] = wnd_menu_create( { ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 4 )      ,
+                                ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 5 ) + 1 }, COL_M_GRY, true , L""               );
+    obj[5] = wnd_menu_create( { ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 4 ) + 1  ,
+                                ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, L"Plugins(?)"     );
 
-    obj[2] = wnd_menu_create( {  49,  75, 152, 101 }, COL_M_GRY, true , L""               );
-    obj[3] = wnd_menu_create( {  50,  76, 151, 100 }, COL_D_GRY, false, L"Multi-Cursor"   );
-    underline_dim[1] = { 96, 95, 9 };
-
-    obj[4] = wnd_menu_create( {  49, 100, 152, 126 }, COL_M_GRY, true , L""               );
-    obj[5] = wnd_menu_create( {  50, 101, 151, 125 }, COL_D_GRY, false, L"Plugins(?)"     );
-    underline_dim[2] = { 65, 120, 9 };
+    underline_dim[0].x = 80,
+    underline_dim[0].w = 11;
+    underline_dim[1].x = 97;
+    underline_dim[2].x = 67;
   } break;
   case 2: {
-    obj[0] = wnd_menu_create( { 101,  49, 216,  76 }, COL_M_GRY, true , L""               );
-    obj[1] = wnd_menu_create( { 102,  50, 215,  75 }, COL_D_GRY, false, L"Hide FPS"       );
-    underline_dim[0] = { 161, 69, 9 };
+    obj[0] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 1, ( WND_BTN_SZ * 2 ) - 1  ,
+                                ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 3 ) + 1 }, COL_M_GRY, true , L""               );
+    obj[1] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 2, ( WND_BTN_SZ * 2 )      ,
+                                ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 3 )     }, COL_D_GRY, false, L"Hide FPS"       );
+    obj[2] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 1, ( WND_BTN_SZ * 3 )      ,
+                                ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 4 ) + 1 }, COL_M_GRY, true , L""               );
+    obj[3] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 2, ( WND_BTN_SZ * 3 ) + 1  ,
+                                ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 4 )     }, COL_D_GRY, false, L"Hide Caret Pos" );
+    obj[4] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 1, ( WND_BTN_SZ * 4 )      ,
+                                ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 5 ) + 1 }, COL_M_GRY, true , L""                );
+    obj[5] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 2, ( WND_BTN_SZ * 4 ) + 1  ,
+                                ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, L"Hide Line Count" );
 
-    obj[2] = wnd_menu_create( { 101,  75, 216, 101 }, COL_M_GRY, true , L""               );
-    obj[3] = wnd_menu_create( { 102,  76, 215, 100 }, COL_D_GRY, false, L"Hide Caret Pos" );
-    underline_dim[1] = { 110, 95, 9 };
-
-    obj[4] = wnd_menu_create( { 101, 100, 216, 126 }, COL_M_GRY, true , L""                );
-    obj[5] = wnd_menu_create( { 102, 101, 215, 125 }, COL_D_GRY, false, L"Hide Line Count" );
-    underline_dim[2] = { 107, 120, 9 };
+    underline_dim[0].x = 166;
+    underline_dim[1].x = 186;
+    underline_dim[2].x = 145,
+    underline_dim[2].w = 10;
   } break;
   default:
     return;
@@ -178,24 +220,35 @@ void wnd_menu_draw_dropdown( HWND hwnd, s8 idx ) {
 }
 
 void wnd_menu_draw_sub_dropdown( HWND hwnd ) {
-  RECT menu_rect = { 151, 49, 233, 130 };
+  RECT menu_rect = {
+    ( WND_BTN_SZ * 6 ) + 1,
+    ( WND_BTN_SZ * 2 ) - 1,
+    ( WND_BTN_SZ * 9 )    ,
+    ( WND_BTN_SZ * 5 ) + 1
+  };
   ValidateRect( hwnd, &menu_rect );
 
   HDC hdc = GetDC( hwnd );
 
   WND_MENU obj[ OBJ_BASE_COUNT ] = {
-    wnd_menu_create( { 151,  49, 233,  76 }, COL_M_GRY, true , L""         ),
-    wnd_menu_create( { 152,  50, 232,  75 }, COL_D_GRY, false, L"Clear"    ),
-    wnd_menu_create( { 151,  76, 233, 103 }, COL_M_GRY, true , L""         ),
-    wnd_menu_create( { 152,  77, 232, 102 }, COL_D_GRY, false, L"Record"   ),
-    wnd_menu_create( { 151, 103, 233, 130 }, COL_M_GRY, true , L""         ),
-    wnd_menu_create( { 152, 104, 232, 129 }, COL_D_GRY, false, L"Playback" )
+    wnd_menu_create( { ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 2 ) - 1  ,
+                       ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 3 ) + 1 }, COL_M_GRY, true , L""         ),
+    wnd_menu_create( { ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 2 )      ,
+                       ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 3 )     }, COL_D_GRY, false, L"Clear"    ),
+    wnd_menu_create( { ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 3 )      ,
+                       ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 4 ) + 1 }, COL_M_GRY, true , L""         ),
+    wnd_menu_create( { ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 3 ) + 1  ,
+                       ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 4 )     }, COL_D_GRY, false, L"Record"   ),
+    wnd_menu_create( { ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 4 )      ,
+                       ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 5 ) + 1 }, COL_M_GRY, true , L""         ),
+    wnd_menu_create( { ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 4 ) + 1  ,
+                       ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, L"Playback" )
   };
   SIZE txt_sz[ OBJ_BASE_COUNT ];
   VEC3 underline_dim[ OBJ_BASE_COUNT / 2 ] = {
-    { 175,  69,  9 },
-    { 169,  96, 10 },
-    { 162, 123,  8 }
+    { 171, ( WND_BTN_SZ * 3 ) - 5,  9 },
+    { 165, ( WND_BTN_SZ * 4 ) - 5, 10 },
+    { 159, ( WND_BTN_SZ * 5 ) - 5,  8 }
   };
 
   SetBkMode( hdc, TRANSPARENT );

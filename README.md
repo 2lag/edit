@@ -1,9 +1,4 @@
 todo :
-- in wnd_menu.cpp
-- - fix menu sizes
-- - fix underline positioning
-- - fix menu not repopping up after closing macro
-- - when done, make sure as many magic nums as possible are gone :p
 - code out functionality of each menu option
 - move any mouse functionality to mousehook & same with any keyboard 1-by-1 & recode
 - fix not being able to full screen drag on vert monitor ( wnd_drag.cpp )
