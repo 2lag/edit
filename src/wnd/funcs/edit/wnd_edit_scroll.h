@@ -32,7 +32,7 @@ public:
     bkrect = rect = {
       txt_rect.right + 1,
       txt_rect.top - 1,
-      txt_rect.right + 25,
+      txt_rect.right + WND_BTN_SZ,
       txt_rect.bottom + 1
     };
 
@@ -247,7 +247,8 @@ public:
     if( dragging )
       return;
 
-    m_pos.x -= 25; m_pos.y -= 50;
+    m_pos.x -= WND_BTN_SZ;
+    m_pos.y -= ( WND_BTN_SZ * 2 );
     hovered = PtInRect( &rect, m_pos );
     cscroll_draw( false, false );
   }
@@ -264,7 +265,7 @@ public:
       if( line_count <= lines_vis )
         scroll_h = bkrect.bottom + 1;
       else
-        scroll_h = max( bkrect.bottom - ( line_sz.cy * ( line_count - lines_vis ) ), 50 );
+        scroll_h = max( bkrect.bottom - ( line_sz.cy * ( line_count - lines_vis ) ), ( WND_BTN_SZ * 2 ) );
 
       scroll_y = (s32)( (f32)( bkrect.bottom - scroll_h ) * ( (f32)curr_line / (f32)line_count ) );
 
@@ -276,7 +277,7 @@ public:
       rect = {
         txt_rect.right + 1,
         scroll_y,
-        txt_rect.right + 25,
+        txt_rect.right + WND_BTN_SZ,
         scroll_y + scroll_h
       };
     }

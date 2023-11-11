@@ -3,11 +3,10 @@
 
 struct WND_MENU : public WND_OBJ {
   LPCWSTR txt;
-  POINT offset;
 };
 
-inline WND_MENU wnd_menu_create( RECT r, COLORREF col, bool next, LPCWSTR txt, POINT offset ) {
-  return { r, CreateSolidBrush( col ), next, txt, offset };
+inline WND_MENU wnd_menu_create( RECT r, COLORREF col, bool next, LPCWSTR txt ) {
+  return { r, CreateSolidBrush( col ), next, txt };
 }
 
 void wnd_clear_menus( s32 ignore = -1, bool overryde = false );

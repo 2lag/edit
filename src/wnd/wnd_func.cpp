@@ -7,10 +7,10 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   GetCursorPos( &m_pos );
   ScreenToClient( hwnd, &m_pos );
 
-  const RECT drag {                 0, 6, wnd_sz.right - 75, 25 },
-              cls { wnd_sz.right - 25, 5, wnd_sz.right -  5, 25 },
-              max { wnd_sz.right - 50, 5, wnd_sz.right - 25, 25 },
-              min { wnd_sz.right - 75, 5, wnd_sz.right - 50, 25 };
+  const RECT drag {                WND_BTN_SZ * 0,              6, wnd_sz.right - WND_BTN_SZ * 3, WND_BTN_SZ },
+              cls { wnd_sz.right - WND_BTN_SZ * 1, WND_BTN_SZ / 5, wnd_sz.right -              5, WND_BTN_SZ },
+              max { wnd_sz.right - WND_BTN_SZ * 2, WND_BTN_SZ / 5, wnd_sz.right - WND_BTN_SZ * 1, WND_BTN_SZ },
+              min { wnd_sz.right - WND_BTN_SZ * 3, WND_BTN_SZ / 5, wnd_sz.right - WND_BTN_SZ * 2, WND_BTN_SZ };
 
   vscroll.cscroll_update();
   wnd_type_line_count( hwnd, wnd_sz );
@@ -69,9 +69,11 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     EndPaint( hwnd, &ps );
   } break;
   case WM_SIZE: {
-    MoveWindow( txt_box, 25, 50,
-      wnd_sz.right - 50,
-      wnd_sz.bottom - 75,
+    MoveWindow( txt_box,
+      WND_BTN_SZ,
+      WND_BTN_SZ * 2,
+      wnd_sz.right - WND_BTN_SZ * 2,
+      wnd_sz.bottom - WND_BTN_SZ * 3,
       TRUE
     );
 
@@ -84,8 +86,8 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     vscroll.txt_rect = get_wnd_sz( vscroll.parent );
 
     vscroll.bkrect = {
-      vscroll.txt_rect.right + 1 , vscroll.txt_rect.top - 1,
-      vscroll.txt_rect.right + 25, vscroll.txt_rect.bottom + 1
+      vscroll.txt_rect.right + 1, vscroll.txt_rect.top - 1,
+      vscroll.txt_rect.right + WND_BTN_SZ, vscroll.txt_rect.bottom + 1
     };
   
     vscroll.cscroll_draw( true, true );

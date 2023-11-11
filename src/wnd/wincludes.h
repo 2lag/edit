@@ -18,6 +18,8 @@
 
 #include "../typedef.h"
 
+#define WND_BTN_SZ 25
+
 enum WND_COL {
   COL_D_GRY = RGB(  32,  32,  32 ),
   COL_M_GRY = RGB( 120, 120, 120 ),

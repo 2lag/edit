@@ -83,9 +83,10 @@ void wnd_type_outline( const HWND hwnd, const POINT wnd_sz ) {
   HDC hdc = GetDC( hwnd );
   HBRUSH brush = CreateSolidBrush( COL_M_GRY );
   RECT outline_sz {
-    24, 49,
-    wnd_sz.x - 24,
-    wnd_sz.y - 24
+    WND_BTN_SZ - 1,
+    ( WND_BTN_SZ * 2 ) - 1,
+    wnd_sz.x - ( WND_BTN_SZ - 1 ),
+    wnd_sz.y - ( WND_BTN_SZ - 1 )
   };
   FillRect( hdc, &outline_sz, brush );
 

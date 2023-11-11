@@ -4,15 +4,22 @@
 
 void wnd_title_draw( const HDC hdc, const RECT wnd_sz ) {
   WND_OBJ obj[ OBJ_COUNT ] = {
-    wnd_obj_create( {                 0, 0, wnd_sz.right     , 25 }, COL_M_GRY, false ),
-    wnd_obj_create( {                 0, 0, wnd_sz.right     , 24 }, COL_D_GRY, false ),
-    wnd_obj_create( { wnd_sz.right - 25, 0, wnd_sz.right     , 25 }, COL_M_GRY, true  ),
-    wnd_obj_create( { wnd_sz.right - 24, 0, wnd_sz.right     , 24 }, COL_D_GRY, false ),
-    wnd_obj_create( { wnd_sz.right - 50, 0, wnd_sz.right - 25, 25 }, COL_M_GRY, true  ),
-    wnd_obj_create( { wnd_sz.right - 49, 0, wnd_sz.right - 25, 24 }, COL_D_GRY, false ),
-    wnd_obj_create( { wnd_sz.right - 75, 0, wnd_sz.right - 50, 25 }, COL_M_GRY, true  ),
-    wnd_obj_create( { wnd_sz.right - 74, 0, wnd_sz.right - 50, 24 }, COL_D_GRY, false )
-  };
+    wnd_obj_create( {                                     0, 0,
+                      wnd_sz.right                         , WND_BTN_SZ * 1 }, COL_M_GRY, false ),
+    wnd_obj_create( {                                     0, 0,
+                      wnd_sz.right                         , WND_BTN_SZ - 1 }, COL_D_GRY, false ),
+    wnd_obj_create( { wnd_sz.right - ( WND_BTN_SZ * 1 )    , 0,
+                      wnd_sz.right                         , WND_BTN_SZ * 1 }, COL_M_GRY, true  ),
+    wnd_obj_create( { wnd_sz.right - ( WND_BTN_SZ * 1 ) + 1, 0,
+                      wnd_sz.right                         , WND_BTN_SZ - 1 }, COL_D_GRY, false ),
+    wnd_obj_create( { wnd_sz.right - ( WND_BTN_SZ * 2 )    , 0,
+                      wnd_sz.right - ( WND_BTN_SZ * 1 )    , WND_BTN_SZ * 1 }, COL_M_GRY, true  ),
+    wnd_obj_create( { wnd_sz.right - ( WND_BTN_SZ * 2 ) + 1, 0,
+                      wnd_sz.right - ( WND_BTN_SZ * 1 )    , WND_BTN_SZ - 1 }, COL_D_GRY, false ),
+    wnd_obj_create( { wnd_sz.right - ( WND_BTN_SZ * 3 )    , 0,
+                      wnd_sz.right - ( WND_BTN_SZ * 2 )    , WND_BTN_SZ * 1 }, COL_M_GRY, true  ),
+    wnd_obj_create( { wnd_sz.right - ( WND_BTN_SZ * 3 ) + 1, 0,
+                      wnd_sz.right - ( WND_BTN_SZ * 2 )    , WND_BTN_SZ - 1 }, COL_D_GRY, false )};
 
   SetBkMode( hdc, TRANSPARENT );
   SetTextColor( hdc, COL_M_GRY );
@@ -24,30 +31,34 @@ void wnd_title_draw( const HDC hdc, const RECT wnd_sz ) {
       FillRect( hdc, &obj[ idx ].r, obj[ idx ].col );
     }
     
-    POINT offset{};
     LPCWSTR txt = L"";
     switch( idx ) {
     case 3:
-      offset = { 16, 20 };
       txt = L"X";
       break;
     case 5:
-      offset = { 17, 20 };
       txt = L"O";
       break;
     case 7:
-      offset = { 16, 25 };
       txt = L"_";
       break;
     }
+
+    SIZE txt_sz{};
+    GetTextExtentPoint32W( hdc, txt, 1, &txt_sz );
+
+    if( idx == 7 )
+      txt_sz.cy += 7; // offset for looks
+
     TextOutW( hdc,
-      obj[ idx ].r.right  - offset.x,
-      obj[ idx ].r.bottom - offset.y,
+      obj[ idx ].r.left + ( obj[ idx ].r.right - obj[ idx ].r.left ) / 2 - ( txt_sz.cx / 2 ),
+      obj[ idx ].r.top  + ( obj[ idx ].r.bottom - obj[ idx ].r.top ) / 2 - ( txt_sz.cy / 2 ),
       txt, 1
     );
   }
 
-  TextOutW( hdc, 6, 4, L"Edit", 4 );
+  LPCWSTR txt = L"Edit";
+  TextOutW( hdc, 6, 4, txt, lstrlenW( txt ) );
 
   for( auto& it : obj )
     DeleteObject( it.col );

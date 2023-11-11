@@ -1,8 +1,11 @@
 todo :
-- remove magic numbers where functions/code can be used
-- - text offset in rect ( calculate text size ) & whatever else needed
+- in wnd_menu.cpp
+- - fix menu sizes
+- - fix underline positioning
+- - fix menu not repopping up after closing macro
+- - when done, make sure as many magic nums as possible are gone :p
 - code out functionality of each menu option
-- move any mouse functionality to mousehook & same with any keyboard
+- move any mouse functionality to mousehook & same with any keyboard 1-by-1 & recode
 - fix not being able to full screen drag on vert monitor ( wnd_drag.cpp )
 - test everything (make list of shit to test in each file), minimize var scope & const unchanging vars | clean/optimize files ( make file checklist ), and add comments to non-self-explanatory code
 - add ss and make documentation
