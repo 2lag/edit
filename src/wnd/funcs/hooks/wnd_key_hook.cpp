@@ -113,9 +113,8 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
         wnd_clear_menus( true );
 
         // figure out way to get c:/dir/filename.type input
-        //   spawn in console ?
-        //   or spawn in new process customized same way as main window with single line edit control
-        //   or just add an edit control into the menu bar on the right side of the menus
+        //   look to see if pre-defined open/save dialogs exist
+        //   if not, just add an edit control into the menu bar on the right side of the menus
         // open/read file in binary mode ( mayb )
         // copy into edit control
 
