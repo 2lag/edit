@@ -121,11 +121,11 @@ void wnd_menu_draw_dropdown( HWND hwnd, s8 idx ) {
     obj[4] = wnd_menu_create( {                      0, ( WND_BTN_SZ * 4 )      ,
                                 ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 5 ) + 1 }, COL_M_GRY, true , L""               );
     obj[5] = wnd_menu_create( {                      0, ( WND_BTN_SZ * 4 ) + 1  ,
-                                ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, L"Exit"           );
+                                ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, L"Save"           );
     
     underline_dim[0].x = 10;
     underline_dim[1].x = 7;
-    underline_dim[2].x = 11,
+    underline_dim[2].x = 7,
     underline_dim[2].w = 10;
   } break;
   case 1: {
