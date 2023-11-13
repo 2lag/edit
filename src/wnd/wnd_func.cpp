@@ -80,10 +80,10 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     wnd_type_line_count( hwnd, wnd_sz, true );
     wnd_type_caret_pos( hwnd, wnd_sz, true );
 
-    if( !vscroll.parent )
+    if( !txt_box )
       break;
 
-    vscroll.txt_rect = get_wnd_sz( vscroll.parent );
+    vscroll.txt_rect = get_wnd_sz( txt_box );
 
     vscroll.bkrect = {
       vscroll.txt_rect.right + 1, vscroll.txt_rect.top - 1,

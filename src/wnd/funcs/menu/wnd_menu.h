@@ -1,5 +1,5 @@
 #pragma once
-#include "../wincludes.h"
+#include "../../wincludes.h"
 
 struct WND_MENU : public WND_OBJ {
   LPCWSTR txt;

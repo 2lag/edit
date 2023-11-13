@@ -42,13 +42,16 @@
     <ClCompile Include="src\wnd\funcs\edit\wnd_edit_line_count.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\funcs\wnd_menu.cpp">
+    <ClCompile Include="src\wnd\funcs\menu\wnd_menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\wnd\funcs\hooks\wnd_key_hook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\wnd\funcs\hooks\wnd_mouse_hook.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wnd\funcs\menu\wnd_menu_funcs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,13 +101,16 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\wnd_menu.h">
+    <ClInclude Include="src\wnd\funcs\menu\wnd_menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\wnd\funcs\hooks\wnd_mouse_hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\wnd\funcs\hooks\wnd_key_hook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wnd\funcs\menu\wnd_menu_funcs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

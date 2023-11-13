@@ -3,7 +3,8 @@
 #include "../hooks/wnd_key_hook.h"
 #include "../hooks/wnd_mouse_hook.h"
 
-#include "../wnd_menu.h"
+#include "../menu/wnd_menu.h"
+
 #include "wnd_edit_line_count.h"
 
 HWND txt_box;
