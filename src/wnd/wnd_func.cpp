@@ -22,7 +22,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     SetFocus( txt_box );
   } break;
   case WM_CTLCOLOREDIT: {
-    wnd_type_customize( wp );
+    wnd_customize( wp );
     return (LRESULT)GetStockObject( 0 );
   } break;
   case WM_DESTROY: {
@@ -76,6 +76,16 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
       wnd_sz.bottom - WND_BTN_SZ * 3,
       TRUE
     );
+
+    if( open_txt ) {
+      MoveWindow( open_txt,
+        ( WND_BTN_SZ * 6 ) + 6,
+        WND_BTN_SZ + 4,
+        ( wnd_sz.right - wnd_sz.left ) - ( ( WND_BTN_SZ * 6 ) + 10 ),
+        WND_BTN_SZ - 9,
+        TRUE
+      );
+    }
 
     wnd_type_line_count( hwnd, wnd_sz, true );
     wnd_type_caret_pos( hwnd, wnd_sz, true );

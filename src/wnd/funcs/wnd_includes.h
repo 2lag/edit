@@ -10,3 +10,4 @@
 #include "edit/wnd_edit.h"
 
 #include "menu/wnd_menu.h"
+#include "menu/wnd_menu_funcs.h"

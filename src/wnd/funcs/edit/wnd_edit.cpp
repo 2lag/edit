@@ -95,7 +95,7 @@ void wnd_type_outline( const HWND hwnd, const POINT wnd_sz ) {
   ReleaseDC( hwnd, hdc );
 }
 
-void wnd_type_customize( const WPARAM wp ) {
+void wnd_customize( const WPARAM wp ) {
   HDC hdc = (HDC)wp;
 
   SetBkMode( hdc, TRANSPARENT );

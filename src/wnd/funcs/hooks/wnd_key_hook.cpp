@@ -53,17 +53,7 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
       if( !GetAsyncKeyState( VK_CONTROL ) )
         break;
 
-      if( m_base_open[0] ) { // do open
-
-        m_base_open[0] = false;
-        wnd_clear_menus( true );
-
-        // add an edit control into the menu bar on the right side of the menus
-        // open/read file in binary mode ( mayb )
-        // copy into edit control
-
-        return 1;
-      }
+      return wnd_menu_open_ctrl( m_base_open[0] );
     } break;
     case 0x53: { // CTRL + S
       if( !GetAsyncKeyState( VK_CONTROL ) )

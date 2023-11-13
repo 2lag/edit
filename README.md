@@ -1,7 +1,7 @@
 todo :
 - finish functionality for :
 - - File
-- - - Open
+- - - Open // figure out why background wont change color, then move onto opening file
 - - - Save
 - do functionality for :
 - - Tools
