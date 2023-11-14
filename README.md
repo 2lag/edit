@@ -1,7 +1,7 @@
 todo :
 - finish functionality for :
 - - File
-- - - Open // figure out why background wont change color, then move onto opening file
+- - - Open // fix imported text showing up in chinese LMFAOOOO
 - - - Save
 - do functionality for :
 - - Tools

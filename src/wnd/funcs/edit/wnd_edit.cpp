@@ -98,6 +98,6 @@ void wnd_type_outline( const HWND hwnd, const POINT wnd_sz ) {
 void wnd_customize( const WPARAM wp ) {
   HDC hdc = (HDC)wp;
 
-  SetBkMode( hdc, TRANSPARENT );
+  SetBkColor( hdc, COL_D_GRY );
   SetTextColor( hdc, COL_M_GRY );
 }

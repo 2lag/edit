@@ -63,31 +63,48 @@ s32 wnd_menu_new_wnd( bool &toggle ) {
   return 1;
 }
 
+WCHAR *file_path = nullptr;
+
 LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
   static bool once = false;
   
+  if( !once ) {
+    SetFocus( hwnd );
+    once = true;
+  }
+
   switch( msg ) {
   case WM_CHAR: {
     if( wp != VK_RETURN )
       break;
 
-    // set the path/file to a var that we can use to import
-  } break;
-  case WM_ERASEBKGND: {
-    
-    HDC hdc = (HDC)wp;
-    HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
-    RECT open_sz = get_wnd_sz( hwnd );
-    FillRect( hdc, &open_sz, dbrush );
-    DeleteObject( dbrush );
+    s32 len = GetWindowTextLengthW( hwnd ) + 1;
+    file_path = new WCHAR[ len ];
+    GetWindowTextW( hwnd, file_path, len );
+    KillTimer( GetParent( hwnd ), 1 );
 
-    if( !once ) {
-      SetFocus( hwnd );
-      once = true;
+    HANDLE file = CreateFileW( file_path, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
+
+    if( file == INVALID_HANDLE_VALUE ) {
+#ifdef _DEBUG
+      wprintf( L"invalid file handle\n" );
+#endif
+      break;
     }
 
-    return 1;
-  }
+    LARGE_INTEGER file_sz;
+    GetFileSizeEx( file, &file_sz );
+    ptr buf_sz = static_cast<ptr>( file_sz.QuadPart );
+    LPVOID buf = new BYTE[ buf_sz ];
+
+    ptr bytes_read;
+    if( ReadFile( file, buf, buf_sz, &bytes_read, nullptr ) && bytes_read == buf_sz )
+      SetWindowTextW( txt_box, static_cast<LPCWSTR>( buf ) );
+
+    delete[] static_cast<BYTE*>( buf );
+    CloseHandle( file );
+    DestroyWindow( hwnd );
+  } break;
   }
 
   return DefSubclassProc( hwnd, msg, wp, lp );
@@ -114,8 +131,16 @@ s32 wnd_menu_open_ctrl( bool &toggle ) {
   );
 
   SetWindowSubclass( open_txt, openproc, 0, 0 );
-  // open/read file in binary? mode once it's set
-  // copy contents into txt_box
+
+  SetTimer( h_global, 1, 100, nullptr );
+
+  MSG msg;
+  while( GetMessageW( &msg, nullptr, 0, 0 ) ) {
+    TranslateMessage( &msg );
+    DispatchMessageW( &msg );
+  }
+
+  KillTimer( h_global, 1 );
 
   return 1;
 }
