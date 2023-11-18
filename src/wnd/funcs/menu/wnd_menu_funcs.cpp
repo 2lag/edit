@@ -98,8 +98,8 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     LPVOID buf = new BYTE[ buf_sz ];
 
     ptr bytes_read;
-    if( ReadFile( file, buf, buf_sz, &bytes_read, nullptr ) && bytes_read == buf_sz )
-      SetWindowTextW( txt_box, static_cast<LPCWSTR>( buf ) );
+    if( ReadFile( file, buf, buf_sz, &bytes_read, nullptr ) && bytes_read == buf_sz ) // fix this
+      SetWindowTextW( txt_box, static_cast<LPCWSTR>( buf ) ); // or this
 
     delete[] static_cast<BYTE*>( buf );
     CloseHandle( file );
