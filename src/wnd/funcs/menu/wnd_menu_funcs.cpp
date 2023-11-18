@@ -97,6 +97,9 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     ptr buf_sz = static_cast<ptr>( file_sz.QuadPart );
     LPVOID buf = new BYTE[ buf_sz ];
 
+    // add this before to get diff encoding types
+    // https://preshing.com/20200727/automatically-detecting-text-encodings-in-cpp/
+
     ptr bytes_read;
     if( ReadFile( file, buf, buf_sz, &bytes_read, nullptr ) && bytes_read == buf_sz ) // fix this
       SetWindowTextW( txt_box, static_cast<LPCWSTR>( buf ) ); // or this
