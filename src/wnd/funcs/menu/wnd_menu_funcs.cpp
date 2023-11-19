@@ -100,6 +100,9 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     ptr buf_sz = static_cast<ptr>( file_sz.QuadPart );
     LPVOID buf = new BYTE[ buf_sz ];
 
+    // reverse notepad and see how they do it
+    // or look at npp
+
     ptr bytes_read;
     if( ReadFile( file, buf, buf_sz, &bytes_read, nullptr ) && bytes_read == buf_sz )
       SetWindowTextA( txt_box, static_cast<LPCSTR>( buf ) );
