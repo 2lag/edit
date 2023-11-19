@@ -4,17 +4,20 @@ todo :
 - - - Open
 - - - - Test and make sure it works ( with [these](https://github.com/arc80/plywood/tree/9c606056faf89f0918b81f5af09c23fefaf9a12d/repos/plywood/src/apps/AutodetectTest/tests) )
 - - - Save
-- - - - Open edit control as long as open edit control doesn't exist & do editproc for it
-- - - - When enter pressed and path valid, copy text to file specified by user
+- - - - Open "save" edit control as long as "open" edit control doesn't exist & do editproc for it
+- - - - When enter pressed and if path valid
+- - - - - Copy text to new file
+- - - - - Replace txt_box text with path ( in case saved in wrong dir and it made new files and user is dumb )
+- - - - - Destroy edit control
 - do functionality for :
-- - Tools
-- - - Macro
-- - - multi-Cursor
-- - - Plugins
-- - Style
+- - Style ( make a cfg file in same dir so it saves settings )
 - - - hide Fps
 - - - hide caret Pos
 - - - hide Line count
+- - Tools
+- - - Macro
+- - - multi-Cursor
+- - - Plugins ( Change to Scripts ? )
 - organize menu functionality into files
 - move any mouse functionality to mousehook & same with any keyboard 1-by-1 & recode
 - fix not being able to full screen drag on vert monitor ( wnd_drag.cpp )
