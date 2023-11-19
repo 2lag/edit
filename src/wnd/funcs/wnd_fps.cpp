@@ -27,10 +27,10 @@ void wnd_fps_draw( HWND hwnd ) {
   }
   while( true ) {
 
-    wchar_t fps_txt[32];
-    swprintf_s( fps_txt,
+    char fps_txt[32];
+    sprintf_s( fps_txt,
       sizeof( fps_txt ) / sizeof( wchar_t ),
-      L"FPS : %llu\0", fps
+      "FPS : %llu\0", fps
     );
 
     RECT wnd_sz = get_wnd_sz( hwnd );
@@ -38,8 +38,8 @@ void wnd_fps_draw( HWND hwnd ) {
     HDC hdc = GetDC( hwnd );
 
     SIZE txt_sz;
-    GetTextExtentPoint32W( hdc, fps_txt,
-      (s32)wcslen( fps_txt ), &txt_sz
+    GetTextExtentPoint32A( hdc, fps_txt,
+      (s32)strlen( fps_txt ), &txt_sz
     );
 
     const RECT fps_rect {
@@ -62,10 +62,10 @@ void wnd_fps_draw( HWND hwnd ) {
 
     SetBkColor( hdc, COL_D_GRY );
     SetTextColor( hdc, COL_M_GRY );
-    TextOutW( hdc,
+    TextOutA( hdc,
       wnd_sz.right  - txt_sz.cx - 5,
       wnd_sz.bottom - txt_sz.cy - 5,
-      fps_txt, (s32)wcslen( fps_txt )
+      fps_txt, (s32)strlen( fps_txt )
     );
 
     ReleaseDC( hwnd, hdc );

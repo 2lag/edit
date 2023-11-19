@@ -1,7 +1,7 @@
 todo :
 - finish functionality for :
 - - File
-- - - Open // fix imported text showing up in chinese LMFAOOOO (detect char type? or just import the proper format idk tbh)
+- - - Open // test and make sure this works
 - - - Save
 - do functionality for :
 - - Tools

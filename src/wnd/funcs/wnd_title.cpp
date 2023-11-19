@@ -31,34 +31,34 @@ void wnd_title_draw( const HDC hdc, const RECT wnd_sz ) {
       FillRect( hdc, &obj[ idx ].r, obj[ idx ].col );
     }
     
-    LPCWSTR txt = L"";
+    LPCSTR txt = "";
     switch( idx ) {
     case 3:
-      txt = L"X";
+      txt = "X";
       break;
     case 5:
-      txt = L"O";
+      txt = "O";
       break;
     case 7:
-      txt = L"_";
+      txt = "_";
       break;
     }
 
     SIZE txt_sz{};
-    GetTextExtentPoint32W( hdc, txt, 1, &txt_sz );
+    GetTextExtentPoint32A( hdc, txt, 1, &txt_sz );
 
     if( idx == 7 )
       txt_sz.cy += 7; // offset for looks
 
-    TextOutW( hdc,
+    TextOutA( hdc,
       obj[ idx ].r.left + ( obj[ idx ].r.right - obj[ idx ].r.left ) / 2 - ( txt_sz.cx / 2 ),
       obj[ idx ].r.top  + ( obj[ idx ].r.bottom - obj[ idx ].r.top ) / 2 - ( txt_sz.cy / 2 ),
       txt, 1
     );
   }
 
-  LPCWSTR txt = L"Edit";
-  TextOutW( hdc, 6, 4, txt, lstrlenW( txt ) );
+  LPCSTR txt = "Edit";
+  TextOutA( hdc, 6, 4, txt, strlen( txt ) );
 
   for( auto& it : obj )
     DeleteObject( it.col );

@@ -18,18 +18,18 @@ void wnd_type_caret_pos( const HWND hwnd, const RECT wnd_sz, bool force_redraw )
   s32 curr_caret_idx = (s32)HIWORD( Edit_GetSel( txt_box ) ) + 1;
   s32 line_idx_x = curr_caret_idx - curr_line_start_idx;
 
-  wchar_t caret_pos[32];
-  swprintf_s( caret_pos,
+  char caret_pos[32];
+  sprintf_s( caret_pos,
     sizeof( caret_pos ) / sizeof( wchar_t ),
-    L"X : %d   Y : %d\0",
+    "X : %d   Y : %d\0",
     line_idx_x, vscroll.curr_line
   );
 
   HDC hdc = GetDC( hwnd );
 
   SIZE txt_sz;
-  GetTextExtentPoint32W( hdc, caret_pos,
-    (s32)wcslen( caret_pos ), &txt_sz
+  GetTextExtentPoint32A( hdc, caret_pos,
+    (s32)strlen( caret_pos ), &txt_sz
   );
 
   caret_rect = {
@@ -45,10 +45,10 @@ void wnd_type_caret_pos( const HWND hwnd, const RECT wnd_sz, bool force_redraw )
   SetBkMode( hdc, TRANSPARENT );
   SetTextColor( hdc, COL_M_GRY );
 
-  TextOutW( hdc,
+  TextOutA( hdc,
     ( wnd_sz.right - txt_sz.cx ) / 2,
     wnd_sz.bottom - txt_sz.cy - 5,
-    caret_pos, (s32)wcslen( caret_pos )
+    caret_pos, (s32)strlen( caret_pos )
   );
 
   ReleaseDC( hwnd, hdc );

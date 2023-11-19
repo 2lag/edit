@@ -2,10 +2,10 @@
 #include "../../wincludes.h"
 
 struct WND_MENU : public WND_OBJ {
-  LPCWSTR txt;
+  const char *txt;
 };
 
-inline WND_MENU wnd_menu_create( RECT r, COLORREF col, bool next, LPCWSTR txt ) {
+inline WND_MENU wnd_menu_create( RECT r, COLORREF col, bool next, const char *txt ) {
   return { r, CreateSolidBrush( col ), next, txt };
 }
 

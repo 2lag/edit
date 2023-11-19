@@ -35,7 +35,7 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
   switch( msg ) {
   case WM_CHAR: {
     if( wp == VK_TAB ) {
-      Edit_ReplaceSel( hwnd,(LPARAM)L"  \0" );
+      Edit_ReplaceSel( hwnd,(LPARAM)"  \0" );
       return 0; 
     }
   } break;
@@ -58,25 +58,25 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
 }
 
 void wnd_type_create( const HWND hwnd ) {
-  txt_box = CreateWindowExW( WS_EX_TRANSPARENT,
-    L"EDIT", 0,
+  txt_box = CreateWindowExA( WS_EX_TRANSPARENT,
+    "EDIT", 0,
     WS_CHILD | WS_VISIBLE | ES_MULTILINE |
     ES_WANTRETURN | ES_NOHIDESEL |
     ES_AUTOVSCROLL | ES_AUTOHSCROLL,
     0, 0, 0, 0, hwnd, 0,
-    (HINSTANCE)GetWindowLongPtrW( hwnd, GWLP_HINSTANCE ), 0
+    (HINSTANCE)GetWindowLongPtrA( hwnd, GWLP_HINSTANCE ), 0
   );
 
   SetWindowSubclass( txt_box, editproc, 0, 0 );
 
-  mouse_hook = SetWindowsHookExW(
+  mouse_hook = SetWindowsHookExA(
     WH_MOUSE_LL, mouse_hook_proc,
-    GetModuleHandleW( NULL ), 0
+    GetModuleHandleA( NULL ), 0
   );
 
-  key_hook = SetWindowsHookExW(
+  key_hook = SetWindowsHookExA(
     WH_KEYBOARD_LL, key_hook_proc,
-    GetModuleHandleW( NULL ), 0
+    GetModuleHandleA( NULL ), 0
   );
 }
 

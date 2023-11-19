@@ -69,7 +69,7 @@ inline void run_debug_console() {
   AllocConsole();
   FILE* new_std;
   freopen_s( &new_std, "CONOUT$", "w", stdout );
-  SetConsoleTitleW( L"edit debug" );
+  SetConsoleTitleA( "edit debug" );
   void *std_handle = GetStdHandle( STD_OUTPUT_HANDLE );
   const SMALL_RECT wnd_debug{ 00, 00, 42, 16 };
   SetConsoleWindowInfo( std_handle, true, &wnd_debug );
@@ -81,4 +81,4 @@ inline void run_debug_console() {
 #define get_monitor_info( c_mon ) \
 MONITORINFO i_mon; \
 i_mon.cbSize = sizeof( i_mon ); \
-GetMonitorInfoW( c_mon, &i_mon )
+GetMonitorInfoA( c_mon, &i_mon )

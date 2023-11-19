@@ -44,7 +44,7 @@ public:
            lbrush = CreateSolidBrush( hovered ? COL_L_GRY : COL_M_GRY );
 
     if( redraw )
-      GetTextExtentPoint32W( hdc, L"A", 1, &line_sz );
+      GetTextExtentPoint32A( hdc, "A", 1, &line_sz );
     cscroll_setinfo( update_info, redraw );
 
     FillRect( hdc, &bkrect, dbrush );
@@ -101,7 +101,7 @@ public:
           curr_line++;
       } else if( scroll_dir == -1 && curr_line > 1 ) {
         if( curr_line >= lines_vis ) {
-          SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
+          SendMessageA( parent, EM_SCROLL, SB_LINEUP, 0 );
           curr_line = line_first + lines_vis - 2;
         } else
           curr_line--;
@@ -147,7 +147,7 @@ public:
       case WHEEL_DDELTA: {
         if( curr_line != 1 ) {
           if( curr_line >= lines_vis ) {
-            SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
+            SendMessageA( parent, EM_SCROLL, SB_LINEUP, 0 );
             curr_line = line_first + lines_vis - 2;
           } else
             curr_line--;
@@ -157,7 +157,7 @@ public:
       case WHEEL_UDELTA: {
         if( curr_line < line_count ) {
           if( curr_line == line_last ) {
-            SendMessageW( parent, EM_SCROLL, SB_LINEDOWN, 0 );
+            SendMessageA( parent, EM_SCROLL, SB_LINEDOWN, 0 );
             curr_line = line_first + lines_vis;
           } else
             curr_line++;
@@ -217,13 +217,13 @@ public:
       s32 caret_line_offset = (s32)HIWORD( Edit_GetSel( parent ) ) - Edit_LineIndex( parent, -1 );
       if( md_delta.y < 0 && curr_line > 1 ) {
         if( curr_line >= lines_vis ) {
-          SendMessageW( parent, EM_SCROLL, SB_LINEUP, 0 );
+          SendMessageA( parent, EM_SCROLL, SB_LINEUP, 0 );
           curr_line = line_first + lines_vis - 2;
         } else
           curr_line--;
       } else if( md_delta.y > 0 && curr_line < line_count ) {
         if( curr_line == line_last ) {
-          SendMessageW( parent, EM_SCROLL, SB_LINEDOWN, 0 );
+          SendMessageA( parent, EM_SCROLL, SB_LINEDOWN, 0 );
           curr_line = line_first + lines_vis;
         } else
           curr_line++;

@@ -37,19 +37,19 @@ s32 wnd_menu_new_wnd( bool &toggle ) {
   m_base_open[0] = false;
   wnd_clear_menus( true );
 
-  ptr buf_len = GetCurrentDirectoryW( 0, NULL ) + (ptr)wcslen( L"\\edit.exe" ) + 1;
-  WCHAR *buf = new WCHAR[ buf_len ];
-  GetCurrentDirectoryW( buf_len, buf );
+  ptr buf_len = GetCurrentDirectoryA( 0, NULL ) + (ptr)strlen( "\\edit.exe" ) + 1;
+  char *buf = new char[ buf_len ];
+  GetCurrentDirectoryA( buf_len, buf );
 
-  wcscat_s( buf, buf_len, L"\\edit.exe\0" );
+  strcat_s( buf, buf_len, "\\edit.exe\0" );
 
-  STARTUPINFOW si;
+  STARTUPINFOA si;
   PROCESS_INFORMATION pi;
   ZeroMemory( &si, sizeof( si ) );
   si.cb = sizeof( si );
   ZeroMemory( &pi, sizeof( pi ) );
 
-  CreateProcessW( buf,
+  CreateProcessA( buf,
     NULL, NULL, NULL,
     NULL, DETACHED_PROCESS,
     NULL, NULL, &si, &pi
@@ -63,7 +63,7 @@ s32 wnd_menu_new_wnd( bool &toggle ) {
   return 1;
 }
 
-WCHAR *file_path = nullptr;
+char *file_path = nullptr;
 
 LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
   static bool once = false;
@@ -78,16 +78,19 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     if( wp != VK_RETURN )
       break;
 
-    s32 len = GetWindowTextLengthW( hwnd ) + 1;
-    file_path = new WCHAR[ len ];
-    GetWindowTextW( hwnd, file_path, len );
+    s32 len = GetWindowTextLengthA( hwnd ) + 1;
+    file_path = new char[ len ];
+    GetWindowTextA( hwnd, file_path, len );
     KillTimer( GetParent( hwnd ), 1 );
 
-    HANDLE file = CreateFileW( file_path, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
+    HANDLE file = CreateFileA( file_path,
+      GENERIC_READ, 0, NULL, OPEN_EXISTING,
+      FILE_ATTRIBUTE_NORMAL, NULL
+    );
 
     if( file == INVALID_HANDLE_VALUE ) {
 #ifdef _DEBUG
-      wprintf( L"invalid file handle\n" );
+      printf( "invalid file handle\n" );
 #endif
       break;
     }
@@ -97,12 +100,9 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     ptr buf_sz = static_cast<ptr>( file_sz.QuadPart );
     LPVOID buf = new BYTE[ buf_sz ];
 
-    // add this before to get diff encoding types
-    // https://preshing.com/20200727/automatically-detecting-text-encodings-in-cpp/
-
     ptr bytes_read;
-    if( ReadFile( file, buf, buf_sz, &bytes_read, nullptr ) && bytes_read == buf_sz ) // fix this
-      SetWindowTextW( txt_box, static_cast<LPCWSTR>( buf ) ); // or this
+    if( ReadFile( file, buf, buf_sz, &bytes_read, nullptr ) && bytes_read == buf_sz )
+      SetWindowTextA( txt_box, static_cast<LPCSTR>( buf ) );
 
     delete[] static_cast<BYTE*>( buf );
     CloseHandle( file );
@@ -122,15 +122,15 @@ s32 wnd_menu_open_ctrl( bool &toggle ) {
 
   RECT open_sz = get_wnd_sz( h_global );
 
-  open_txt = CreateWindowExW( WS_EX_TRANSPARENT,
-    L"EDIT", 0,
+  open_txt = CreateWindowExA( WS_EX_TRANSPARENT,
+    "EDIT", 0,
     WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | ES_NOHIDESEL,
     ( WND_BTN_SZ * 6 ) + 6,
     WND_BTN_SZ + 4,
     ( open_sz.right - open_sz.left ) - ( ( WND_BTN_SZ * 6 ) + 10 ),
     WND_BTN_SZ - 9,
     h_global, NULL,
-    (HINSTANCE)GetWindowLongPtrW( h_global, GWLP_HINSTANCE ), NULL
+    (HINSTANCE)GetWindowLongPtrA( h_global, GWLP_HINSTANCE ), NULL
   );
 
   SetWindowSubclass( open_txt, openproc, 0, 0 );
@@ -138,9 +138,9 @@ s32 wnd_menu_open_ctrl( bool &toggle ) {
   SetTimer( h_global, 1, 100, nullptr );
 
   MSG msg;
-  while( GetMessageW( &msg, nullptr, 0, 0 ) ) {
+  while( GetMessageA( &msg, nullptr, 0, 0 ) ) {
     TranslateMessage( &msg );
-    DispatchMessageW( &msg );
+    DispatchMessageA( &msg );
   }
 
   KillTimer( h_global, 1 );

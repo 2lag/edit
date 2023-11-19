@@ -103,5 +103,5 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     vscroll.cscroll_draw( true, true );
   } break;
   }
-  return DefWindowProcW( hwnd, msg, wp, lp );
+  return DefWindowProcA( hwnd, msg, wp, lp );
 }

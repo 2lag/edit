@@ -1,21 +1,24 @@
 #include "wnd_menu.h"
 
+#pragma warning( push )
+#pragma warning( disable : 4267 )
+
 void wnd_menu_draw( HDC hdc, RECT wnd_sz ) {
   SIZE txt_sz[ OBJ_BASE_COUNT ] = {};
 
   WND_MENU obj[ OBJ_BASE_COUNT ] = {
     wnd_menu_create( {                     -1, ( WND_BTN_SZ       - 1 ),
-                       ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 2 )     }, COL_M_GRY, true , L""      ),
+                       ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 2 )     }, COL_M_GRY, true , ""      ),
     wnd_menu_create( {                      0,   WND_BTN_SZ            ,
-                       ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 2 ) - 1 }, COL_D_GRY, false, L"File"  ),
+                       ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 2 ) - 1 }, COL_D_GRY, false, "File"  ),
     wnd_menu_create( { ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ       - 1 ),
-                       ( WND_BTN_SZ * 4 ) + 2, ( WND_BTN_SZ * 2 )     }, COL_M_GRY, true , L""      ),
+                       ( WND_BTN_SZ * 4 ) + 2, ( WND_BTN_SZ * 2 )     }, COL_M_GRY, true , ""      ),
     wnd_menu_create( { ( WND_BTN_SZ * 2 )    ,   WND_BTN_SZ            ,
-                       ( WND_BTN_SZ * 4 ) + 1, ( WND_BTN_SZ * 2 ) - 1 }, COL_D_GRY, false, L"Tools" ),
+                       ( WND_BTN_SZ * 4 ) + 1, ( WND_BTN_SZ * 2 ) - 1 }, COL_D_GRY, false, "Tools" ),
     wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 2, ( WND_BTN_SZ       - 1 ),
-                       ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 2 )     }, COL_M_GRY, true , L""      ),
+                       ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 2 )     }, COL_M_GRY, true , ""      ),
     wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 2,   WND_BTN_SZ            ,
-                       ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 2 ) - 1 }, COL_D_GRY, false, L"Style" )
+                       ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 2 ) - 1 }, COL_D_GRY, false, "Style" )
   };
 
   SetBkMode( hdc, TRANSPARENT );
@@ -30,13 +33,12 @@ void wnd_menu_draw( HDC hdc, RECT wnd_sz ) {
     SetTextColor( hdc, COL_M_GRY );
 
     if( idx % 2 != 0 )
-      GetTextExtentPoint32W( hdc, obj[ idx ].txt, lstrlenW( obj[ idx ].txt ), &txt_sz[ idx ] );
+      GetTextExtentPoint32A( hdc, obj[ idx ].txt, strlen( obj[ idx ].txt ), &txt_sz[ idx ] );
 
-    TextOutW( hdc,
+    TextOutA( hdc,
       obj[ idx ].r.left + ( ( obj[ idx ].r.right - obj[ idx ].r.left ) / 2 ) - ( txt_sz[ idx ].cx / 2 ),
       obj[ idx ].r.top  + ( ( obj[ idx ].r.bottom - obj[ idx ].r.top ) / 2 ) - ( txt_sz[ idx ].cy / 2 ),
-      obj[ idx ].txt,
-      lstrlenW( obj[ idx ].txt )
+      obj[ idx ].txt, strlen( obj[ idx ].txt )
     );
 
     s32 underline_pos = 0;
@@ -111,17 +113,17 @@ void wnd_menu_draw_dropdown( HWND hwnd, s8 idx ) {
   switch( idx ) {
   case 0: {
     obj[0] = wnd_menu_create( {                      0, ( WND_BTN_SZ * 2 ) - 1  ,
-                                ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 3 ) + 1 }, COL_M_GRY, true , L""               );
+                                ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 3 ) + 1 }, COL_M_GRY, true , ""               );
     obj[1] = wnd_menu_create( {                      0, ( WND_BTN_SZ * 2 )      ,
-                                ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 3 )     }, COL_D_GRY, false, L"New"            );
+                                ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 3 )     }, COL_D_GRY, false, "New"            );
     obj[2] = wnd_menu_create( {                      0, ( WND_BTN_SZ * 3 )      ,
-                                ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 4 ) + 1 }, COL_M_GRY, true , L""               );
+                                ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 4 ) + 1 }, COL_M_GRY, true , ""               );
     obj[3] = wnd_menu_create( {                      0, ( WND_BTN_SZ * 3 ) + 1  ,
-                                ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 4 )     }, COL_D_GRY, false, L"Open"           );
+                                ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 4 )     }, COL_D_GRY, false, "Open"           );
     obj[4] = wnd_menu_create( {                      0, ( WND_BTN_SZ * 4 )      ,
-                                ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 5 ) + 1 }, COL_M_GRY, true , L""               );
+                                ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 5 ) + 1 }, COL_M_GRY, true , ""               );
     obj[5] = wnd_menu_create( {                      0, ( WND_BTN_SZ * 4 ) + 1  ,
-                                ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, L"Save"           );
+                                ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, "Save"           );
     
     underline_dim[0].x = 10;
     underline_dim[1].x = 7;
@@ -130,17 +132,17 @@ void wnd_menu_draw_dropdown( HWND hwnd, s8 idx ) {
   } break;
   case 1: {
     obj[0] = wnd_menu_create( { ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 2 ) - 1  ,
-                                ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 3 ) + 1 }, COL_M_GRY, true , L""               );
+                                ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 3 ) + 1 }, COL_M_GRY, true , ""               );
     obj[1] = wnd_menu_create( { ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 2 )      ,
-                                ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 3 )     }, COL_D_GRY, false, L"Macro"          );
+                                ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 3 )     }, COL_D_GRY, false, "Macro"          );
     obj[2] = wnd_menu_create( { ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 3 )      ,
-                                ( WND_BTN_SZ * 2 ) + 2, ( WND_BTN_SZ * 4 ) + 1 }, COL_M_GRY, true , L""               );
+                                ( WND_BTN_SZ * 2 ) + 2, ( WND_BTN_SZ * 4 ) + 1 }, COL_M_GRY, true , ""               );
     obj[3] = wnd_menu_create( { ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 3 ) + 1  ,
-                                ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 4 )     }, COL_D_GRY, false, L"Multi-Cursor"   );
+                                ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 4 )     }, COL_D_GRY, false, "Multi-Cursor"   );
     obj[4] = wnd_menu_create( { ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 4 )      ,
-                                ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 5 ) + 1 }, COL_M_GRY, true , L""               );
+                                ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 5 ) + 1 }, COL_M_GRY, true , ""               );
     obj[5] = wnd_menu_create( { ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 4 ) + 1  ,
-                                ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, L"Plugins(?)"     );
+                                ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, "Plugins(?)"     );
 
     underline_dim[0].x = 80,
     underline_dim[0].w = 11;
@@ -149,17 +151,17 @@ void wnd_menu_draw_dropdown( HWND hwnd, s8 idx ) {
   } break;
   case 2: {
     obj[0] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 1, ( WND_BTN_SZ * 2 ) - 1  ,
-                                ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 3 ) + 1 }, COL_M_GRY, true , L""               );
+                                ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 3 ) + 1 }, COL_M_GRY, true , ""               );
     obj[1] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 2, ( WND_BTN_SZ * 2 )      ,
-                                ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 3 )     }, COL_D_GRY, false, L"Hide FPS"       );
+                                ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 3 )     }, COL_D_GRY, false, "Hide FPS"       );
     obj[2] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 1, ( WND_BTN_SZ * 3 )      ,
-                                ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 4 ) + 1 }, COL_M_GRY, true , L""               );
+                                ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 4 ) + 1 }, COL_M_GRY, true , ""               );
     obj[3] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 2, ( WND_BTN_SZ * 3 ) + 1  ,
-                                ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 4 )     }, COL_D_GRY, false, L"Hide Caret Pos" );
+                                ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 4 )     }, COL_D_GRY, false, "Hide Caret Pos" );
     obj[4] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 1, ( WND_BTN_SZ * 4 )      ,
-                                ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 5 ) + 1 }, COL_M_GRY, true , L""                );
+                                ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 5 ) + 1 }, COL_M_GRY, true , ""                );
     obj[5] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 2, ( WND_BTN_SZ * 4 ) + 1  ,
-                                ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, L"Hide Line Count" );
+                                ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, "Hide Line Count" );
 
     underline_dim[0].x = 166;
     underline_dim[1].x = 186;
@@ -182,23 +184,22 @@ void wnd_menu_draw_dropdown( HWND hwnd, s8 idx ) {
     SetTextColor( hdc, COL_M_GRY );
 
     if( m_idx % 2 != 0 )
-      GetTextExtentPoint32W( hdc, obj[ m_idx ].txt, lstrlenW( obj[ m_idx ].txt ), &txt_sz[ m_idx ] );
+      GetTextExtentPoint32A( hdc, obj[ m_idx ].txt, strlen( obj[ m_idx ].txt ), &txt_sz[ m_idx ] );
 
-    TextOutW( hdc,
+    TextOutA( hdc,
       obj[ m_idx ].r.left + ( ( obj[ m_idx ].r.right - obj[ m_idx ].r.left ) / 2 ) - ( txt_sz[ m_idx ].cx / 2 ),
       obj[ m_idx ].r.top  + ( ( obj[ m_idx ].r.bottom - obj[ m_idx ].r.top ) / 2 ) - ( txt_sz[ m_idx ].cy / 2 ),
-      obj[ m_idx ].txt,
-      lstrlenW( obj[ m_idx ].txt )
+      obj[ m_idx ].txt, strlen( obj[ m_idx ].txt )
     );
 
     if( idx == 1 && m_idx == 1 ) {
       SIZE lt_sz{};
-      GetTextExtentPoint32W( hdc, L">", 1, &lt_sz );
+      GetTextExtentPoint32A( hdc, ">", 1, &lt_sz );
 
-      TextOutW( hdc,
+      TextOutA( hdc,
         obj[ m_idx ].r.right - 15,
         obj[ m_idx ].r.top  + ( ( obj[ m_idx ].r.bottom - obj[ m_idx ].r.top ) / 2 ) - ( lt_sz.cy / 2 ),
-        L">", 1
+        ">", 1
       );
     }
   }
@@ -232,17 +233,17 @@ void wnd_menu_draw_sub_dropdown( HWND hwnd ) {
 
   WND_MENU obj[ OBJ_BASE_COUNT ] = {
     wnd_menu_create( { ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 2 ) - 1  ,
-                       ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 3 ) + 1 }, COL_M_GRY, true , L""         ),
+                       ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 3 ) + 1 }, COL_M_GRY, true , ""         ),
     wnd_menu_create( { ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 2 )      ,
-                       ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 3 )     }, COL_D_GRY, false, L"Clear"    ),
+                       ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 3 )     }, COL_D_GRY, false, "Clear"    ),
     wnd_menu_create( { ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 3 )      ,
-                       ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 4 ) + 1 }, COL_M_GRY, true , L""         ),
+                       ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 4 ) + 1 }, COL_M_GRY, true , ""         ),
     wnd_menu_create( { ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 3 ) + 1  ,
-                       ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 4 )     }, COL_D_GRY, false, L"Record"   ),
+                       ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 4 )     }, COL_D_GRY, false, "Record"   ),
     wnd_menu_create( { ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 4 )      ,
-                       ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 5 ) + 1 }, COL_M_GRY, true , L""         ),
+                       ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 5 ) + 1 }, COL_M_GRY, true , ""         ),
     wnd_menu_create( { ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 4 ) + 1  ,
-                       ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, L"Playback" )
+                       ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, "Playback" )
   };
   SIZE txt_sz[ OBJ_BASE_COUNT ];
   VEC3 underline_dim[ OBJ_BASE_COUNT / 2 ] = {
@@ -262,13 +263,12 @@ void wnd_menu_draw_sub_dropdown( HWND hwnd ) {
 
     SetTextColor( hdc, COL_M_GRY );
 
-    GetTextExtentPoint32W( hdc, obj[ idx ].txt, lstrlenW( obj[ idx ].txt ), &txt_sz[ idx ] );
+    GetTextExtentPoint32A( hdc, obj[ idx ].txt, strlen( obj[ idx ].txt ), &txt_sz[ idx ] );
 
-    TextOutW( hdc,
+    TextOutA( hdc,
       obj[ idx ].r.left + ( ( obj[ idx ].r.right - obj[ idx ].r.left ) / 2 ) - ( txt_sz[ idx ].cx / 2 ),
       obj[ idx ].r.top  + ( ( obj[ idx ].r.bottom - obj[ idx ].r.top ) / 2 ) - ( txt_sz[ idx ].cy / 2 ),
-      obj[ idx ].txt,
-      lstrlenW( obj[ idx ].txt )
+      obj[ idx ].txt, strlen( obj[ idx ].txt )
     );
   }
 
@@ -287,3 +287,5 @@ void wnd_menu_draw_sub_dropdown( HWND hwnd ) {
   for( s8 idx = 0; idx < OBJ_BASE_COUNT; ++idx )
     DeleteObject( obj[ idx ].col );
 }
+
+#pragma warning( pop )

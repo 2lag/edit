@@ -27,18 +27,18 @@ void wnd_type_line_count( const HWND hwnd, const RECT wnd_sz, const bool force_r
            curr_line <= vscroll.line_count;
            curr_line++ ) {
     SIZE txt_sz;
-    wchar_t line[32];
-    swprintf_s( line,
+    char line[32];
+    sprintf_s( line,
       sizeof( line ) / sizeof( wchar_t ),
-      L"%d\0", curr_line
+      "%d\0", curr_line
     );
 
-    GetTextExtentPoint32W( hdc, line, (s32)wcslen( line ), &txt_sz );
+    GetTextExtentPoint32A( hdc, line, (s32)strlen( line ), &txt_sz );
 
-    TextOutW( hdc,
+    TextOutA( hdc,
       ( 24 - txt_sz.cx ) / 2,
       50 + ( txt_sz.cy * ( curr_line - vscroll.line_first ) ),
-      line, (s32)wcslen( line )
+      line, (s32)strlen( line )
     );
   }
 

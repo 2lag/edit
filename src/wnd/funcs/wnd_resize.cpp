@@ -40,11 +40,11 @@ void wnd_resize_get_cursor( const POINT m_pos, const RECT wnd_sz ) {
        in_hcenter =  ( !on_right && !on_left ),
        in_vcenter =  ( !on_bottom && !on_top );
 
-  static HCURSOR cur_nesw = LoadCursorW( 0, IDC_SIZENESW ),
-                 cur_nwse = LoadCursorW( 0, IDC_SIZENWSE ),
-                 cur_ns   = LoadCursorW( 0, IDC_SIZENS   ),
-                 cur_we   = LoadCursorW( 0, IDC_SIZEWE   ),
-                 cur_def  = LoadCursorW( 0, IDC_ARROW    );
+  static HCURSOR cur_nesw = LoadCursorA( 0, IDC_SIZENESW ),
+                 cur_nwse = LoadCursorA( 0, IDC_SIZENWSE ),
+                 cur_ns   = LoadCursorA( 0, IDC_SIZENS   ),
+                 cur_we   = LoadCursorA( 0, IDC_SIZEWE   ),
+                 cur_def  = LoadCursorA( 0, IDC_ARROW    );
 
   if( on_top )
     SetCursor( in_hcenter ? cur_ns : ( on_left ? cur_nwse : cur_nesw ) );
