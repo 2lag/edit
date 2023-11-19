@@ -83,7 +83,10 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     GetWindowTextW( hwnd, file_path, len );
     KillTimer( GetParent( hwnd ), 1 );
 
-    HANDLE file = CreateFileW( file_path, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
+    HANDLE file = CreateFileW( file_path,
+      GENERIC_READ, 0, NULL, OPEN_EXISTING,
+      FILE_ATTRIBUTE_NORMAL, NULL
+    );
 
     if( file == INVALID_HANDLE_VALUE ) {
 #ifdef _DEBUG
@@ -99,10 +102,9 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
 
     // add this before to get diff encoding types
     // https://preshing.com/20200727/automatically-detecting-text-encodings-in-cpp/
+    //  or reverse notepad and see how they do it
+    //  or look at npp
 
-    ptr bytes_read;
-    if( ReadFile( file, buf, buf_sz, &bytes_read, nullptr ) && bytes_read == buf_sz ) // fix this
-      SetWindowTextW( txt_box, static_cast<LPCWSTR>( buf ) ); // or this
 
     delete[] static_cast<BYTE*>( buf );
     CloseHandle( file );
