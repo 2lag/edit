@@ -2,7 +2,9 @@ todo :
 - finish functionality for :
 - - File
 - - - Open
-- - - - Test and make sure it works ( with [these](https://github.com/arc80/plywood/tree/9c606056faf89f0918b81f5af09c23fefaf9a12d/repos/plywood/src/apps/AutodetectTest/tests) )
+- - - - Figure out how to handle both types of line break types in openproc
+- - - - Also utf16 be/le
+- - - - Test with [these](https://github.com/arc80/plywood/tree/9c606056faf89f0918b81f5af09c23fefaf9a12d/repos/plywood/src/apps/AutodetectTest/tests)
 - - - Save
 - - - - Open "save" edit control as long as "open" edit control doesn't exist & do editproc for it
 - - - - When enter pressed and if path valid
