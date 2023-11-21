@@ -58,7 +58,7 @@ void wnd_title_draw( const HDC hdc, const RECT wnd_sz ) {
   }
 
   LPCSTR txt = "Edit";
-  TextOutA( hdc, 6, 4, txt, strlen( txt ) );
+  TextOutA( hdc, 6, 4, txt, (s32)strlen( txt ) );
 
   for( auto& it : obj )
     DeleteObject( it.col );

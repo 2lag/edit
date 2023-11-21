@@ -77,8 +77,8 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
       TRUE
     );
 
-    if( open_txt ) {
-      MoveWindow( open_txt,
+    if( menu_txt ) {
+      MoveWindow( menu_txt,
         ( WND_BTN_SZ * 6 ) + 6,
         WND_BTN_SZ + 4,
         ( wnd_sz.right - wnd_sz.left ) - ( ( WND_BTN_SZ * 6 ) + 10 ),

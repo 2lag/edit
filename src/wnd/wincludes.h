@@ -46,7 +46,7 @@ inline WND_OBJ wnd_obj_create( RECT r, COLORREF col, bool next ) {
 
 extern HWND h_global;
 extern HWND txt_box;
-extern HWND open_txt;
+extern HWND menu_txt;
 
 #define OBJ_BASE_COUNT 6
 extern bool m_base_open[ OBJ_BASE_COUNT / 2 ];

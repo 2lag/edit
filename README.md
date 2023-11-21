@@ -2,17 +2,11 @@ todo :
 - finish functionality for :
 - - File
 - - - Open
-- - - - Figure out how to handle both types of line break types in openproc
-- - - - Also utf16 be/le
-- - - - Test with [these](https://github.com/arc80/plywood/tree/9c606056faf89f0918b81f5af09c23fefaf9a12d/repos/plywood/src/apps/AutodetectTest/tests)
-- - - Save
-- - - - Open "save" edit control as long as "open" edit control doesn't exist & do editproc for it
-- - - - When enter pressed and if path valid
-- - - - - Copy text to new file
-- - - - - Replace txt_box text with path ( in case saved in wrong dir and it made new files and user is dumb )
-- - - - - Destroy edit control
+- - - - swap with fread calls
+- - - - test with [these](https://github.com/arc80/plywood/tree/9c606056faf89f0918b81f5af09c23fefaf9a12d/repos/plywood/src/apps/AutodetectTest/tests)
+- check for memory leaks
 - do functionality for :
-- - Style ( make a cfg file in same dir so it saves settings )
+- - Style ( make a raw byte cfg in same dir for settings ( & load on start ) )
 - - - hide Fps
 - - - hide caret Pos
 - - - hide Line count
@@ -20,8 +14,10 @@ todo :
 - - - Macro
 - - - multi-Cursor
 - - - Plugins ( Change to Scripts ? )
-- organize menu functionality into files
+- organize/optimize menu functionality code
 - move any mouse functionality to mousehook & same with any keyboard 1-by-1 & recode
 - fix not being able to full screen drag on vert monitor ( wnd_drag.cpp )
-- test everything (make list of shit to test in each file), minimize var scope & const unchanging vars | clean/optimize files ( make file checklist ), and add comments to non-self-explanatory code
+- minimize var scope & const unchanging vars, clean/optimize files ( make file checklist )
+- add comments to non-self-explaning code
+- test everything ( make list of stuff from each file's funcs )
 - add ss and make documentation

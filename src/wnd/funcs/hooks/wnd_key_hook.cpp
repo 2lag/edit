@@ -53,23 +53,14 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
       if( !GetAsyncKeyState( VK_CONTROL ) )
         break;
 
-      return wnd_menu_open_ctrl( m_base_open[0] );
+      return wnd_menu_edit_ctrl( m_base_open[0], 0 );
     } break;
     case 0x53: { // CTRL + S
       if( !GetAsyncKeyState( VK_CONTROL ) )
         break;
 
-      if( m_base_open[0] ) { // do save instead
-        m_base_open[0] = false;
-        wnd_clear_menus( true );
-
-        // use same method to get c:/dir/filename.type input as above
-        // figure out way to copy entirety of edit control
-        // create then write content to file
-        //   make sure to force overwrite
-
-        return 1;
-      }
+      if( m_base_open[0] ) // save route
+        return wnd_menu_edit_ctrl( m_base_open[0], 1 );
 
       return wnd_menu_dropdown_toggle( m_base_open[2], 2 );
     } break;

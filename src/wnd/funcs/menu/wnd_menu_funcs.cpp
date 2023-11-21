@@ -1,7 +1,7 @@
 #include "wnd_menu_funcs.h"
 #include "wnd_menu.h"
 
-HWND open_txt;
+HWND menu_txt;
 
 s32 wnd_menu_dropdown_toggle( bool &toggle, s32 idx ) {
   toggle = !toggle;
@@ -90,8 +90,13 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
 
     if( file == INVALID_HANDLE_VALUE ) {
 #ifdef _DEBUG
-      printf( "invalid file handle\n" );
+      printf( "invalid path : %s\n", file_path );
+#else
+      // add sprintf to output path ?
+      SetWindowTextA( txt_box, "invalid path\n" );
 #endif
+
+      delete[] file_path;
       break;
     }
 
@@ -103,7 +108,8 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     ptr bytes_read;
     if( ReadFile( file, buf, buf_sz, &bytes_read, nullptr ) && bytes_read == buf_sz )
       SetWindowTextA( txt_box, static_cast<LPCSTR>( buf ) );
-
+    
+    delete[] file_path;
     delete[] static_cast<BYTE*>( buf );
     CloseHandle( file );
     DestroyWindow( hwnd );
@@ -113,27 +119,93 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
   return DefSubclassProc( hwnd, msg, wp, lp );
 }
 
-s32 wnd_menu_open_ctrl( bool &toggle ) {
+LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
+  static bool once = false;
+  
+  if( !once ) {
+    SetFocus( hwnd );
+    once = true;
+  }
+
+  switch( msg ) {
+  case WM_CHAR: {
+    if( wp != VK_RETURN )
+      break;
+
+    s32 path_len = GetWindowTextLengthA( hwnd ) + 1;
+    file_path = new char[ path_len ];
+    GetWindowTextA( hwnd, file_path, path_len );
+    KillTimer( GetParent( hwnd ), 1 );
+
+    HANDLE file = CreateFileA( file_path,
+      GENERIC_WRITE, FILE_SHARE_READ |
+      FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+      NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL
+    );
+
+    if( file == INVALID_HANDLE_VALUE ) {
+#ifdef _DEBUG
+      printf( "error opening file handle : %lu\npath : %s\n", GetLastError(), file_path );
+#else
+      SetWindowTextA( menu_txt, "invalid path" );
+#endif
+
+      delete[] file_path;
+      break;
+    } else {
+      s32 txt_len = GetWindowTextLengthA( txt_box ) + 1;
+      char *txt_box_txt = new char[ txt_len ];
+      GetWindowTextA( txt_box, txt_box_txt, txt_len );
+
+      ptr bytes_wrote;
+      if( WriteFile( file, txt_box_txt, txt_len - 1, &bytes_wrote, NULL ) ) {
+        SetWindowTextA( txt_box, file_path ); // in case saved in wrong dir bc user ( me... OR YOU...... ) is dumb.
+        DestroyWindow( menu_txt );
+      } else {
+#ifdef _DEBUG
+        printf( "error writing to file : %lu\n", GetLastError() );
+#else
+        SetWindowTextA( menu_txt, "failed to write to file" );
+#endif
+      }
+      
+      delete[] file_path;
+      delete[] txt_box_txt;
+      CloseHandle( file );
+    }
+  } break;
+  }
+
+  return DefSubclassProc( hwnd, msg, wp, lp );
+}
+
+s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
   if( !toggle )
     return 1;
+
+  if( menu_txt )
+    DestroyWindow( menu_txt );
 
   toggle = false;
   wnd_clear_menus( true );
 
-  RECT open_sz = get_wnd_sz( h_global );
+  RECT menu_sz = get_wnd_sz( h_global );
 
-  open_txt = CreateWindowExA( WS_EX_TRANSPARENT,
+  menu_txt = CreateWindowExA( WS_EX_TRANSPARENT,
     "EDIT", 0,
     WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | ES_NOHIDESEL,
     ( WND_BTN_SZ * 6 ) + 6,
     WND_BTN_SZ + 4,
-    ( open_sz.right - open_sz.left ) - ( ( WND_BTN_SZ * 6 ) + 10 ),
+    ( menu_sz.right - menu_sz.left ) - ( ( WND_BTN_SZ * 6 ) + 10 ),
     WND_BTN_SZ - 9,
     h_global, NULL,
     (HINSTANCE)GetWindowLongPtrA( h_global, GWLP_HINSTANCE ), NULL
   );
 
-  SetWindowSubclass( open_txt, openproc, 0, 0 );
+  SetWindowSubclass( menu_txt,
+    ( !idx ) ? openproc : saveproc,
+    0, 0
+  );
 
   SetTimer( h_global, 1, 100, nullptr );
 
