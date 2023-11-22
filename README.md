@@ -1,4 +1,6 @@
 todo :
+- remove timer from wnd_menu_edit_ctrl if it's pointless
+- figure out how to slim down getasynckeystate calls in the wnd_key_hook switch statement
 - finish functionality for :
 - - File
 - - - Open
@@ -14,6 +16,7 @@ todo :
 - - - Macro
 - - - multi-Cursor
 - - - Plugins ( Change to Scripts ? )
+- - - - figure out how to permit/enable custom scripting ( .edit file in ./scripts/ )
 - organize/optimize menu functionality code
 - move any mouse functionality to mousehook & same with any keyboard 1-by-1 & recode
 - fix not being able to full screen drag on vert monitor ( wnd_drag.cpp )

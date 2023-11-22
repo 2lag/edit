@@ -78,9 +78,9 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     if( wp != VK_RETURN )
       break;
 
-    s32 len = GetWindowTextLengthA( hwnd ) + 1;
-    file_path = new char[ len ];
-    GetWindowTextA( hwnd, file_path, len );
+    s32 path_len = GetWindowTextLengthA( hwnd ) + 1;
+    file_path = new char[ path_len ];
+    GetWindowTextA( hwnd, file_path, path_len );
     KillTimer( GetParent( hwnd ), 1 );
 
     HANDLE file = CreateFileA( file_path,
@@ -92,7 +92,8 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
 #ifdef _DEBUG
       printf( "invalid path : %s\n", file_path );
 #else
-      // add sprintf to output path ?
+      char* bad_path_msg;
+      // add sprintf to add path to printout
       SetWindowTextA( txt_box, "invalid path\n" );
 #endif
 
@@ -203,7 +204,7 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
   );
 
   SetWindowSubclass( menu_txt,
-    ( !idx ) ? openproc : saveproc,
+    ( idx == 0 ) ? openproc : saveproc,
     0, 0
   );
 
