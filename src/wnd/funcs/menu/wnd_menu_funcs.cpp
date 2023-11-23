@@ -81,7 +81,6 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     s32 path_len = GetWindowTextLengthA( hwnd ) + 1;
     file_path = new char[ path_len ];
     GetWindowTextA( hwnd, file_path, path_len );
-    KillTimer( GetParent( hwnd ), 1 );
 
     HANDLE file = CreateFileA( file_path,
       GENERIC_READ, 0, NULL, OPEN_EXISTING,
@@ -136,7 +135,6 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     s32 path_len = GetWindowTextLengthA( hwnd ) + 1;
     file_path = new char[ path_len ];
     GetWindowTextA( hwnd, file_path, path_len );
-    KillTimer( GetParent( hwnd ), 1 );
 
     HANDLE file = CreateFileA( file_path,
       GENERIC_WRITE, FILE_SHARE_READ |
@@ -208,15 +206,11 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
     0, 0
   );
 
-  SetTimer( h_global, 1, 100, nullptr );
-
   MSG msg;
   while( GetMessageA( &msg, nullptr, 0, 0 ) ) {
     TranslateMessage( &msg );
     DispatchMessageA( &msg );
   }
-
-  KillTimer( h_global, 1 );
 
   return 1;
 }
