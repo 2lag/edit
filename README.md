@@ -1,5 +1,4 @@
 todo :
-- figure out how to slim down getasynckeystate calls in the wnd_key_hook switch statement
 - finish functionality for :
 - - File
 - - - Open
