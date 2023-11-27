@@ -5,6 +5,7 @@ todo :
 - - - - swap to fopen and fread calls
 - - - - test with [these (english only ofc)](https://github.com/arc80/plywood/tree/9c606056faf89f0918b81f5af09c23fefaf9a12d/repos/plywood/src/apps/AutodetectTest/tests)
 - check for memory leaks ( test everything )
+- - make sure all new's are delete'd
 - do functionality for :
 - - Style ( make a raw byte cfg in same dir for settings ( & load on start ) )
 - - - hide Fps
