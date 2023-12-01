@@ -19,62 +19,39 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
     if( p_key->vkCode != 0x4D )
       m_sub_open = false; // ensures submenu is closed
 
-    p_key->flags |= LLKHF_INJECTED;
+    if( GetAsyncKeyState( VK_CONTROL ) ) {
+      p_key->flags |= LLKHF_INJECTED;
 
+      switch( p_key->vkCode ) {
+      case 0x41: { // CTRL + A
+        Edit_SetSel( txt_box, 0, -1 );
 
-    switch( p_key->vkCode ) {
-    case 0x41: { // CTRL + A
-      if( !GetAsyncKeyState( VK_CONTROL ) )
-        break;
+        return 1;
+      } break;
+      case 0x46: { // CTRL + F
+        return wnd_menu_dropdown_toggle( m_base_open[0], 0 );
+      } break;
+      case 0x4D: { // CTRL + M
+        return wnd_menu_subdropdown_toggle( m_base_open[1], m_sub_open );
+      } break;
+      case 0x4E: { // CTRL + N
+        return wnd_menu_new_wnd( m_base_open[0] );
+      } break;
+      case 0x4F: { // CTRL + O
+        return wnd_menu_edit_ctrl( m_base_open[0], 0 );
+      } break;
+      case 0x53: { // CTRL + S
+        if( m_base_open[0] ) // save route
+          return wnd_menu_edit_ctrl( m_base_open[0], 1 );
 
-      Edit_SetSel( txt_box, 0, -1 );
-
-      return 1;
-    } break;
-    case 0x46: { // CTRL + F
-      if( !GetAsyncKeyState( VK_CONTROL ) )
-        break;
-
-      return wnd_menu_dropdown_toggle( m_base_open[0], 0 );
-    } break;
-    case 0x4D: { // CTRL + M
-      if( !GetAsyncKeyState( VK_CONTROL ) )
-        break;
-
-      return wnd_menu_subdropdown_toggle( m_base_open[1], m_sub_open );
-    } break;
-    case 0x4E: { // CTRL + N
-      if( !GetAsyncKeyState( VK_CONTROL ) )
-        break;
-
-      return wnd_menu_new_wnd( m_base_open[0] );
-    } break;
-    case 0x4F: { // CTRL + O
-      if( !GetAsyncKeyState( VK_CONTROL ) )
-        break;
-
-      return wnd_menu_edit_ctrl( m_base_open[0], 0 );
-    } break;
-    case 0x53: { // CTRL + S
-      if( !GetAsyncKeyState( VK_CONTROL ) )
-        break;
-
-      if( m_base_open[0] ) // save route
-        return wnd_menu_edit_ctrl( m_base_open[0], 1 );
-
-      return wnd_menu_dropdown_toggle( m_base_open[2], 2 );
-    } break;
-    case 0x54: { // CTRL + T
-      if( !GetAsyncKeyState( VK_CONTROL ) )
-        break;
-
-      return wnd_menu_dropdown_toggle( m_base_open[1], 1 );
-    } break;
-    default:
-      if( GetAsyncKeyState( VK_CONTROL ) )
-        break;
+        return wnd_menu_dropdown_toggle( m_base_open[2], 2 );
+      } break;
+      case 0x54: { // CTRL + T
+        return wnd_menu_dropdown_toggle( m_base_open[1], 1 );
+      } break;
+      }
+    } else
       wnd_clear_menus();
-    }
   }
 
   return CallNextHookEx( 0, ncode, wp, lp );

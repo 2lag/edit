@@ -8,6 +8,7 @@ todo :
 - - - Macro
 - - - multi-Cursor
 - - - Plugins ( Change to Scripts ? )
+- - - - figure out how to permit/enable custom scripting ( .edit file in ./scripts/ ? )
 - fix not being able to full screen drag on vert monitor ( wnd_drag.cpp )
 - organize/optimize menu functionality code, & check for memory leaks, minimize var scope & const unchanging vars, clean/optimize files ( file checklist )
 - move any mouse functionality to mousehook & same with any keyboard 1-by-1 & recode
