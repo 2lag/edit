@@ -92,8 +92,9 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
 #ifdef _DEBUG
       printf( "invalid path : %s\n", file_path );
 #else
-      // add sprintf to output path ?
-      SetWindowTextA( txt_box, "invalid path\n" );
+      char *err = new char[ 16 + len ];
+      sprintf_s( err, 16 + len, "invalid path : %s", file_path );
+      SetWindowTextA( txt_box, err );
 #endif
 
       delete[] file_path;
