@@ -5,6 +5,8 @@ todo :
 - - - hide caret Pos
 - - - hide Line count
 - - Tools
+- - - Find
+- - - Replace
 - - - Macro
 - - - multi-Cursor
 - - - Plugins ( Change to Scripts ? )
