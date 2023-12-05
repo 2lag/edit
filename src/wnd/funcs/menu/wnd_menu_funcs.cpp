@@ -7,7 +7,7 @@ s32 wnd_menu_dropdown_toggle( bool &toggle, s32 idx ) {
   toggle = !toggle;
 
   if( toggle )
-    wnd_menu_draw_dropdown( h_global, idx );
+    wnd_menu_draw_dropdown( h_global, (s8)idx );
   else
     wnd_clear_menus( true );
 
@@ -65,7 +65,7 @@ s32 wnd_menu_new_wnd( bool &toggle ) {
 
 char *file_path = nullptr;
 
-LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
+LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, DWORD_PTR ) {
   static bool once = false;
   
   if( !once ) {
@@ -120,7 +120,7 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
   return DefSubclassProc( hwnd, msg, wp, lp );
 }
 
-LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
+LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, DWORD_PTR ) {
   static bool once = false;
   
   if( !once ) {
@@ -212,6 +212,35 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
     TranslateMessage( &msg );
     DispatchMessageA( &msg );
   }
+
+  return 1;
+}
+
+s32 wnd_menu_style_toggle( s32 idx ) {
+  wnd_clear_menus( true );
+
+  // move this to inline function in wincludes to call in source.cpp
+  char *buffer;
+  size_t buffer_sz = MAX_PATH;
+  errno_t err = _dupenv_s( &buffer, &buffer_sz,"USERPROFILE");
+
+  if( !buffer || err )
+    return 1; // swap this to print buffer & err into txt_box
+
+  sprintf_s( buffer + strlen( buffer ),
+    MAX_PATH - strlen( buffer ),
+    "\\Documents\\edit\\edit.cfg"
+  );
+
+  // check for file in buffer, if doesn't exist, create folder + that & init with 11100000 binary since all start enabled
+
+  // read idx byte
+  //   if 1, set to 0
+  //   if 0, set to 1
+
+  // adjust wincludes extern'd arr[ idx ] as needed
+
+  // dont forget to add check for toggle in each function where everything is drawn to enable/disable
 
   return 1;
 }

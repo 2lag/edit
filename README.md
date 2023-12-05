@@ -1,9 +1,11 @@
 todo :
+- finish functionality for :
+- - Style
+- - - follow comments in wnd_menu_funcs' wnd_menu_style_toggle
+- - - move load from file/create file & arr init to source.cpp when it's working
+- - - then add notation for toggled status in menu
+- change all setwindowtexta calls to add the text onto the end of the current document instead of overwriting their entire work loll
 - do functionality for :
-- - Style ( make a raw byte cfg in same dir for settings, load on start, and add notation for toggled status )
-- - - hide Fps
-- - - hide caret Pos
-- - - hide Line count
 - - Tools
 - - - Find
 - - - Replace
@@ -17,4 +19,4 @@ todo :
 - test current and implement missing support for alternative pointless encoding formats ( utf-16, utf-32, etc. )
 - add comments to non-self-explaning code
 - test everything ( make list of stuff from each file's funcs )
-- add ss and make documentation
+- add ss, make documentation, then make repo public
