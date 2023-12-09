@@ -2,8 +2,7 @@ todo :
 - finish functionality for :
 - - Style
 - - - follow comments in wnd_menu_funcs' wnd_menu_style_toggle
-- - - move load from file/create file & arr init to source.cpp when it's working
-- - - then add notation for toggled status in menu
+- - - add notation for toggled status in menu
 - swap setwindowtexta calls to append text to end of current text instead of overwriting their entire work loll
 - do functionality for :
 - - Tools

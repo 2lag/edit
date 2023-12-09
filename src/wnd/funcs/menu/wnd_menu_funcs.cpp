@@ -216,31 +216,67 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
   return 1;
 }
 
+
+bool menu_style_toggle[ OBJ_BASE_COUNT / 2 ] = { true };
 s32 wnd_menu_style_toggle( s32 idx ) {
   wnd_clear_menus( true );
 
-  // move this to inline function in wincludes to call in source.cpp
-  char *buffer;
-  size_t buffer_sz = MAX_PATH;
-  errno_t err = _dupenv_s( &buffer, &buffer_sz,"USERPROFILE");
+  // move this to inline function in wincludes to call in source.cpp & replace with code to open file
+    char *buffer;
+    size_t buffer_sz = MAX_PATH;
+    errno_t err = _dupenv_s( &buffer, &buffer_sz, "USERPROFILE" );
 
-  if( !buffer || err )
-    return 1; // swap this to print buffer & err into txt_box
+    if( !buffer || err )
+      return 1; // swap this to print buffer & err into txt_box
 
-  sprintf_s( buffer + strlen( buffer ),
-    MAX_PATH - strlen( buffer ),
-    "\\Documents\\edit\\edit.cfg"
-  );
+    sprintf_s( buffer + strlen( buffer ),
+      MAX_PATH - strlen( buffer ),
+      "\\Documents\\edit\\edit.cfg"
+    );
 
-  // check for file in buffer, if doesn't exist, create folder + that & init with 11100000 binary since all start enabled
+    FILE *config;
+    errno_t config_err = fopen_s( &config, buffer, "r" );
+    
+    if( config_err ) {
+      if( config )
+        fclose( config );
+      printf( "buffer : %s\n", buffer );
+      buffer[ strlen( buffer ) - 8 ] = '\0';
+      printf( "buffer : %s\n", buffer );
+      CreateDirectoryA( buffer, NULL );
+      
+      sprintf_s( buffer + strlen( buffer ),
+        MAX_PATH - strlen( buffer ),
+        "\edit.cfg"
+      );
 
-  // read idx byte
+      printf( "buffer : %s\n", buffer );
+      errno_t cfg_err = fopen_s( &config, buffer, "w" );
+
+      if( cfg_err ) {
+        if( config )
+          fclose( config );
+
+        return 1; // swap this to print buffer & err into txt_box
+      }
+
+      fprintf_s( config, "%x", 0x11100000 );
+    }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // read idx bit
   //   if 1, set to 0
   //   if 0, set to 1
-
-  // adjust wincludes extern'd arr[ idx ] as needed
+  // write idx bit
+  // set menu_style_toggle[ idx ] to value of idx bit
+  // close file
+  // delete buffer
 
   // dont forget to add check for toggle in each function where everything is drawn to enable/disable
+
+  
+  if( config )
+    fclose( config );
 
   return 1;
 }

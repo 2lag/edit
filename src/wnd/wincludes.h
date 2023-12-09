@@ -50,6 +50,7 @@ extern HWND menu_txt;
 
 #define OBJ_BASE_COUNT 6
 extern bool m_base_open[ OBJ_BASE_COUNT / 2 ];
+extern bool menu_style_toggle[ OBJ_BASE_COUNT / 2 ];
 
 #include "funcs/edit/wnd_edit_scroll.h"
 extern CSCROLL vscroll;
