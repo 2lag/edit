@@ -216,67 +216,19 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
   return 1;
 }
 
-
-bool menu_style_toggle[ OBJ_BASE_COUNT / 2 ] = { true };
 s32 wnd_menu_style_toggle( s32 idx ) {
   wnd_clear_menus( true );
 
-  // move this to inline function in wincludes to call in source.cpp & replace with code to open file
-    char *buffer;
-    size_t buffer_sz = MAX_PATH;
-    errno_t err = _dupenv_s( &buffer, &buffer_sz, "USERPROFILE" );
+  // read file user-profile\Documents\edit\edit.cfg
 
-    if( !buffer || err )
-      return 1; // swap this to print buffer & err into txt_box
-
-    sprintf_s( buffer + strlen( buffer ),
-      MAX_PATH - strlen( buffer ),
-      "\\Documents\\edit\\edit.cfg"
-    );
-
-    FILE *config;
-    errno_t config_err = fopen_s( &config, buffer, "r" );
-    
-    if( config_err ) {
-      if( config )
-        fclose( config );
-      printf( "buffer : %s\n", buffer );
-      buffer[ strlen( buffer ) - 8 ] = '\0';
-      printf( "buffer : %s\n", buffer );
-      CreateDirectoryA( buffer, NULL );
-      
-      sprintf_s( buffer + strlen( buffer ),
-        MAX_PATH - strlen( buffer ),
-        "\edit.cfg"
-      );
-
-      printf( "buffer : %s\n", buffer );
-      errno_t cfg_err = fopen_s( &config, buffer, "w" );
-
-      if( cfg_err ) {
-        if( config )
-          fclose( config );
-
-        return 1; // swap this to print buffer & err into txt_box
-      }
-
-      fprintf_s( config, "%x", 0x11100000 );
-    }
-  //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  // read idx bit
+  // toggle bit at idx
   //   if 1, set to 0
   //   if 0, set to 1
   // write idx bit
   // set menu_style_toggle[ idx ] to value of idx bit
   // close file
-  // delete buffer
-
-  // dont forget to add check for toggle in each function where everything is drawn to enable/disable
-
   
-  if( config )
-    fclose( config );
+  // dont forget to add check for toggle in each function where everything is drawn to enable/disable
 
   return 1;
 }

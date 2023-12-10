@@ -216,8 +216,8 @@ void wnd_menu_draw_dropdown( HWND hwnd, s8 idx ) {
 
   ReleaseDC( hwnd, hdc );
 
-  for( s8 idx = 0; idx < OBJ_BASE_COUNT; ++idx )
-    DeleteObject( obj[ idx ].col );
+  for( s8 o_idx = 0; o_idx < OBJ_BASE_COUNT; ++o_idx )
+    DeleteObject( obj[ o_idx ].col );
 }
 
 void wnd_menu_draw_sub_dropdown( HWND hwnd ) {
