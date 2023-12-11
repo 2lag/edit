@@ -224,8 +224,8 @@ s32 wnd_menu_style_toggle( s32 idx ) {
   // toggle bit at idx
   //   if 1, set to 0
   //   if 0, set to 1
-  // write idx bit
   // set menu_style_toggle[ idx ] to value of idx bit
+  // write idx bit to file
   // close file
   
   // dont forget to add check for toggle in each function where everything is drawn to enable/disable

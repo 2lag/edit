@@ -1,6 +1,8 @@
 #include "wnd/wnd_func.h"
 #include "wnd/funcs/wnd_fps.h"
 
+#include "wnd/funcs/util/config.h"
+
 HWND h_global;
 
 #define WND_BASE_SZ 420
@@ -23,8 +25,9 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
   HMONITOR c_mon = MonitorFromPoint( {}, MONITOR_DEFAULTTOPRIMARY );
   get_monitor_info( c_mon );
 
-  POINT wnd_pos = { ( i_mon.rcWork.right - i_mon.rcWork.left ) / 2 - ( WND_BASE_SZ / 2 ),
-                    ( i_mon.rcWork.bottom - i_mon.rcWork.top ) / 2 - ( WND_BASE_SZ / 2 )
+  POINT wnd_pos {
+    ( i_mon.rcWork.right - i_mon.rcWork.left ) / 2 - ( WND_BASE_SZ / 2 ),
+    ( i_mon.rcWork.bottom - i_mon.rcWork.top ) / 2 - ( WND_BASE_SZ / 2 )
   };
 
   h_global = CreateWindowExA( 0,
@@ -44,6 +47,9 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
   draw_fps.detach();
 
   run_debug_console();
+
+  if( !init_config() )
+    return 1;
 
   MSG msg;
   while( true ) {

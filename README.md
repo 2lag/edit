@@ -1,11 +1,10 @@
 todo :
 - finish functionality for :
 - - Style
-- - - add config creation & call in WinMain after debug console called
-- - - - dont forget to init "bool menu_style_toggle[ OBJ_BASE_COUNT / 2 ] = { true };" then and there
 - - - follow comments to finish wnd_menu_funcs' wnd_menu_style_toggle
 - - - add notation for toggled status in menu
 - swap setwindowtexta calls to append text to end of current text instead of overwriting their entire work loll
+- add exit to file submenu
 - do functionality for :
 - - Tools
 - - - Find

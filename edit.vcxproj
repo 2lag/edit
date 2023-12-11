@@ -185,6 +185,7 @@
     <ClCompile Include="src\wnd\funcs\hooks\wnd_key_hook.cpp" />
     <ClCompile Include="src\wnd\funcs\hooks\wnd_mouse_hook.cpp" />
     <ClCompile Include="src\wnd\funcs\menu\wnd_menu_funcs.cpp" />
+    <ClCompile Include="src\wnd\funcs\util\config.cpp" />
     <ClCompile Include="src\wnd\funcs\wnd_drag.cpp" />
     <ClCompile Include="src\wnd\funcs\wnd_fps.cpp" />
     <ClCompile Include="src\wnd\funcs\menu\wnd_menu.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="src\wnd\funcs\hooks\wnd_key_hook.h" />
     <ClInclude Include="src\wnd\funcs\hooks\wnd_mouse_hook.h" />
     <ClInclude Include="src\wnd\funcs\menu\wnd_menu_funcs.h" />
+    <ClInclude Include="src\wnd\funcs\util\config.h" />
     <ClInclude Include="src\wnd\funcs\util\overloads.h" />
     <ClInclude Include="src\wnd\funcs\util\util.h" />
     <ClInclude Include="src\wnd\funcs\wnd_fps.h" />

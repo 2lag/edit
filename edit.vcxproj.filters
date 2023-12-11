@@ -54,6 +54,9 @@
     <ClCompile Include="src\wnd\funcs\menu\wnd_menu_funcs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\wnd\funcs\util\config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\typedef.h">
@@ -111,6 +114,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\wnd\funcs\menu\wnd_menu_funcs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wnd\funcs\util\config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
