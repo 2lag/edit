@@ -2,6 +2,7 @@ todo :
 - finish functionality for :
 - - Style
 - - - follow comments to finish wnd_menu_funcs' wnd_menu_style_toggle
+- - - - alternative : add read_config & toggle_config_option and just call those in WinMain and the toggle keychecker location respectively
 - - - add notation for toggled status in menu
 - swap setwindowtexta calls to append text to end of current text instead of overwriting their entire work loll
 - add exit to file submenu
