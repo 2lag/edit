@@ -2,6 +2,12 @@
 
 bool menu_style_toggle[ OBJ_BASE_COUNT / 2 ];
 
+bool load_config() {
+  
+
+  return true;
+}
+
 bool init_config() {
   char *doc_path = nullptr;
   size_t doc_len = 0;
@@ -45,9 +51,9 @@ bool init_config() {
     free( doc_path );
     delete[] cfg_path;
     delete[] edit_path;
-    return true;
+    return load_config();
   } else {
-    char default_cfg = 0x11100000;
+    u64 default_cfg = 0x11100000;
     ptr bytes_written;
     WriteFile( cfg_file, &default_cfg, 1, &bytes_written, NULL );
     CloseHandle( cfg_file );
@@ -59,5 +65,11 @@ bool init_config() {
   free( doc_path );
   delete[] cfg_path;
   delete[] edit_path;
+  return true;
+}
+
+bool toggle_config_idx( s32 idx ) {
+  
+  
   return true;
 }

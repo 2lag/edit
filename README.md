@@ -1,9 +1,14 @@
 todo :
+- add printfs to ret false statements in config.cpp ( and dont return 1 in WinMain lol )
+- - then make sure to init var arr to all true by default at very beginning of init and just use temporary memory tracking
+- - also, for ret true statements, return read_config in init
 - finish functionality for :
 - - Style
-- - - follow comments to finish wnd_menu_funcs' wnd_menu_style_toggle
-- - - - change to -> add read_config & toggle_config_option and just call those in WinMain and the toggle keychecker function w/ additional code respectively
-- - - add notation for toggled status in menu
+- - - finish load_config & toggle_config_idx
+- - - add notation for toggled status in menu in wnd/funcs/menu/wnd_menu.cpp
+- organize/optimize menu functionality code, & check for memory leaks, minimize var scope & const unchanging vars, clean/optimize files ( file checklist )
+- - match any "new" statements with "delete"
+- - make sure hooks are managed with unhooks on exit
 - swap setwindowtexta calls to append text to end of current text instead of overwriting their entire work loll
 - add exit to file submenu
 - do functionality for :
@@ -15,9 +20,6 @@ todo :
 - - - Plugins ( Change to Scripts ? )
 - - - - figure out how to permit/enable custom scripting ( .edit file in ./scripts/ ? )
 - fix not being able to full screen drag on vert monitor ( wnd_drag.cpp )
-- organize/optimize menu functionality code, & check for memory leaks, minimize var scope & const unchanging vars, clean/optimize files ( file checklist )
-- - match any "new" statements with "delete"
-- - make sure hooks are managed with unhooks on exit
 - move any mouse functionality to mousehook & same with any keyboard 1-by-1 & recode
 - test current and implement missing support for alternative pointless encoding formats ( utf-16, utf-32, etc. )
 - add comments to non-self-explaning code

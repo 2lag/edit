@@ -1,6 +1,8 @@
 #include "wnd_menu_funcs.h"
 #include "wnd_menu.h"
 
+#include "../util/config.h"
+
 HWND menu_txt;
 
 s32 wnd_menu_dropdown_toggle( bool &toggle, s32 idx ) {
@@ -219,16 +221,7 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
 s32 wnd_menu_style_toggle( s32 idx ) {
   wnd_clear_menus( true );
 
-  // read file user-profile\Documents\edit\edit.cfg
-
-  // toggle bit at idx
-  //   if 1, set to 0
-  //   if 0, set to 1
-  // set menu_style_toggle[ idx ] to value of idx bit
-  // write idx bit to file
-  // close file
-  
-  // dont forget to add check for toggle in each function where everything is drawn to enable/disable
+  toggle_config_idx( idx );
 
   return 1;
 }
