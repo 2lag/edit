@@ -48,8 +48,7 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
 
   run_debug_console();
 
-  if( !init_config() )
-    return 1;
+  init_config();
 
   MSG msg;
   while( true ) {
