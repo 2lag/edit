@@ -5,7 +5,7 @@ bool menu_style_toggle[ OBJ_BASE_COUNT / 2 ];
 void load_config() {
   // open file
   // read first 3 bits & set to menu_style_toggle
-  //  - test print bits first bc encoding may b fucky
+  //  - test print bits first bc encoding may b fucky (check writefile doc)
   // close file
 
   return;
@@ -85,7 +85,12 @@ void init_config() {
 }
 
 bool toggle_config_idx( s32 idx ) {
-  
+  // open file
+  // read idx bit
+  // toggle idx bit
+  // set menu_style_toggle
+  // save file
+  // close file
   
   return true;
 }
