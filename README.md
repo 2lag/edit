@@ -2,7 +2,7 @@ todo :
 - finish functionality for :
 - - Style
 - - - finish load_config & toggle_config_idx
-- - - add notation for toggled status in menu in wnd/funcs/menu/wnd_menu.cpp
+- - - add symbol indicating toggled status in wnd/funcs/menu/wnd_menu.cpp
 - organize/optimize menu functionality code, & check for memory leaks, minimize var scope & const unchanging vars, clean/optimize files ( file checklist )
 - - match any "new" statements with "delete"
 - - make sure hooks are managed with unhooks on exit
