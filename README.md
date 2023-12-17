@@ -1,7 +1,8 @@
 todo :
 - finish functionality for :
 - - Style
-- - - finish load_config & toggle_config_idx
+- - - finish toggle_config_idx
+- - - add toggle to each option in the function that does the drawing
 - - - add symbol indicating toggled status in wnd/funcs/menu/wnd_menu.cpp
 - organize/optimize menu functionality code, & check for memory leaks, minimize var scope & const unchanging vars, clean/optimize files ( file checklist )
 - - match any "new" statements with "delete"
