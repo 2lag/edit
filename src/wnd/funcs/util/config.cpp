@@ -5,7 +5,7 @@ bool menu_style_toggle[ OBJ_BASE_COUNT / 2 ];
 void load_config() {
   // open file
   // read first 3 bits & set to menu_style_toggle
-  //  - test print bits first bc encoding may b fucky (check writefile doc)
+  //  - test print bits first bc encoding may b fucky
   // close file
 
   return;
