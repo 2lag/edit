@@ -142,7 +142,7 @@ void init_config() {
 }
 
 bool toggle_config_idx( s32 idx ) {
-  // open file
+  // open file ( binary mode? other method? test and find out! )
   // read idx bit
   // toggle idx bit
   // set menu_style_toggle
