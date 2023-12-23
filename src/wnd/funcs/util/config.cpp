@@ -148,6 +148,72 @@ bool toggle_config_idx( s32 idx ) {
   // set menu_style_toggle
   // save file
   // close file
+
+  /*
+  char *doc_path = nullptr;
+  size_t doc_len = 0;
+  _dupenv_s(&doc_path, &doc_len, "USERPROFILE");
+
+  if (!doc_path) {
+    #ifdef _DEBUG
+      printf("failed @ docpath\n");
+    #endif
+    return false;
+  }
+
+  doc_len += strlen("\\Documents\\edit\\edit.cfg") + 1;
+  char *cfg_path = new char[doc_len];
+  strcpy_s(cfg_path, doc_len, doc_path);
+  strcat_s(cfg_path, doc_len, "\\Documents\\edit\\edit.cfg");
+
+  HANDLE cfg_file = CreateFileA(cfg_path,
+    GENERIC_READ | GENERIC_WRITE, 0, NULL,
+    OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL
+  );
+
+  if (cfg_file == INVALID_HANDLE_VALUE) {
+    free(doc_path);
+    delete[] cfg_path;
+    #ifdef _DEBUG
+      printf("failed to open cfg file for toggling\n");
+    #endif
+    return false;
+  }
+
+  u64 cfg;
+  ptr bytes_read;
+  if (!ReadFile(cfg_file, &cfg, sizeof(cfg), &bytes_read, NULL) || bytes_read != sizeof(cfg)) {
+    CloseHandle(cfg_file);
+    free(doc_path);
+    delete[] cfg_path;
+    #ifdef _DEBUG
+      printf("failed @ reading cfg for toggle\n");
+    #endif
+    return false;
+  }
+
+  // toggle the bit
+  cfg ^= 1ULL << idx;
+  menu_style_toggle[idx] = !menu_style_toggle[idx];
+
+  // move the cursor back to the beginning of the file to write
+  SetFilePointer(cfg_file, 0, NULL, FILE_BEGIN);
+  ptr bytes_written;
+  if (!WriteFile(cfg_file, &cfg, sizeof(cfg), &bytes_written, NULL) || bytes_written != sizeof(cfg)) {
+    CloseHandle(cfg_file);
+    free(doc_path);
+    delete[] cfg_path;
+    #ifdef _DEBUG
+      printf("failed @ writing cfg for toggle\n");
+    #endif
+    return false;
+  }
+
+  CloseHandle(cfg_file);
+  free(doc_path);
+  delete[] cfg_path;
+  return true;
+  */
   
   return true;
 }
