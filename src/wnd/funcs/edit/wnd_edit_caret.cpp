@@ -3,7 +3,7 @@
 RECT caret_rect;
 
 void wnd_type_caret_pos( const HWND hwnd, const RECT wnd_sz, bool force_redraw ) {
-  if( !txt_box )
+  if( !menu_style_toggle[1] || !txt_box )
     return;
 
   static s64 prev_sel = 0;

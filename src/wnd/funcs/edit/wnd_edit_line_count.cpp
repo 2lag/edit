@@ -1,7 +1,7 @@
 #include "wnd_edit_line_count.h"
 
 void wnd_type_line_count( const HWND hwnd, const RECT wnd_sz, const bool force_redraw ) {
-  if( !txt_box )
+  if( !menu_style_toggle[2] || !txt_box )
     return;
 
   static s32 prev_line = 0;

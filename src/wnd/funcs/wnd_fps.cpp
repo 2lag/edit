@@ -5,7 +5,7 @@ u64 prev_time = GetTickCount64(), frames{}, fps{};
 bool hide_fps = false;
 
 void wnd_fps_calc() {
-  if( hide_fps )
+  if( hide_fps || !menu_style_toggle[0] )
     return;
 
   u64 cur_time = GetTickCount64();
@@ -25,8 +25,8 @@ void wnd_fps_draw( HWND hwnd ) {
   while( !hwnd ) {
     Sleep( 100 );
   }
-  while( true ) {
 
+  while( true && ( !hide_fps || menu_style_toggle[0] ) ) {
     char fps_txt[32];
     sprintf_s( fps_txt,
       sizeof( fps_txt ) / sizeof( wchar_t ),
