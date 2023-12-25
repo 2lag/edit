@@ -153,19 +153,19 @@ void wnd_menu_draw_dropdown( HWND hwnd, s8 idx ) {
     obj[0] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 1, ( WND_BTN_SZ * 2 ) - 1  ,
                                 ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 3 ) + 1 }, COL_M_GRY, true , ""               );
     obj[1] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 2, ( WND_BTN_SZ * 2 )      ,
-                                ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 3 )     }, COL_D_GRY, false, "Hide FPS"       );
+                                ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 3 )     }, COL_D_GRY, false, menu_style_toggle[0] ? "[x] FPS"        : "[  ] FPS"         );
     obj[2] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 1, ( WND_BTN_SZ * 3 )      ,
                                 ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 4 ) + 1 }, COL_M_GRY, true , ""               );
     obj[3] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 2, ( WND_BTN_SZ * 3 ) + 1  ,
-                                ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 4 )     }, COL_D_GRY, false, "Hide Caret Pos" );
+                                ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 4 )     }, COL_D_GRY, false, menu_style_toggle[1] ? "[x] Caret Pos"  : "[  ] Caret Pos"   );
     obj[4] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 1, ( WND_BTN_SZ * 4 )      ,
                                 ( WND_BTN_SZ * 9 )    , ( WND_BTN_SZ * 5 ) + 1 }, COL_M_GRY, true , ""                );
     obj[5] = wnd_menu_create( { ( WND_BTN_SZ * 4 ) + 2, ( WND_BTN_SZ * 4 ) + 1  ,
-                                ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, "Hide Line Count" );
+                                ( WND_BTN_SZ * 9 ) - 1, ( WND_BTN_SZ * 5 )     }, COL_D_GRY, false, menu_style_toggle[2] ? "[x] Line Count" : "[  ] Line Count"  );
 
-    underline_dim[0].x = 166;
-    underline_dim[1].x = 186;
-    underline_dim[2].x = 145,
+    underline_dim[0].x = 160;
+    underline_dim[1].x = 180;
+    underline_dim[2].x = 138,
     underline_dim[2].w = 10;
   } break;
   default:

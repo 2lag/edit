@@ -1,14 +1,10 @@
 todo :
 - finish functionality for :
-- - Style
-- - - add symbol indicating toggled status in wnd/funcs/menu/wnd_menu.cpp
-- - - draw over toggled off components
-- organize/optimize menu functionality code, & check for memory leaks, minimize var scope & const unchanging vars, clean/optimize files ( file checklist )
-- - match any "new" statements with "delete"
-- - make sure hooks are managed with unhooks on exit
+- - drawing over toggled off components once ( wnd_edit_caret, wnd_edit_line_count, wnd_fps )
 - swap setwindowtexta calls to append text to beginning/end of text instead of overwriting
 - fix flickering background bug (set background color to current of what i try to force it to then just add your own outline instead of using the subpixel glow)
-- add exit to file submenu
+- organize/optimize menu functionality code, & check for memory leaks, minimize var scope & const unchanging vars, clean/optimize files ( file checklist )
+- - match any "new" statements with "delete", make sure hooks are managed with unhooks on exit, etc
 - do functionality for :
 - - Tools
 - - - Find
