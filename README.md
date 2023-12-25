@@ -8,7 +8,6 @@ todo :
 - - make sure hooks are managed with unhooks on exit
 - swap setwindowtexta calls to append text to beginning/end of text instead of overwriting
 - fix flickering background bug (set background color to current of what i try to force it to then just add your own outline instead of using the subpixel glow)
-- add exit to file submenu
 - do functionality for :
 - - Tools
 - - - Find
