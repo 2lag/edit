@@ -1,10 +1,13 @@
 #include "wnd_edit_caret.h"
 
 RECT caret_rect;
+bool caret_covered = false;
 
 void wnd_type_caret_pos( const HWND hwnd, const RECT wnd_sz, bool force_redraw ) {
-  if( !menu_style_toggle[1] || !txt_box )
+  if( ( !menu_style_toggle[ CARET ] && caret_covered ) || !txt_box )
     return;
+  else if( menu_style_toggle[ CARET ] && txt_box )
+    caret_covered = false;
 
   static s64 prev_sel = 0;
   s64 sel = Edit_GetSel( txt_box );
@@ -45,11 +48,14 @@ void wnd_type_caret_pos( const HWND hwnd, const RECT wnd_sz, bool force_redraw )
   SetBkMode( hdc, TRANSPARENT );
   SetTextColor( hdc, COL_M_GRY );
 
-  TextOutA( hdc,
-    ( wnd_sz.right - txt_sz.cx ) / 2,
-    wnd_sz.bottom - txt_sz.cy - 5,
-    caret_pos, (s32)strlen( caret_pos )
-  );
+  if( menu_style_toggle[ CARET ] ) {
+    TextOutA( hdc,
+      ( wnd_sz.right - txt_sz.cx ) / 2,
+      wnd_sz.bottom - txt_sz.cy - 5,
+      caret_pos, (s32)strlen( caret_pos )
+    );
+  } else
+    caret_covered = true;
 
   ReleaseDC( hwnd, hdc );
   DeleteObject( dbrush );

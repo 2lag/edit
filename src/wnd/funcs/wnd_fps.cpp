@@ -5,7 +5,7 @@ u64 prev_time = GetTickCount64(), frames{}, fps{};
 bool hide_fps = false;
 
 void wnd_fps_calc() {
-  if( hide_fps || !menu_style_toggle[0] )
+  if( hide_fps || !menu_style_toggle[ FPS ] )
     return;
 
   u64 cur_time = GetTickCount64();
@@ -26,7 +26,7 @@ void wnd_fps_draw( HWND hwnd ) {
     Sleep( 100 );
   }
 
-  while( true && ( !hide_fps || menu_style_toggle[0] ) ) {
+  while( true && ( !hide_fps || menu_style_toggle[ FPS ] ) ) {
     char fps_txt[32];
     sprintf_s( fps_txt,
       sizeof( fps_txt ) / sizeof( wchar_t ),
@@ -49,7 +49,7 @@ void wnd_fps_draw( HWND hwnd ) {
       wnd_sz.bottom - 5
     };
 
-    if( caret_rect.right > fps_rect.left + 15 ) {
+    if( caret_rect.right > fps_rect.left + 15 && menu_style_toggle[ CARET ] ) {
       hide_fps = true;
       ReleaseDC( hwnd, hdc );
       Sleep( 1000 );
@@ -71,6 +71,6 @@ void wnd_fps_draw( HWND hwnd ) {
     ReleaseDC( hwnd, hdc );
     DeleteObject( dbrush );
 
-    Sleep( 10 );
+    Sleep( UPDATE_INTERVAL );
   }
 }
