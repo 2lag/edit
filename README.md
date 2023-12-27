@@ -1,11 +1,11 @@
-- finish functionality for :
-- - drawing over toggled off components once ( wnd_edit_line_count, wnd_fps )
+finish :
+- drawing over toggled off line count
 - swap all setwindowtexta calls to append text to beginning of text instead of overwriting
 - fix flickering bg bug ( set bg color to current of what i try to force it to then just add your own outline instead of using hacky subpixel glow )
 - fix not being able to full screen drag on vert monitor ( wnd_drag.cpp )
 - organize/optimize menu functionality code, & check for memory leaks, minimize var scope & const unchanging vars, clean/optimize files ( file checklist )
 - - match any "new" statements with "delete", make sure hooks are managed with unhooks on exit, etc
-- do functionality for :
+- plan functionality for :
 - - Tools
 - - - Find
 - - - Replace
