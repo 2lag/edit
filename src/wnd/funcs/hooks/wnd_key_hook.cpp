@@ -35,7 +35,8 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
         return wnd_menu_dropdown_toggle( m_base_open[0], 0 );
       } break;
       case 0x4C: { // CTRL + L
-        return wnd_menu_style_toggle(2);
+        if( m_base_open[2] )
+          return wnd_menu_style_toggle(2);
       } break;
       case 0x4D: { // CTRL + M
         return wnd_menu_subdropdown_toggle( m_base_open[1], m_sub_open );
@@ -46,8 +47,9 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
       case 0x4F: { // CTRL + O
         return wnd_menu_edit_ctrl( m_base_open[0], 0 );
       } break;
-      case 0x50: { // CTRL + P
-        return wnd_menu_style_toggle(1);
+      case 0x50: { // CTRL + P      
+        if( m_base_open[2] )
+          return wnd_menu_style_toggle(1);
       } break;
       case 0x53: { // CTRL + S
         if( m_base_open[0] ) // save route

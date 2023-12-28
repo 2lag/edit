@@ -10,8 +10,21 @@ s32 wnd_menu_dropdown_toggle( bool &toggle, s32 idx ) {
 
   if( toggle )
     wnd_menu_draw_dropdown( h_global, (s8)idx );
-  else
+  else {
+    HDC hdc = GetDC( h_global );
+
+    HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
+  
+    RECT wnd_sz = get_wnd_sz( h_global );
+
+    RECT r { 0, 50, 24, wnd_sz.bottom - 25 };
+    FillRect( hdc, &r, dbrush );
+
+    ReleaseDC( h_global, hdc );
+    DeleteObject( dbrush );
+
     wnd_clear_menus( true );
+  }
 
   return 1;
 }
@@ -124,7 +137,7 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
 
 LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, DWORD_PTR ) {
   static bool once = false;
-  
+
   if( !once ) {
     SetFocus( hwnd );
     once = true;
@@ -136,8 +149,28 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
       break;
 
     s32 path_len = GetWindowTextLengthA( hwnd ) + 1;
-    file_path = new char[ path_len ];
-    GetWindowTextA( hwnd, file_path, path_len );
+    s32 txt_box_len = GetWindowTextLengthA( txt_box ) + 1;
+    u64 total_len = static_cast<u64>( path_len ) + static_cast<u64>( txt_box_len ) + 4ull; // +4 for "\r\n\r\n"
+    file_path = new char[ total_len ];
+
+    if( !file_path ) {
+#ifdef _DEBUG
+      printf("failed to allocate file_path memory\n");
+#else
+      SetWindowTextA( menu_txt, "memory error" );
+#endif
+      break;
+    }
+
+    if( !GetWindowTextA( hwnd, file_path, path_len ) ) {
+#ifdef _DEBUG
+      printf("failed to get text: %lu\n", GetLastError() );
+#else
+      SetWindowTextA( menu_txt, "error getting path" );
+#endif
+      delete[] file_path;
+      break;
+    }
 
     HANDLE file = CreateFileA( file_path,
       GENERIC_WRITE, FILE_SHARE_READ |
@@ -147,34 +180,58 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
 
     if( file == INVALID_HANDLE_VALUE ) {
 #ifdef _DEBUG
-      printf( "error opening file handle : %lu\npath : %s\n", GetLastError(), file_path );
+      printf("error opening file handle : %lu\npath : %s\n", GetLastError(), file_path );
 #else
-      SetWindowTextA( menu_txt, "invalid path" );
+      SetWindowTextA( menu_txt, "invalid path");
 #endif
 
       delete[] file_path;
       break;
-    } else {
-      s32 txt_len = GetWindowTextLengthA( txt_box ) + 1;
-      char *txt_box_txt = new char[ txt_len ];
-      GetWindowTextA( txt_box, txt_box_txt, txt_len );
+    }
 
-      ptr bytes_wrote;
-      if( WriteFile( file, txt_box_txt, txt_len - 1, &bytes_wrote, NULL ) ) {
-        SetWindowTextA( txt_box, file_path ); // in case saved in wrong dir bc user ( me... OR YOU...... ) is dumb.
-        DestroyWindow( menu_txt );
-      } else {
+    char *txt_box_txt = new char[ txt_box_len ];
+
+    if( !txt_box_txt ) {
 #ifdef _DEBUG
-        printf( "error writing to file : %lu\n", GetLastError() );
+      printf("failed mem allocation for text box text\n" );
 #else
-        SetWindowTextA( menu_txt, "failed to write to file" );
+      SetWindowTextA( menu_txt, "memory error");
 #endif
-      }
-      
+      delete[] file_path;
+      CloseHandle( file );
+      break;
+    }
+
+    if( !GetWindowTextA( txt_box, txt_box_txt, txt_box_len ) ) {
+#ifdef _DEBUG
+      printf("failed to get text box text\n" );
+#else
+      SetWindowTextA( menu_txt, "error getting text");
+#endif
       delete[] file_path;
       delete[] txt_box_txt;
       CloseHandle( file );
+      break;
     }
+
+    ptr bytes_wrote;
+    if( !WriteFile( file, txt_box_txt, txt_box_len - 1, &bytes_wrote, NULL ) ) {
+#ifdef _DEBUG
+      printf( "error writing to file : %lu\n", GetLastError() );
+#else
+      SetWindowTextA( menu_txt, "failed to write to file" );
+#endif
+    } else {
+      strcat_s( file_path, total_len, "\r\n\r\n");
+      strcat_s( file_path, total_len, txt_box_txt );
+
+      SetWindowTextA( txt_box, file_path ); // in case saved in wrong dir bc user ( me... OR YOU...... ) is dumb.
+      DestroyWindow( menu_txt );
+    }
+
+    delete[] file_path;
+    delete[] txt_box_txt;
+    CloseHandle( file );
   } break;
   }
 

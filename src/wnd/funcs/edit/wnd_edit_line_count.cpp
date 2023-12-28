@@ -1,8 +1,25 @@
 #include "wnd_edit_line_count.h"
 
 void wnd_type_line_count( const HWND hwnd, const RECT wnd_sz, const bool force_redraw ) {
-  if( !menu_style_toggle[ LINE_COUNT ] || !txt_box )
+  static bool hide_line_count_prev = true;
+
+  if( !menu_style_toggle[ LINE_COUNT ] || !txt_box ) {
+    if( !hide_line_count_prev ) {
+      HDC hdc = GetDC( hwnd );
+
+      HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
+  
+      RECT r { 0, 50, 24, wnd_sz.bottom - 25 };
+      FillRect( hdc, &r, dbrush );
+
+      ReleaseDC( hwnd, hdc );
+      DeleteObject( dbrush );
+
+      hide_line_count_prev = true;
+    }
     return;
+  } else
+    hide_line_count_prev = false;
 
   static s32 prev_line = 0;
   if( prev_line == vscroll.curr_line && !force_redraw )
