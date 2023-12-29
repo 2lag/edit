@@ -104,7 +104,7 @@ void wnd_drag_resize( const HWND hwnd, const POINT m_pos ) {
        m_in_rxr = sm_pos_adj.x > mon_sz.x * 0.9f,
        m_in_tyr = sm_pos_adj.y < mon_sz.y * 0.1f,
        m_in_byr = sm_pos_adj.y > mon_sz.y * 0.9f,
-       within_max_range = sm_pos_adj.y <= i_mon.rcWork.top && !m_in_lxr && !m_in_rxr,
+       within_max_range = sm_pos_adj.y <= mon_sz.y * 0.01f && !m_in_lxr && !m_in_rxr,
      within_lhalf_range = sm_pos_adj.x <= mon_sz.x * 0.01f && !m_in_tyr && !m_in_byr,
      within_rhalf_range = sm_pos_adj.x >= mon_sz.x * 0.99f && !m_in_tyr && !m_in_byr,
    within_lcorner_range = ( m_in_tyr || m_in_byr ) && m_in_lxr,

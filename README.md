@@ -1,6 +1,4 @@
 finish :
-- fix flickering bg bug ( set bg to current of forced col then just add your own outline instead of using hacky subpixel glow )
-- fix not being able to full screen drag on vert monitor ( wnd_drag.cpp )
 - organize/optimize, check for memory leaks ( new matched w delete etc ), minimize var scopes & const unchanging vars, clean/optimize all files, unhook hooks on exit, proper bug handling, etc
 - plan functionality for :
 - - Tools

@@ -15,6 +15,16 @@ CSCROLL vscroll;
 bool m_base_open[ OBJ_BASE_COUNT / 2 ] = { false };
 
 void wnd_clear_menus( s32 exclude, bool overryde ) {
+  bool should_run = false;
+  for( s8 idx = 0; idx < OBJ_BASE_COUNT / 2; ++idx ) {
+    if( m_base_open[ idx ] )
+      should_run = true;
+      break;
+  }
+
+  if( !should_run )
+    return;
+
   for( s8 idx = 0; idx < OBJ_BASE_COUNT / 2; idx++ ) {
     if( !m_base_open[ idx ] || ( exclude == idx && !overryde ) )
       continue;
