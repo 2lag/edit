@@ -1,5 +1,23 @@
 finish :
 - organize/optimize, check for memory leaks ( new matched w delete etc ), minimize var scopes & const unchanging vars, clean/optimize all files, unhook hooks on exit, proper bug handling, etc
+- - wnd_edit.cpp/h
+- - wnd_edit_caret.cpp/h
+- - wnd_edit_line_count.cpp/h
+- - wnd_edit_scroll.h
+- - wnd_key_hook.cpp/h
+- - wnd_mouse_hook.cpp/h
+- - wnd_menu.cpp/h
+- - wnd_menu_funcs.cpp/h
+- - config.cpp/h
+- - overloads.h
+- - util.h
+- - wnd_drag.cpp/h
+- - wnd_fps.cpp/h
+- - wnd_resize.cpp/h
+- - wnd_title.cpp/h
+- - wincludes.h
+- - wnd_func.cpp/h
+- - source.cpp
 - plan functionality for :
 - - Tools
 - - - Find
