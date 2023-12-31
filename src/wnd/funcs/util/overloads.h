@@ -36,6 +36,6 @@ inline bool operator!( const POINT &a ) {
   return ( a.x == 0 || a.y == 0 );
 }
 
-inline bool operator!(const RECT& a) {
+inline bool operator!( const RECT& a ) {
   return ( a.left == 0 && a.right == 0 && a.top == 0 && a.bottom == 0 );
 }

@@ -1,11 +1,5 @@
 finish :
 - organize/optimize, check for memory leaks ( new matched w delete etc ), minimize var scopes & const unchanging vars, clean/optimize all files, unhook hooks on exit, proper bug handling, etc
-- - wnd_edit.cpp/h
-- - wnd_edit_caret.cpp/h
-- - wnd_edit_line_count.cpp/h
-- - wnd_edit_scroll.h
-- - wnd_key_hook.cpp/h
-- - wnd_mouse_hook.cpp/h
 - - wnd_menu.cpp/h
 - - wnd_menu_funcs.cpp/h
 - - config.cpp/h
@@ -18,6 +12,13 @@ finish :
 - - wincludes.h
 - - wnd_func.cpp/h
 - - source.cpp
+- make sure resize wont work if dragging scroll ( wnd_resize )
+- divide the following files into more descriptive functions
+- - wnd_edit ( wnd_type_create )
+- - wnd_edit_caret ( all )
+- - wnd_edit_line_count ( all )
+- - wnd_edit_scroll ( maybe... )
+- - 
 - plan functionality for :
 - - Tools
 - - - Find

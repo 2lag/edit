@@ -1,27 +1,27 @@
 #include "wnd_edit_caret.h"
 
 RECT caret_rect;
-bool caret_covered = false;
 
-void wnd_type_caret_pos( const HWND hwnd, const RECT wnd_sz, bool force_redraw ) {
+void wnd_type_caret_pos( const HWND hwnd, const RECT wnd_sz, const bool force_redraw ) {
+  static bool caret_covered = false;
+  static s64 prev_sel = 0;
+
   if( ( !menu_style_toggle[ CARET ] && caret_covered ) || !txt_box )
     return;
-  else if( menu_style_toggle[ CARET ] && txt_box )
-    caret_covered = false;
 
-  static s64 prev_sel = 0;
   s64 sel = Edit_GetSel( txt_box );
 
-  if( sel != prev_sel )
-    prev_sel = sel;
-  else if( !force_redraw )
+  if( sel == prev_sel && !force_redraw )
     return;
+    
+  prev_sel = sel;
+  caret_covered = !menu_style_toggle[ CARET ];
 
   s32 curr_line_start_idx = Edit_LineIndex( txt_box, -1 ) + 1;
-  s32 curr_caret_idx = (s32)HIWORD( Edit_GetSel( txt_box ) ) + 1;
+  s32 curr_caret_idx = static_cast<s32>( HIWORD( sel ) ) + 1;
   s32 line_idx_x = curr_caret_idx - curr_line_start_idx;
 
-  char caret_pos[32];
+  char caret_pos[128];
   sprintf_s( caret_pos,
     sizeof( caret_pos ) / sizeof( wchar_t ),
     "X : %d   Y : %d\0",

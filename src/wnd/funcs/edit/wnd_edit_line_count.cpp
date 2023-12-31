@@ -4,7 +4,7 @@ void wnd_type_line_count( const HWND hwnd, const RECT wnd_sz, const bool force_r
   static bool hide_line_count_prev = true;
 
   if( !menu_style_toggle[ LINE_COUNT ] || !txt_box ) {
-    if( !hide_line_count_prev ) {
+    if( !hide_line_count_prev || force_redraw ) {
       HDC hdc = GetDC( hwnd );
 
       HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
