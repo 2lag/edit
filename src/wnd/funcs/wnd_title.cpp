@@ -76,9 +76,7 @@ void wnd_title_max( const HWND hwnd, const bool mouse_over ) {
   if( !mouse_over )
     return;
 
-  HMONITOR c_mon = MonitorFromWindow( hwnd,
-    is_maxd ? MONITOR_DEFAULTTOPRIMARY : MONITOR_DEFAULTTONEAREST
-  );
+  HMONITOR c_mon = MonitorFromWindow( hwnd, MONITOR_DEFAULTTONEAREST );
   get_monitor_info( c_mon );
 
   POINT mon_sz = to_sz_point( i_mon.rcWork ),
@@ -111,6 +109,5 @@ void wnd_title_max( const HWND hwnd, const bool mouse_over ) {
 }
 
 void wnd_title_min( const HWND hwnd, const bool mouse_over ) {
-  if( mouse_over )
-    ShowWindow( hwnd, SW_MINIMIZE );
+  if( mouse_over ) ShowWindow( hwnd, SW_MINIMIZE );
 }

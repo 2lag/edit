@@ -37,7 +37,7 @@ struct VEC3 {
   s32 x, y, w;
 };
 
-inline WND_OBJ wnd_obj_create( RECT r, COLORREF col, bool next ) {
+inline WND_OBJ wnd_obj_create( const RECT r, const COLORREF col, const bool next ) {
   return { r, CreateSolidBrush( col ), next };
 }
 
@@ -50,14 +50,13 @@ extern HWND menu_txt;
 
 #define OBJ_BASE_COUNT 6
 extern bool m_base_open[ OBJ_BASE_COUNT / 2 ];
+extern bool menu_style_toggle[ OBJ_BASE_COUNT / 2 ];
 
 enum MENU_STYLE {
   FPS = 0,
   CARET = 1,
   LINE_COUNT = 2
 };
-
-extern bool menu_style_toggle[ OBJ_BASE_COUNT / 2 ];
 
 #include "funcs/edit/wnd_edit_scroll.h"
 extern CSCROLL vscroll;
@@ -73,7 +72,6 @@ extern RECT  max_prev_sz;
 extern bool  is_maxd;
 
 inline void run_debug_console() {
-#ifdef _DEBUG
   AllocConsole();
   FILE* new_std;
   freopen_s( &new_std, "CONOUT$", "w", stdout );
@@ -83,10 +81,9 @@ inline void run_debug_console() {
   SetConsoleWindowInfo( std_handle, true, &wnd_debug );
   SetConsoleScreenBufferSize( std_handle, { 43, 17 } );
   SetConsoleWindowInfo( std_handle, true, &wnd_debug );
-#endif
 }
 
 #define get_monitor_info( c_mon ) \
-MONITORINFO i_mon; \
-i_mon.cbSize = sizeof( i_mon ); \
-GetMonitorInfoA( c_mon, &i_mon )
+  MONITORINFO i_mon; \
+  i_mon.cbSize = sizeof( i_mon ); \
+  GetMonitorInfoA( c_mon, &i_mon )

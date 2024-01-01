@@ -1,15 +1,17 @@
 finish :
+- fix maximize button not working properly - wnd_title
+- fix double clicking on titlebar shrinking window size ( make it toggle maximized ) - wnd_title & wnd_resize's wnd_resize_title
+- make sure scroll wont drag if resizing ( user_resizing ) - wnd_edit_scroll
+- figure out why tools->multicursor submenu doesnt display properly - wnd_menu
 - organize/optimize, minimize var scopes & const unchanging vars, clean/optimize all files, unhook hooks on exit, proper bug handling, etc
-- - wincludes.h
-- - wnd_drag.cpp/h
-- - wnd_title.cpp/h
+- - wnd_title.cpp
 - - wnd_resize.cpp/h
 - - wnd_edit_scroll
-- - wnd_menu.cpp ( figure out why tools->multicursor doesnt display properly )
+- - wnd_menu.cpp
 - - wnd_menu_funcs.cpp/h
 - - wnd_func.cpp/h
 - - source.cpp
-- make sure resize wont work if dragging scroll ( wnd_resize )
+- globalize window size and previous window size, then change all sizes to those and pos's to call to_pos_point
 - plan functionality for :
 - - Tools
 - - - Find

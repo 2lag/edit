@@ -46,7 +46,9 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
   std::thread draw_fps( wnd_fps_draw, std::ref( h_global ) );
   draw_fps.detach();
 
+#ifdef _DEBUG
   run_debug_console();
+#endif
 
   init_config();
 

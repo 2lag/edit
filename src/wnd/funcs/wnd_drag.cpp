@@ -45,10 +45,10 @@ void wnd_drag( const HWND hwnd, const POINT m_pos ) {
 
   u32 swp_flags = SWP_NOSIZE | SWP_NOZORDER;
 
-  bool is_quarthalfmax = ( wnd_sz   == m_sz     ) ||
-                         ( wnd_sz.x == m_sz.x / 2 &&
-                         ( wnd_sz.y == m_sz.y     ||
-                           wnd_sz.y == m_sz.y / 2 ));
+  bool is_quarthalfmax = wnd_sz   == m_sz ||
+                         wnd_sz.x == m_sz.x / 2 ||
+                         wnd_sz.y == m_sz.y / 2;
+
   if( is_quarthalfmax ) {
     swp_flags = SWP_NOZORDER;
     f32 wnd_xper = (f32)m_pos.x / (f32)wnd_sz.x;
@@ -99,25 +99,18 @@ void wnd_drag_resize( const HWND hwnd, const POINT m_pos ) {
   if( sm_pos.x > pmon_sz.x )
     sm_pos_adj.x = sm_pos.x - ( pm_rect.right - mon_sz.x );
 
-  // lord forgive me
-  bool m_in_lxr = sm_pos_adj.x < mon_sz.x * 0.1f,
-       m_in_rxr = sm_pos_adj.x > mon_sz.x * 0.9f,
-       m_in_tyr = sm_pos_adj.y < mon_sz.y * 0.1f,
-       m_in_byr = sm_pos_adj.y > mon_sz.y * 0.9f,
-       within_max_range = sm_pos_adj.y <= mon_sz.y * 0.01f && !m_in_lxr && !m_in_rxr,
-     within_lhalf_range = sm_pos_adj.x <= mon_sz.x * 0.01f && !m_in_tyr && !m_in_byr,
-     within_rhalf_range = sm_pos_adj.x >= mon_sz.x * 0.99f && !m_in_tyr && !m_in_byr,
+  // lord forgive me ( partly forgiven as of 1.1.24 )
+  bool m_in_lxr = sm_pos_adj.x <= mon_sz.x * 0.1f,
+       m_in_rxr = sm_pos_adj.x >= mon_sz.x * 0.9f,
+       m_in_tyr = sm_pos_adj.y <= mon_sz.y * 0.1f,
+       m_in_byr = sm_pos_adj.y >= mon_sz.y * 0.9f,
+       within_max_range = m_in_tyr && !m_in_lxr && !m_in_rxr,
+     within_lhalf_range = m_in_lxr && !m_in_tyr && !m_in_byr,
+     within_rhalf_range = m_in_rxr && !m_in_tyr && !m_in_byr,
    within_lcorner_range = ( m_in_tyr || m_in_byr ) && m_in_lxr,
    within_rcorner_range = ( m_in_tyr || m_in_byr ) && m_in_rxr,
    within_tcorner_range = ( m_in_lxr || m_in_rxr ) && m_in_tyr,
-   within_bcorner_range = ( m_in_lxr || m_in_rxr ) && m_in_byr,
-           within_range =  within_max_range     ||
-                           within_lhalf_range   || within_rhalf_range   ||
-                           within_lcorner_range || within_tcorner_range ||
-                           within_rcorner_range || within_bcorner_range;
-
-  if( !within_range )
-    return;
+   within_bcorner_range = ( m_in_lxr || m_in_rxr ) && m_in_byr;
 
   is_maxd = true;
   GetClientRect( hwnd, &max_prev_sz );
@@ -133,21 +126,16 @@ void wnd_drag_resize( const HWND hwnd, const POINT m_pos ) {
     },
     nwnd_sz = mon_sz;
     nwnd_sz.x /= 2;
-  } else if( within_tcorner_range ) {
+  } else if( within_tcorner_range || within_bcorner_range ) {
     nwnd_pos = {
       within_lcorner_range ?
         i_mon.rcWork.left : i_mon.rcWork.right - mon_sz.x / 2,
-      i_mon.rcWork.top
+      within_tcorner_range ?
+        i_mon.rcWork.top : mon_sz.y / 2 + monitor_offset.y
     };
     nwnd_sz = mon_sz / 2;
-  } else if( within_bcorner_range ) {
-    nwnd_pos = {
-      within_lcorner_range ?
-        i_mon.rcWork.left : i_mon.rcWork.right - mon_sz.x / 2,
-      mon_sz.y / 2 + monitor_offset.y
-    };
-    nwnd_sz = mon_sz / 2;
-  }
+  } else
+    return;
 
   SetWindowPos( hwnd, 0,
     nwnd_pos.x, nwnd_pos.y,
