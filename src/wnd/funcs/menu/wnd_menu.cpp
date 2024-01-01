@@ -1,9 +1,6 @@
 #include "wnd_menu.h"
 
-#pragma warning( push )
-#pragma warning( disable : 4267 )
-
-void wnd_menu_draw( HDC hdc, RECT wnd_sz ) {
+void wnd_menu_draw( const HDC hdc ) {
   SIZE txt_sz[ OBJ_BASE_COUNT ] = {};
 
   WND_MENU obj[ OBJ_BASE_COUNT ] = {
@@ -65,7 +62,7 @@ void wnd_menu_draw( HDC hdc, RECT wnd_sz ) {
     DeleteObject( it.col );
 }
 
-void wnd_menu_draw_dropdown( HWND hwnd, s8 idx ) {
+void wnd_menu_draw_dropdown( const HWND hwnd, const s8 idx ) {
   wnd_clear_menus( idx, false );
 
   RECT menu_rect;
@@ -220,7 +217,7 @@ void wnd_menu_draw_dropdown( HWND hwnd, s8 idx ) {
     DeleteObject( obj[ o_idx ].col );
 }
 
-void wnd_menu_draw_sub_dropdown( HWND hwnd ) {
+void wnd_menu_draw_sub_dropdown( const HWND hwnd ) {
   RECT menu_rect = {
     ( WND_BTN_SZ * 6 ) + 1,
     ( WND_BTN_SZ * 2 ) - 1,
@@ -287,5 +284,3 @@ void wnd_menu_draw_sub_dropdown( HWND hwnd ) {
   for( s8 idx = 0; idx < OBJ_BASE_COUNT; ++idx )
     DeleteObject( obj[ idx ].col );
 }
-
-#pragma warning( pop )

@@ -64,7 +64,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
 
     wnd_title_draw( hdc, wnd_sz );
     wnd_type_outline( hwnd, to_sz_point( wnd_sz ) );
-    wnd_menu_draw( hdc, wnd_sz );
+    wnd_menu_draw( hdc );
 
     EndPaint( hwnd, &ps );
   } break;

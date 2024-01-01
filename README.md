@@ -18,7 +18,7 @@ finish :
 - - wnd_edit_caret ( all )
 - - wnd_edit_line_count ( all )
 - - wnd_edit_scroll ( maybe... )
-- - 
+- - wnd_menu.cpp/h ( all )
 - plan functionality for :
 - - Tools
 - - - Find
