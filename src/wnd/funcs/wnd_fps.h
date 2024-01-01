@@ -2,4 +2,4 @@
 #include "../wincludes.h"
 
 void wnd_fps_calc();
-void wnd_fps_draw( HWND hwnd );
+void wnd_fps_draw( const HWND hwnd );

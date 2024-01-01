@@ -119,6 +119,9 @@
     <ClInclude Include="src\wnd\funcs\util\config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\wnd\funcs\hooks\wnd_hooks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="customme.bin">

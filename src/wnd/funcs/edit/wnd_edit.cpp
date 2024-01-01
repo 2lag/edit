@@ -1,29 +1,26 @@
 #include "wnd_edit.h"
-
-#include "../hooks/wnd_key_hook.h"
-#include "../hooks/wnd_mouse_hook.h"
-
-#include "../menu/wnd_menu.h"
-
 #include "wnd_edit_line_count.h"
 
-HWND txt_box;
-HHOOK mouse_hook;
-HHOOK key_hook;
-CSCROLL vscroll;
+#include "../hooks/wnd_hooks.h"
+#include "../menu/wnd_menu.h"
 
+
+HWND txt_box;
+HHOOK key_hook;
+HHOOK mouse_hook;
+CSCROLL vscroll;
 bool m_base_open[ OBJ_BASE_COUNT / 2 ] = { false };
 
-void wnd_clear_menus( const s32 exclude, const bool overryde ) {
-  bool should_run = false;
+bool wnd_should_clear_menus() {
   for( s8 idx = 0; idx < OBJ_BASE_COUNT / 2; ++idx ) {
-    if( m_base_open[ idx ] ) {
-      should_run = true;
-      break;
-    }
+    if( m_base_open[ idx ] )
+      return true;
   }
+  return false;
+};
 
-  if( !should_run )
+void wnd_clear_menus( const s32 exclude, const bool overryde ) {
+  if( !wnd_should_clear_menus() )
     return;
 
   for( s8 idx = 0; idx < OBJ_BASE_COUNT / 2; idx++ ) {
@@ -32,16 +29,15 @@ void wnd_clear_menus( const s32 exclude, const bool overryde ) {
 
     m_base_open[ idx ] = false;
   }
-  vscroll.cscroll_draw( true, true );
 
+  vscroll.cscroll_draw( true, true );
   RECT wnd_sz = get_wnd_sz( h_global );
   wnd_type_line_count( h_global, wnd_sz, true );
   wnd_type_outline( h_global, to_sz_point( wnd_sz ) );
 }
 
-LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR class_uid, DWORD_PTR data ) {
+LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, DWORD_PTR ) {
   static bool once = false;
-  vscroll.txt_rect = get_wnd_sz( hwnd );
 
   switch( msg ) {
   case WM_CHAR: {
@@ -57,6 +53,8 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR c
     DeleteObject( dbrush );
 
     if( !once ) {
+      // initial scrollbar spawn
+      // will only run when txt_box exists
       vscroll.cscroll_create( txt_box );
       once = true;
     }
@@ -80,15 +78,7 @@ void wnd_type_create( const HWND hwnd ) {
 
   SetWindowSubclass( txt_box, editproc, 0, 0 );
 
-  mouse_hook = SetWindowsHookExA(
-    WH_MOUSE_LL, mouse_hook_proc,
-    GetModuleHandleA( NULL ), 0
-  );
-
-  key_hook = SetWindowsHookExA(
-    WH_KEYBOARD_LL, key_hook_proc,
-    GetModuleHandleA( NULL ), 0
-  );
+  wnd_init_hooks();
 }
 
 void wnd_type_outline( const HWND hwnd, const POINT wnd_sz ) {
@@ -102,7 +92,14 @@ void wnd_type_outline( const HWND hwnd, const POINT wnd_sz ) {
   };
   FillRect( hdc, &outline_sz, brush );
 
+  // maybe swap this with validaterect inside_sz ?
+  HBRUSH bg_brush = CreateSolidBrush( COL_D_GRY );
+  RECT inside_sz = outline_sz - 1;
+  FillRect( hdc, &inside_sz, bg_brush );
+  
+  DeleteObject( bg_brush );
   DeleteObject( brush );
+
   ReleaseDC( hwnd, hdc );
 }
 

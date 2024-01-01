@@ -20,8 +20,8 @@ void load_config() {
   strcat_s( cfg_path, doc_len, "\\Documents\\edit\\edit.cfg" );
 
   if( !cfg_path ) {
-    free( doc_path );
     delete[] cfg_path;
+    free( doc_path );
 #ifdef _DEBUG
     printf("failed @ cfg path\n");
 #endif
@@ -33,9 +33,10 @@ void load_config() {
     FILE_ATTRIBUTE_NORMAL, NULL
   );
 
-  if( cfg_file == INVALID_HANDLE_VALUE || GetLastError() == ERROR_FILE_NOT_FOUND ) {
-    free( doc_path );
+  if( cfg_file == INVALID_HANDLE_VALUE ||
+      GetLastError() == ERROR_FILE_NOT_FOUND ) {
     delete[] cfg_path;
+    free( doc_path );
 #ifdef _DEBUG
     if( cfg_file == INVALID_HANDLE_VALUE )
       printf("failed @ invalid_handle_value : %d\n", GetLastError() );
@@ -48,25 +49,25 @@ void load_config() {
   u64 cfg;
   ptr bytes_read;
   if( !ReadFile( cfg_file, &cfg, 1, &bytes_read, NULL ) ) {
-    free( doc_path );
-    delete[] cfg_path;
     CloseHandle( cfg_file );
-  #ifdef _DEBUG
+    delete[] cfg_path;
+    free( doc_path );
+#ifdef _DEBUG
     printf("failed @ reading cfg file\n");
-  #endif
+#endif
     return;
   }
 
   for( s32 i = 0; i < 3; i++ )
     menu_style_toggle[i] = ( cfg >> i ) & 1;
 
-  #ifdef _DEBUG
+#ifdef _DEBUG
     printf("successfully loaded edit.cfg\n");
-  #endif
+#endif
 
-  free( doc_path );
-  delete[] cfg_path;
   CloseHandle( cfg_file );
+  delete[] cfg_path;
+  free( doc_path );
   return;
 }
 
@@ -92,8 +93,8 @@ void init_config() {
 
   if( !CreateDirectoryA( edit_path, NULL ) ) {
     if( GetLastError() != ERROR_ALREADY_EXISTS ) {
-      free( doc_path );
       delete[] edit_path;
+      free( doc_path );
 #ifdef _DEBUG
       printf("failed @ directory\n");
 #endif
@@ -107,9 +108,9 @@ void init_config() {
   strcat_s( cfg_path, edit_path_len, "edit.cfg" );
 
   if( !cfg_path ) {
-    free( doc_path );
-    delete[] cfg_path;
     delete[] edit_path;
+    delete[] cfg_path;
+    free( doc_path );
 #ifdef _DEBUG
       printf("failed @ cfg path\n");
 #endif
@@ -139,13 +140,13 @@ void init_config() {
     CloseHandle( cfg_file );
   }
 
-  free( doc_path );
-  delete[] cfg_path;
   delete[] edit_path;
+  delete[] cfg_path;
+  free( doc_path );
   return;
 }
 
-bool toggle_config_idx( s32 idx ) {
+bool toggle_config_idx( const s32 idx ) {
   menu_style_toggle[ idx ] = !menu_style_toggle[ idx ];
   
   char *doc_path = nullptr;
@@ -153,9 +154,9 @@ bool toggle_config_idx( s32 idx ) {
   _dupenv_s( &doc_path, &doc_len, "USERPROFILE" );
 
   if( !doc_path ) {
-    #ifdef _DEBUG
+#ifdef _DEBUG
       printf("failed @ docpath\n");
-    #endif
+#endif
     return false;
   }
 
@@ -170,23 +171,24 @@ bool toggle_config_idx( s32 idx ) {
   );
   
   if( cfg_file == INVALID_HANDLE_VALUE ) {
-    free( doc_path );
     delete[] cfg_path;
-    #ifdef _DEBUG
+    free( doc_path );
+#ifdef _DEBUG
       printf("failed to open cfg file for toggling\n");
-    #endif
+#endif
     return false;
   }
   
   u8 cfg;
   ptr bytes_read;
-  if( !ReadFile( cfg_file, &cfg, sizeof( cfg ), &bytes_read, NULL ) || bytes_read != sizeof( cfg ) ) {
+  if( !ReadFile( cfg_file, &cfg, sizeof( cfg ), &bytes_read, NULL ) ||
+      bytes_read != sizeof( cfg ) ) {
     CloseHandle( cfg_file );
-    free( doc_path );
     delete[] cfg_path;
-    #ifdef _DEBUG
+    free( doc_path );
+#ifdef _DEBUG
       printf("failed @ reading cfg for toggle\n");
-    #endif
+#endif
     return false;
   }
 
@@ -196,16 +198,16 @@ bool toggle_config_idx( s32 idx ) {
   ptr bytes_written;
   if( !WriteFile( cfg_file, &cfg, sizeof( cfg ), &bytes_written, NULL ) || bytes_written != sizeof( cfg ) ) {
     CloseHandle( cfg_file );
-    free( doc_path );
     delete[] cfg_path;
-    #ifdef _DEBUG
+    free( doc_path );
+#ifdef _DEBUG
       printf("failed @ writing cfg for toggle\n");
-    #endif
+#endif
     return false;
   }
 
   CloseHandle( cfg_file );
-  free( doc_path );
   delete[] cfg_path;
+  free( doc_path );
   return true;
 }

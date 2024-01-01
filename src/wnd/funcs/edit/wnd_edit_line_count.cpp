@@ -1,20 +1,35 @@
 #include "wnd_edit_line_count.h"
 
-void wnd_type_line_count( const HWND hwnd, const RECT wnd_sz, const bool force_redraw ) {
+HDC wnd_edit_line_count_draw_bg( const HWND hwnd,
+                                 const RECT wnd_sz,
+                                 const bool ret_hdc = false ) {
+  HDC hdc = GetDC( hwnd );
+
+  SetBkMode( hdc, TRANSPARENT );
+  SetTextColor( hdc, COL_M_GRY );
+
+  HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
+  
+  RECT r { 0, 50, 24, wnd_sz.bottom - 25 };
+  FillRect( hdc, &r, dbrush );
+
+  DeleteObject( dbrush );
+
+  if( ret_hdc )
+    return hdc;
+
+  ReleaseDC( hwnd, hdc );
+  return nullptr;
+}
+
+void wnd_type_line_count( const HWND hwnd,
+                          const RECT wnd_sz,
+                          const bool force_redraw ) {
   static bool hide_line_count_prev = true;
 
   if( !menu_style_toggle[ LINE_COUNT ] || !txt_box ) {
     if( !hide_line_count_prev || force_redraw ) {
-      HDC hdc = GetDC( hwnd );
-
-      HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
-  
-      RECT r { 0, 50, 24, wnd_sz.bottom - 25 };
-      FillRect( hdc, &r, dbrush );
-
-      ReleaseDC( hwnd, hdc );
-      DeleteObject( dbrush );
-
+      wnd_edit_line_count_draw_bg( hwnd, wnd_sz );
       hide_line_count_prev = true;
     }
     return;
@@ -25,19 +40,11 @@ void wnd_type_line_count( const HWND hwnd, const RECT wnd_sz, const bool force_r
   if( prev_line == vscroll.curr_line && !force_redraw )
     return;
 
-  HDC hdc = GetDC( hwnd );
-
-  SetBkMode( hdc, TRANSPARENT );
-  SetTextColor( hdc, COL_M_GRY );
-  
-  HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
-  
-  RECT r { 0, 50, 24, wnd_sz.bottom - 25 };
-  FillRect( hdc, &r, dbrush );
-
   if( vscroll.curr_line  == vscroll.line_first + vscroll.lines_vis &&
       vscroll.line_first == vscroll.line_last  - vscroll.lines_vis + 1 )
     vscroll.line_first++;
+
+  HDC hdc = wnd_edit_line_count_draw_bg( hwnd, wnd_sz, true );
 
   for( s32 curr_line = vscroll.line_first;
            curr_line < vscroll.line_first + vscroll.lines_vis &&
@@ -60,7 +67,6 @@ void wnd_type_line_count( const HWND hwnd, const RECT wnd_sz, const bool force_r
   }
 
   ReleaseDC( hwnd, hdc );
-  DeleteObject( dbrush );
 
   prev_line = vscroll.curr_line;
 }

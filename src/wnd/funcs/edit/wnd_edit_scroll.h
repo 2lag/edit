@@ -44,7 +44,7 @@ public:
 
     cscroll_draw( true, true );
   }
-  void cscroll_draw( static bool update_info = true, static bool redraw = false ) {
+  void cscroll_draw( bool update_info = true, bool redraw = false ) {
     HDC hdc = GetDC( parent );
     HBRUSH dbrush = CreateSolidBrush( COL_D_GRY ),
            lbrush = CreateSolidBrush(

@@ -1,24 +1,15 @@
 finish :
-- organize/optimize, check for memory leaks ( new matched w delete etc ), minimize var scopes & const unchanging vars, clean/optimize all files, unhook hooks on exit, proper bug handling, etc
-- - wnd_menu.cpp/h
-- - wnd_menu_funcs.cpp/h
-- - config.cpp/h
-- - overloads.h
-- - util.h
-- - wnd_drag.cpp/h
-- - wnd_fps.cpp/h
-- - wnd_resize.cpp/h
-- - wnd_title.cpp/h
+- organize/optimize, minimize var scopes & const unchanging vars, clean/optimize all files, unhook hooks on exit, proper bug handling, etc
 - - wincludes.h
+- - wnd_drag.cpp/h
+- - wnd_title.cpp/h
+- - wnd_resize.cpp/h
+- - wnd_edit_scroll
+- - wnd_menu.cpp ( figure out why tools->multicursor doesnt display properly )
+- - wnd_menu_funcs.cpp/h
 - - wnd_func.cpp/h
 - - source.cpp
 - make sure resize wont work if dragging scroll ( wnd_resize )
-- divide the following files into more descriptive functions
-- - wnd_edit ( wnd_type_create )
-- - wnd_edit_caret ( all )
-- - wnd_edit_line_count ( all )
-- - wnd_edit_scroll ( maybe... )
-- - wnd_menu.cpp/h ( all )
 - plan functionality for :
 - - Tools
 - - - Find

@@ -200,6 +200,7 @@
     <ClInclude Include="src\wnd\funcs\edit\wnd_edit_caret.h" />
     <ClInclude Include="src\wnd\funcs\edit\wnd_edit_line_count.h" />
     <ClInclude Include="src\wnd\funcs\edit\wnd_edit_scroll.h" />
+    <ClInclude Include="src\wnd\funcs\hooks\wnd_hooks.h" />
     <ClInclude Include="src\wnd\funcs\hooks\wnd_key_hook.h" />
     <ClInclude Include="src\wnd\funcs\hooks\wnd_mouse_hook.h" />
     <ClInclude Include="src\wnd\funcs\menu\wnd_menu_funcs.h" />
