@@ -35,7 +35,8 @@ void wnd_drag( const HWND hwnd, const POINT m_pos ) {
   GetWindowRect( hwnd, &r_wnd );
 
   HMONITOR c_mon = MonitorFromWindow( hwnd, MONITOR_DEFAULTTONEAREST );
-  get_monitor_info( c_mon );
+  MONITORINFO i_mon;
+  get_monitor_info( c_mon, i_mon );
 
 
   POINT m_delta = m_pos - duser_start,
@@ -73,12 +74,13 @@ void wnd_drag_resize( const HWND hwnd, const POINT m_pos ) {
   GetCursorPos( &sm_pos );
 
   HMONITOR c_mon = MonitorFromPoint( sm_pos, MONITOR_DEFAULTTONEAREST );
+  MONITORINFO i_mon;
   static HMONITOR pc_mon = nullptr;
   static RECT pm_rect{};
   static POINT monitor_offset{};
 
   if( c_mon != pc_mon ) {
-    get_monitor_info( c_mon );
+    get_monitor_info( c_mon, i_mon );
     if( !EqualRect( &i_mon.rcWork, &pm_rect ) ) {
       pm_rect = i_mon.rcWork;
       pc_mon = c_mon;
@@ -86,7 +88,7 @@ void wnd_drag_resize( const HWND hwnd, const POINT m_pos ) {
     }
   }
 
-  get_monitor_info( pc_mon );
+  get_monitor_info( pc_mon, i_mon );
   POINT nwnd_sz{},
        nwnd_pos{},
          mon_sz = to_sz_point( i_mon.rcWork ),
@@ -112,9 +114,6 @@ void wnd_drag_resize( const HWND hwnd, const POINT m_pos ) {
    within_tcorner_range = ( m_in_lxr || m_in_rxr ) && m_in_tyr,
    within_bcorner_range = ( m_in_lxr || m_in_rxr ) && m_in_byr;
 
-  is_maxd = true;
-  GetClientRect( hwnd, &max_prev_sz );
-
   if( within_max_range ) {
     nwnd_pos = to_pos_point( i_mon.rcWork ),
     nwnd_sz  = mon_sz;
@@ -136,6 +135,8 @@ void wnd_drag_resize( const HWND hwnd, const POINT m_pos ) {
     nwnd_sz = mon_sz / 2;
   } else
     return;
+
+  is_maxd = true;
 
   SetWindowPos( hwnd, 0,
     nwnd_pos.x, nwnd_pos.y,

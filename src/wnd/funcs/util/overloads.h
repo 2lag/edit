@@ -4,8 +4,8 @@ inline POINT operator+=( POINT &a, const POINT b ) {
   return { a.x += b.x, a.y += b.y };
 }
 
-inline POINT operator+=( const POINT a, const s32 b ) {
-  return { a.x + b, a.y + b };
+inline POINT operator+=( POINT a, const s32 b ) {
+  return { a.x += b, a.y += b };
 }
 
 inline POINT operator+( const POINT a, const POINT b ) {
@@ -13,7 +13,7 @@ inline POINT operator+( const POINT a, const POINT b ) {
 }
 
 inline POINT operator-=( const POINT a, const s32 b ) {
-  return { a.x - b, a.y - b };
+  return { a.x - b, a.y - b }; // for resize
 }
 
 inline POINT operator-( const POINT a ) {
@@ -29,6 +29,9 @@ inline bool operator==( const POINT a, const POINT b ) {
 }
 
 inline POINT operator/( const POINT a, const s32 b ) {
+  if( b == 0 )
+    return { 0, 0 };
+
   return { a.x / b, a.y / b };
 }
 

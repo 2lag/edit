@@ -5,6 +5,11 @@
 
 HWND h_global;
 
+RECT max_prev_sz;
+POINT max_prev_pos;
+
+bool is_maxd = false;
+
 #define WND_BASE_SZ 420
 
 s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
@@ -23,12 +28,16 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
   RegisterClassExA( &wnd_cls );
 
   HMONITOR c_mon = MonitorFromPoint( {}, MONITOR_DEFAULTTOPRIMARY );
-  get_monitor_info( c_mon );
+  MONITORINFO i_mon;
+  get_monitor_info( c_mon, i_mon );
 
   POINT wnd_pos {
     ( i_mon.rcWork.right - i_mon.rcWork.left ) / 2 - ( WND_BASE_SZ / 2 ),
     ( i_mon.rcWork.bottom - i_mon.rcWork.top ) / 2 - ( WND_BASE_SZ / 2 )
   };
+  
+  max_prev_pos = wnd_pos;
+  max_prev_sz = i_mon.rcWork;
 
   h_global = CreateWindowExA( 0,
     "edit_class", "edit",

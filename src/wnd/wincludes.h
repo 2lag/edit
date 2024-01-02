@@ -83,7 +83,7 @@ inline void run_debug_console() {
   SetConsoleWindowInfo( std_handle, true, &wnd_debug );
 }
 
-#define get_monitor_info( c_mon ) \
-  MONITORINFO i_mon; \
-  i_mon.cbSize = sizeof( i_mon ); \
-  GetMonitorInfoA( c_mon, &i_mon )
+inline void get_monitor_info( HMONITOR c_mon, MONITORINFO &i_mon ) {
+  i_mon.cbSize = sizeof( i_mon );
+  GetMonitorInfoA( c_mon, &i_mon );
+}
