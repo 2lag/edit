@@ -4,7 +4,6 @@
 #define RESIZE_THRESHOLD 5
 #define MIN_WINDOW_SIZE 256
 
-bool user_resizing = false;
 POINT ruser_start{};
 s32 d_side{};
 

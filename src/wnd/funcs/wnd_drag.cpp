@@ -66,7 +66,7 @@ void wnd_drag( const HWND hwnd, const POINT m_pos ) {
   );
 }
 
-void wnd_drag_resize( const HWND hwnd, const POINT m_pos ) {
+void wnd_drag_resize( const HWND hwnd ) {
   if( user_resizing )
     return;
 
@@ -110,14 +110,13 @@ void wnd_drag_resize( const HWND hwnd, const POINT m_pos ) {
      within_lhalf_range = m_in_lxr && !m_in_tyr && !m_in_byr,
      within_rhalf_range = m_in_rxr && !m_in_tyr && !m_in_byr,
    within_lcorner_range = ( m_in_tyr || m_in_byr ) && m_in_lxr,
-   within_rcorner_range = ( m_in_tyr || m_in_byr ) && m_in_rxr,
    within_tcorner_range = ( m_in_lxr || m_in_rxr ) && m_in_tyr,
    within_bcorner_range = ( m_in_lxr || m_in_rxr ) && m_in_byr;
 
-  if( within_max_range ) {
+  if( within_max_range ) { // fullscreen
     nwnd_pos = to_pos_point( i_mon.rcWork ),
     nwnd_sz  = mon_sz;
-  } else if( within_lhalf_range || within_rhalf_range ) {
+  } else if( within_lhalf_range || within_rhalf_range ) { // half screen
     nwnd_pos = {
       within_lhalf_range ?
         i_mon.rcWork.left : i_mon.rcWork.right - mon_sz.x / 2,

@@ -1,5 +1,7 @@
 #include "wnd_mouse_hook.h"
 
+bool user_resizing = false;
+
 LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
   if( ncode == HC_ACTION ) {
     MSLLHOOKSTRUCT* p_mouse = reinterpret_cast<MSLLHOOKSTRUCT*>( lp );
@@ -9,7 +11,7 @@ LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
       vscroll.cscroll_ishovered( p_mouse );
 
       if( vscroll.dragging )
-        vscroll.cscroll_drag( p_mouse );
+        vscroll.cscroll_drag( p_mouse, user_resizing );
       else if( vscroll.mdragging )
         vscroll.cscroll_mbutton_scroll( p_mouse );
     } break;

@@ -43,7 +43,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     wnd_title_min( PtInRect( &min, m_pos ) );
   } break;
   case WM_LBUTTONUP: {
-    wnd_drag_resize( hwnd, m_pos );
+    wnd_drag_resize( hwnd );
 
     wnd_drag_off();
     wnd_resize_off();

@@ -76,11 +76,11 @@ public:
       dragging = true;
     }
   }
-  void cscroll_drag( const MSLLHOOKSTRUCT* p_mouse ) {
+  void cscroll_drag( const MSLLHOOKSTRUCT* p_mouse, bool resizing ) {
     POINT m_pos = p_mouse->pt;
     ScreenToClient( parent, &m_pos );
 
-    if( !GetAsyncKeyState( MK_LBUTTON ) || !dragging ) {
+    if( !GetAsyncKeyState( MK_LBUTTON ) || !dragging || resizing ) {
       duser_start = m_pos;
       dragging = false;
       return;

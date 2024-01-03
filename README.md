@@ -1,6 +1,4 @@
 finish :
-- make sure scroll wont drag if resizing ( user_resizing ) - wnd_edit_scroll
-- figure out why tools->multicursor submenu doesnt display properly - wnd_menu
 - organize/optimize, minimize var scopes & const unchanging vars, clean/optimize all files, unhook hooks on exit, proper bug handling, etc
 - - wnd_title.cpp
 - - wnd_resize.cpp/h

@@ -65,38 +65,40 @@ void wnd_menu_draw( const HDC hdc ) {
 void wnd_menu_draw_dropdown( const HWND hwnd, const s8 idx ) {
   wnd_clear_menus( idx, false );
 
-  RECT menu_rect;
+  { // need this so proper menu actually displays
+    RECT menu_rect;
 
-  switch( idx ) {
-  case 0: {
-    menu_rect = {
-      0,
-      ( WND_BTN_SZ * 2 ) - 1,
-      ( WND_BTN_SZ * 2 ),
-      ( WND_BTN_SZ * 5 ) + 1
-    };
-  } break;
-  case 1: {
-    menu_rect = {
-      ( WND_BTN_SZ * 2 ) - 1,
-      ( WND_BTN_SZ * 2 ) - 1,
-      ( WND_BTN_SZ * 6 ) + 2,
-      ( WND_BTN_SZ * 5 ) + 1
-    };
-  } break;
-  case 2: {
-    menu_rect = {
-      ( WND_BTN_SZ * 4 ) +  1,
-      ( WND_BTN_SZ * 2 ) -  1,
-      ( WND_BTN_SZ * 9 ),
-      ( WND_BTN_SZ * 5 ) +  1
-    };
-  } break;
-  default:
-    return;
+    switch( idx ) {
+    case 0: {
+      menu_rect = {
+        0,
+        ( WND_BTN_SZ * 2 ) - 1,
+        ( WND_BTN_SZ * 2 ),
+        ( WND_BTN_SZ * 5 ) + 1
+      };
+    } break;
+    case 1: {
+      menu_rect = {
+        ( WND_BTN_SZ * 2 ) - 1,
+        ( WND_BTN_SZ * 2 ) - 1,
+        ( WND_BTN_SZ * 6 ) + 2,
+        ( WND_BTN_SZ * 5 ) + 1
+      };
+    } break;
+    case 2: {
+      menu_rect = {
+        ( WND_BTN_SZ * 4 ) +  1,
+        ( WND_BTN_SZ * 2 ) -  1,
+        ( WND_BTN_SZ * 9 ),
+        ( WND_BTN_SZ * 5 ) +  1
+      };
+    } break;
+    default:
+      return;
+    }
+
+    ValidateRect( h_global, &menu_rect );
   }
-
-  ValidateRect( h_global, &menu_rect );
 
   HDC hdc = GetDC( hwnd );
   WND_MENU obj[ OBJ_BASE_COUNT ] = {};
@@ -107,7 +109,7 @@ void wnd_menu_draw_dropdown( const HWND hwnd, const s8 idx ) {
   };
   SIZE txt_sz[ OBJ_BASE_COUNT ] = {};
 
-  switch( idx ) {
+  switch( idx ) { // "Anotha one" - DJ Khaled, 2015 ( another sin )
   case 0: {
     obj[0] = wnd_menu_create( {                      0, ( WND_BTN_SZ * 2 ) - 1  ,
                                 ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 3 ) + 1 }, COL_M_GRY, true , ""               );
@@ -133,7 +135,7 @@ void wnd_menu_draw_dropdown( const HWND hwnd, const s8 idx ) {
     obj[1] = wnd_menu_create( { ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 2 )      ,
                                 ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 3 )     }, COL_D_GRY, false, "Macro"          );
     obj[2] = wnd_menu_create( { ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 3 )      ,
-                                ( WND_BTN_SZ * 2 ) + 2, ( WND_BTN_SZ * 4 ) + 1 }, COL_M_GRY, true , ""               );
+                                ( WND_BTN_SZ * 6 ) + 2, ( WND_BTN_SZ * 4 ) + 1 }, COL_M_GRY, true , ""               );
     obj[3] = wnd_menu_create( { ( WND_BTN_SZ * 2 )    , ( WND_BTN_SZ * 3 ) + 1  ,
                                 ( WND_BTN_SZ * 6 ) + 1, ( WND_BTN_SZ * 4 )     }, COL_D_GRY, false, "Multi-Cursor"   );
     obj[4] = wnd_menu_create( { ( WND_BTN_SZ * 2 ) - 1, ( WND_BTN_SZ * 4 )      ,
@@ -170,6 +172,7 @@ void wnd_menu_draw_dropdown( const HWND hwnd, const s8 idx ) {
   }
 
   SetBkMode( hdc, TRANSPARENT );
+  SetTextColor( hdc, COL_M_GRY );
 
   for( s8 m_idx = 0; m_idx < OBJ_BASE_COUNT; ++m_idx ) {
     FillRect( hdc, &obj[ m_idx ].r, obj[ m_idx ].col );
@@ -178,7 +181,6 @@ void wnd_menu_draw_dropdown( const HWND hwnd, const s8 idx ) {
       FillRect( hdc, &obj[ m_idx ].r, obj[ m_idx ].col );
     }
 
-    SetTextColor( hdc, COL_M_GRY );
 
     if( m_idx % 2 != 0 )
       GetTextExtentPoint32A( hdc, obj[ m_idx ].txt, strlen( obj[ m_idx ].txt ), &txt_sz[ m_idx ] );
