@@ -26,6 +26,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     return (LRESULT)GetStockObject( 0 );
   } break;
   case WM_DESTROY: {
+    wnd_title_cls( true );
     PostQuitMessage( 0 );
     return 0;
   } break;

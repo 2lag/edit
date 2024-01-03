@@ -1,14 +1,14 @@
 #include "wnd_edit.h"
 #include "wnd_edit_line_count.h"
 
-#include "../hooks/wnd_hooks.h"
 #include "../menu/wnd_menu.h"
+#include "../hooks/wnd_hooks.h"
 
 
 HWND txt_box;
 HHOOK key_hook;
-HHOOK mouse_hook;
 CSCROLL vscroll;
+HHOOK mouse_hook;
 bool m_base_open[ OBJ_BASE_COUNT / 2 ] = { false };
 
 bool wnd_should_clear_menus() {

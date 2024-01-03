@@ -1,6 +1,5 @@
 #include "wnd/wnd_func.h"
 #include "wnd/funcs/wnd_fps.h"
-
 #include "wnd/funcs/util/config.h"
 
 HWND h_global;
@@ -73,8 +72,6 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
     if( msg.message == WM_QUIT )
       break;
   }
-
-  UnhookWindowsHookEx( mouse_hook );
 
   return (s32)msg.wParam;
 }

@@ -1,6 +1,5 @@
 finish :
-- organize/optimize, minimize var scopes & const unchanging vars, clean/optimize all files, unhook hooks on exit, proper bug handling, etc
-- - wnd_title.cpp
+- organize/optimize, minimize var scopes & const unchanging vars, clean/optimize all files, proper bug handling, etc
 - - wnd_resize.cpp/h
 - - wnd_edit_scroll
 - - wnd_menu.cpp
@@ -8,7 +7,8 @@ finish :
 - - wnd_func.cpp/h
 - - source.cpp
 - globalize window size and previous window size, then change all sizes to those and pos's to call to_pos_point ( avoids recomputation/recalling )
-- (void)XXX all functions with ignored return values
+- run profiler and optimize more
+- (void)XXX all functions with ignored return values, add checks for important ret values in all files, concat to local log w/ date & time if error is before text editor is working, or if text editor is not working
 - plan functionality for :
 - - Tools
 - - - Find
@@ -19,6 +19,7 @@ finish :
 - - - - figure out how to permit/enable custom scripting ( .edit file in ./scripts/ ? )
 - move any mouse functionality to mousehook & same with any keyboard 1-by-1 & recode
 - test current and implement missing support for alternative pointless encoding formats ( utf-16, utf-32, etc. )
+- full, final reoptimization
 - add comments to non-self-explaning code
 - test everything ( make list of stuff from each file's funcs )
 - add ss, make documentation, then make repo public

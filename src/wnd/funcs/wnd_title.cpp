@@ -1,9 +1,11 @@
 #include "wnd_title.h"
 
+#include "./hooks/wnd_hooks.h"
+
 #define OBJ_COUNT 8
 
 void wnd_title_draw( const HDC hdc, const RECT wnd_sz ) {
-  WND_OBJ obj[ OBJ_COUNT ] = {
+  WND_OBJ obj[ OBJ_COUNT ] = { // i've got to figure out a better way for this ( vector ? ). sin #2...
     wnd_obj_create( {                                     0, 0,
                       wnd_sz.right                         , WND_BTN_SZ * 1 }, COL_M_GRY, false ),
     wnd_obj_create( {                                     0, 0,
@@ -33,22 +35,16 @@ void wnd_title_draw( const HDC hdc, const RECT wnd_sz ) {
     
     LPCSTR txt = "";
     switch( idx ) {
-    case 3:
-      txt = "X";
-      break;
-    case 5:
-      txt = "O";
-      break;
-    case 7:
-      txt = "_";
-      break;
+    case 3: txt = "X"; break;
+    case 5: txt = "O"; break;
+    case 7: txt = "_"; break;
     }
 
     SIZE txt_sz{};
     GetTextExtentPoint32A( hdc, txt, 1, &txt_sz );
 
     if( idx == 7 )
-      txt_sz.cy += 7; // offset for looks
+      txt_sz.cy += 7; // underscore sits too low naturally
 
     TextOutA( hdc,
       obj[ idx ].r.left + ( obj[ idx ].r.right - obj[ idx ].r.left ) / 2 - ( txt_sz.cx / 2 ),
@@ -65,8 +61,11 @@ void wnd_title_draw( const HDC hdc, const RECT wnd_sz ) {
 }
 
 void wnd_title_cls( const bool mouse_over ) {
-  if( mouse_over )
-    ExitProcess( 0 );
+  if( !mouse_over )
+    return;
+
+  wnd_unhook();
+  ExitProcess( 0 );
 }
 
 void wnd_title_max( const bool mouse_over ) {
