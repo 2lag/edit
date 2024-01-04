@@ -1,12 +1,13 @@
 finish :
 - organize/optimize, minimize var scopes & const unchanging vars, clean/optimize all files, proper bug handling, etc
-- - wnd_resize.cpp/h
 - - wnd_edit_scroll
 - - wnd_menu.cpp
+- - - only draw embedded menus once, rest as needed, figure out better way to make dynamic with function pointers
 - - wnd_menu_funcs.cpp/h
 - - wnd_func.cpp/h
 - - source.cpp
-- globalize window size and previous window size, then change all sizes to those and pos's to call to_pos_point ( avoids recomputation/recalling )
+- globalize window size and previous window size, same w/ respective pos's set w to_pos_point @ same time ( avoids recomputation/recalling )
+- - do same to mouse pos ( both global and local to window ? )
 - run profiler and optimize more
 - (void)XXX all functions with ignored return values, add checks for important ret values in all files, concat to local log w/ date & time if error is before text editor is working, or if text editor is not working
 - plan functionality for :
@@ -17,7 +18,7 @@ finish :
 - - - multi-Cursor
 - - - Tools -> Plugins ( Custom scripting language )
 - - - - figure out how to permit/enable custom scripting ( .edit file in ./scripts/ ? )
-- move any mouse functionality to mousehook & same with any keyboard 1-by-1 & recode
+- move any mouse functionality to mousehook & same with any keyboard 1-by-1 & recode as needed
 - test current and implement missing support for alternative pointless encoding formats ( utf-16, utf-32, etc. )
 - full, final reoptimization
 - add comments to non-self-explaning code

@@ -59,11 +59,12 @@ void wnd_resize_get_cursor( const POINT m_pos, const RECT wnd_sz ) {
 
 void wnd_resize_on( const HWND hwnd, const POINT m_pos, const RECT wnd_sz ) {
   wnd_resize_get_side( m_pos, wnd_sz );
-  if( d_side ) {
-    user_resizing = true;
-    ruser_start = m_pos;
-    SetCapture( hwnd );
-  }
+  if( !d_side )
+    return;
+
+  user_resizing = true;
+  ruser_start = m_pos;
+  SetCapture( hwnd );
 }
 
 void wnd_resize_off() {
@@ -73,7 +74,10 @@ void wnd_resize_off() {
   }
 }
 
-void wnd_resize_check_bounds( const HWND hwnd, LPPOINT wnd_pos, LPPOINT wnd_sz, const POINT m_delta ) {
+void wnd_resize_check_bounds( const HWND hwnd,
+                                 LPPOINT wnd_pos,
+                                 LPPOINT wnd_sz,
+                             const POINT m_delta ) {
   HMONITOR c_mon = MonitorFromWindow( hwnd, MONITOR_DEFAULTTONEAREST );
   MONITORINFO i_mon;
   get_monitor_info( c_mon, i_mon );
@@ -86,6 +90,7 @@ void wnd_resize_check_bounds( const HWND hwnd, LPPOINT wnd_pos, LPPOINT wnd_sz, 
     wnd_pos->y = i_mon.rcWork.top;
     wnd_sz->y += m_delta.y;
   }
+
   if( wnd_pos->x + wnd_sz->x >= i_mon.rcWork.right )
     wnd_sz->x = i_mon.rcWork.right - wnd_pos->x;
   if( wnd_pos->y + wnd_sz->y >= i_mon.rcWork.bottom )
@@ -101,7 +106,17 @@ void wnd_resize_check_bounds( const HWND hwnd, LPPOINT wnd_pos, LPPOINT wnd_sz, 
   }
 }
 
-void wnd_resize( const HWND hwnd, const POINT m_pos, const RECT wnd_sz ) {
+void wnd_adj_win_pos_sz( POINT& wnd_pos,
+                         POINT& pwnd_sz,
+                   const POINT  pos_adj,
+                   const POINT  sz_adj ) {
+  wnd_pos += pos_adj;
+  pwnd_sz += sz_adj;
+}
+
+void wnd_resize( const HWND hwnd,
+                 const POINT m_pos,
+                 const RECT wnd_sz ) {
   if( !d_side || !user_resizing ) {
     ruser_start = m_pos;
     return;
@@ -113,25 +128,39 @@ void wnd_resize( const HWND hwnd, const POINT m_pos, const RECT wnd_sz ) {
   
   ClientToScreen( hwnd, &wnd_pos );
 
-  auto wnd_adj = [&]( POINT pos, POINT size ) {
-    wnd_pos += pos;
-    pwnd_sz += size;
-  };  
-
-  std::unordered_map<s32, std::function<void()>> edge_actions {
-    { EDGE_TOP_LEFT    , { [&](){ wnd_adj( { m_delta.x, m_delta.y }, { -m_delta.x, -m_delta.y } ); } } },
-    { EDGE_TOP         , { [&](){ wnd_adj( {         0, m_delta.y }, {          0, -m_delta.y } ); } } },
-    { EDGE_TOP_RIGHT   , { [&](){ wnd_adj( {         0, m_delta.y }, {  m_delta.x, -m_delta.y } ); ruser_start.x = m_pos.x; } } },
-    { EDGE_RIGHT       , { [&](){ wnd_adj( {         0,         0 }, {  m_delta.x,          0 } ); ruser_start.x = m_pos.x; } } },
-    { EDGE_BOTTOM_RIGHT, { [&](){ wnd_adj( {         0,         0 }, {  m_delta.x,  m_delta.y } ); ruser_start   = m_pos;   } } },
-    { EDGE_BOTTOM      , { [&](){ wnd_adj( {         0,         0 }, {          0,  m_delta.y } ); ruser_start.y = m_pos.y; } } },
-    { EDGE_BOTTOM_LEFT , { [&](){ wnd_adj( { m_delta.x,         0 }, { -m_delta.x,  m_delta.y } ); ruser_start.y = m_pos.y; } } },
-    { EDGE_LEFT        , { [&](){ wnd_adj( { m_delta.x,         0 }, { -m_delta.x,          0 } ); } } }
+  // and finally, sin #3
+  std::unordered_map<s32, std::pair<POINT, POINT>> adjustments {
+    { EDGE_TOP_LEFT    , { {            m_delta   }, {             -m_delta   } } },
+    { EDGE_TOP         , { {         0, m_delta.y }, {          0, -m_delta.y } } },
+    { EDGE_TOP_RIGHT   , { {         0, m_delta.y }, {  m_delta.x, -m_delta.y } } },
+    { EDGE_RIGHT       , { {         0,         0 }, {  m_delta.x,          0 } } },
+    { EDGE_BOTTOM_RIGHT, { {         0,         0 }, {              m_delta   } } },
+    { EDGE_BOTTOM      , { {         0,         0 }, {          0,  m_delta.y } } },
+    { EDGE_BOTTOM_LEFT , { { m_delta.x,         0 }, { -m_delta.x,  m_delta.y } } },
+    { EDGE_LEFT        , { { m_delta.x,         0 }, { -m_delta.x,          0 } } }
   };
 
-  auto it = edge_actions.find( d_side );
-  if( it != edge_actions.end() )
-    it->second();
+  auto adjustment = adjustments.find( d_side );
+  if( adjustment != adjustments.end() ) {
+    wnd_adj_win_pos_sz( wnd_pos, pwnd_sz,
+      adjustment->second.first,
+      adjustment->second.second
+    );
+  }
+
+  switch( d_side ) {
+  case EDGE_TOP_RIGHT:
+  case EDGE_RIGHT:
+    ruser_start.x = m_pos.x;
+    break;
+  case EDGE_BOTTOM_LEFT:
+  case EDGE_BOTTOM:
+    ruser_start.y = m_pos.y;
+    break;
+  case EDGE_BOTTOM_RIGHT:
+    ruser_start = m_pos;
+    break;
+  }
 
   wnd_resize_check_bounds( hwnd, &wnd_pos, &pwnd_sz, m_delta );
 
