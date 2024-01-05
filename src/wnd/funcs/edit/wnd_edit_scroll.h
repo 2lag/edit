@@ -49,10 +49,9 @@ public:
     HBRUSH dbrush = CreateSolidBrush( COL_D_GRY ),
            lbrush = CreateSolidBrush(
              hovered ? COL_L_GRY : COL_M_GRY
-    );
+           );
 
-    if( redraw )
-      GetTextExtentPoint32A( hdc, "A", 1, &line_sz );
+    if( redraw ) GetTextExtentPoint32A( hdc, "A", 1, &line_sz );
     cscroll_setinfo( update_info, redraw );
 
     FillRect( hdc, &bkrect, dbrush );
@@ -76,7 +75,8 @@ public:
       dragging = true;
     }
   }
-  void cscroll_drag( const MSLLHOOKSTRUCT* p_mouse, bool resizing ) {
+  void cscroll_drag( const MSLLHOOKSTRUCT* p_mouse,
+                                      bool resizing ) {
     POINT m_pos = p_mouse->pt;
     ScreenToClient( parent, &m_pos );
 
@@ -130,10 +130,11 @@ public:
       return;
 
     s32 char_idx = (s32)HIWORD( Edit_GetSel( parent ) );
-
-    if( GetAsyncKeyState( VK_MBUTTON ) || GetAsyncKeyState( VK_CONTROL ) ) {
-      s32 line_len = Edit_LineLength( parent, char_idx );
+    // this has got to be another sin ngl... #4
+    if( GetAsyncKeyState( VK_MBUTTON ) ||
+        GetAsyncKeyState( VK_CONTROL ) ) {
       s32 curr_line_start_idx = Edit_LineIndex( parent, -1 );
+      s32 line_len = Edit_LineLength( parent, char_idx );
 
 #define WHEEL_DDELTA 0x0078
 #define WHEEL_UDELTA 0xFF88
@@ -204,15 +205,14 @@ public:
 
     if( md_delta.x >= line_sz.cx || md_delta.x <= -line_sz.cx ) {
       s32 curr_caret_idx = char_idx + 1;
+      s32 curr_line_start_idx = Edit_LineIndex( parent, -1 ) + 1;
       if( md_delta.x < 0 ) {
-        s32 curr_line_start_idx = Edit_LineIndex( parent, -1 ) + 1;
         if( curr_caret_idx - curr_line_start_idx <= 0 ) {
           mduser_start = m_pos;
           return;
         }
         char_idx--;
       } else {
-        s32 curr_line_start_idx = Edit_LineIndex( parent, -1 ) + 1;
         s32 line_len = Edit_LineLength( parent, curr_caret_idx );
         if( curr_caret_idx >= curr_line_start_idx + line_len ) {
           mduser_start = m_pos;
@@ -296,14 +296,16 @@ public:
     }
   }
   void cscroll_update() {
-    if( parent ) {
-      static s64 prev_sel = 0;
-      s64 sel = Edit_GetSel( parent );
+    if( !parent )
+      return;
 
-      if( sel != prev_sel ) {
-        cscroll_draw( true, true );
-        prev_sel = sel;
-      }
-    }
+    static s64 prev_sel = 0;
+    s64 sel = Edit_GetSel( parent );
+
+    if( sel == prev_sel )
+      return;
+
+    cscroll_draw( true, true );
+    prev_sel = sel;
   }
 };

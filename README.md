@@ -1,10 +1,11 @@
 finish :
 - organize/optimize, minimize var scopes & const unchanging vars, clean/optimize all files, proper bug handling, etc
 - - wnd_edit_scroll.h
+- - - code is good for the most part, make more readable, optimize drag n stuff etc
 - - wnd_menu_funcs.cpp/h
 - - wnd_func.cpp/h
 - - source.cpp
-- swap all centered text calcs to use respective center_text, globalize window size, prev window size, window pos, prev window pos, ( mouse pos, prev mouse pos ( global and local to screen ) ) ( avoids recomputation/recalling )
+- globalize window size, prev window size, window pos, prev window pos, ( mouse pos, prev mouse pos ( global & make func to convert to local ) ) ( avoids recomputation/recalling )
 - make sure fps is calculating properly
 - run profiler and optimize more
 - plan functionality for :
