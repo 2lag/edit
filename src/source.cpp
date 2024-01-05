@@ -30,28 +30,27 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
   MONITORINFO i_mon;
   get_monitor_info( c_mon, i_mon );
 
-  POINT wnd_pos {
-    ( i_mon.rcWork.right - i_mon.rcWork.left ) / 2 - ( WND_BASE_SZ / 2 ),
-    ( i_mon.rcWork.bottom - i_mon.rcWork.top ) / 2 - ( WND_BASE_SZ / 2 )
+  POINT wnd_pos = max_prev_pos = {
+    ( i_mon.rcWork.right - i_mon.rcWork.left - WND_BASE_SZ ) / 2,
+    ( i_mon.rcWork.bottom - i_mon.rcWork.top - WND_BASE_SZ ) / 2
   };
-  
-  max_prev_pos = wnd_pos;
   max_prev_sz = i_mon.rcWork;
 
   h_global = CreateWindowExA( 0,
     "edit_class", "edit",
     WS_POPUPWINDOW,
-    wnd_pos.x,
-    wnd_pos.y,
-    WND_BASE_SZ,
-    WND_BASE_SZ,
+    wnd_pos.x  , wnd_pos.y  ,
+    WND_BASE_SZ, WND_BASE_SZ,
     0, 0, inst, 0
   );
 
   ShowWindow( h_global, cmdshow );
   UpdateWindow( h_global );
 
-  std::thread draw_fps( wnd_fps_draw, std::ref( h_global ) );
+  std::thread draw_fps(
+    wnd_fps_draw,
+    std::ref( h_global )
+  );
   draw_fps.detach();
 
 #ifdef _DEBUG

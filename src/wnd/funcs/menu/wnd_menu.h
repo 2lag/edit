@@ -7,8 +7,8 @@ struct WND_MENU : public WND_OBJ {
 
 inline WND_MENU wnd_menu_create( const RECT r,
                                  const COLORREF col,
-                                 const bool next,
-                                 const char *txt ) {
+                                 const char *txt,
+                                 const bool next = false ) {
   return { r, CreateSolidBrush( col ), next, txt };
 }
 

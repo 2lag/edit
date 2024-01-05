@@ -12,6 +12,8 @@
 
 #include <thread>
 
+#include <vector>
+
 #ifdef _DEBUG
 #include <stdio.h>
 #endif
@@ -30,7 +32,7 @@ enum WND_COL {
 struct WND_OBJ {
   RECT r;
   HBRUSH col;
-  bool next;
+  bool next = false;
 };
 
 struct VEC3 {
@@ -87,3 +89,6 @@ inline void get_monitor_info( HMONITOR c_mon, MONITORINFO &i_mon ) {
   i_mon.cbSize = sizeof( i_mon );
   GetMonitorInfoA( c_mon, &i_mon );
 }
+
+#define hcenter_text( r_container, text_sz ) r_container.left + ( ( r_container.right - r_container.left ) / 2 ) - ( text_sz.cx / 2 )
+#define vcenter_text( r_container, text_sz ) r_container.top  + ( ( r_container.bottom - r_container.top ) / 2 ) - ( text_sz.cy / 2 )
