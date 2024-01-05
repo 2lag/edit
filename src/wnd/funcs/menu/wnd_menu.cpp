@@ -83,9 +83,7 @@ RECT wnd_menu_create_vert( const HDC hdc,
   vector<SIZE> txt_sz( txt.size() );
   vector<s32> underline_dim( txt.size() );
   for( s8 idx = 0; idx < txt.size(); ++idx ) {
-    underline_dim[ idx ] = ( WND_BTN_SZ * ( idx + 3 ) ) - 5;
-    if( sub )
-      underline_dim[ idx ] = ( WND_BTN_SZ * ( idx + 5 ) ) - 5;
+    underline_dim[ idx ] = start.y + ( WND_BTN_SZ * ( idx + 1 ) ) - 5;
 
     RECT item_rect {
       ( start.x + 1 ),
