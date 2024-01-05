@@ -8,7 +8,7 @@ POINT ruser_start{};
 s32 d_side{};
 
 void wnd_resize_get_side( const POINT m_pos, const RECT wnd_sz ) {
-  POINT pwn_sz = to_sz_point( wnd_sz );
+  POINT pwn_sz = get_size( wnd_sz );
   
   bool on_left   = ( m_pos.x <= RESIZE_THRESHOLD ),
        on_top    = ( m_pos.y <= RESIZE_THRESHOLD ),
@@ -30,7 +30,7 @@ void wnd_resize_get_side( const POINT m_pos, const RECT wnd_sz ) {
 }
 
 void wnd_resize_get_cursor( const POINT m_pos, const RECT wnd_sz ) {
-  POINT pwn_sz = to_sz_point( wnd_sz );
+  POINT pwn_sz = get_size( wnd_sz );
   
   bool on_left   = ( m_pos.x <= RESIZE_THRESHOLD ),
        on_top    = ( m_pos.y <= RESIZE_THRESHOLD ),
@@ -123,8 +123,8 @@ void wnd_resize( const HWND hwnd,
   }
 
   POINT m_delta = ( m_pos - ruser_start ),
-        wnd_pos = ( to_pos_point( wnd_sz ) -= 1 ),
-        pwnd_sz = ( to_sz_point ( wnd_sz ) += 2 );
+        wnd_pos = ( get_position( wnd_sz ) -= 1 ),
+        pwnd_sz = ( get_size ( wnd_sz ) += 2 );
   
   ClientToScreen( hwnd, &wnd_pos );
 
@@ -179,19 +179,19 @@ void wnd_resize_title( const HWND hwnd, const bool mouse_over ) {
   MONITORINFO i_mon;
   get_monitor_info( c_mon, i_mon );
 
-  POINT mon_sz = to_sz_point( i_mon.rcWork ),
+  POINT mon_sz = get_size( i_mon.rcWork ),
        nwnd_ps{},
        nwnd_sz{};
 
   if( !is_maxd ) {
     GetClientRect( hwnd, &max_prev_sz );
-    max_prev_pos = to_pos_point( max_prev_sz );
+    max_prev_pos = get_position( max_prev_sz );
     ClientToScreen( hwnd, &max_prev_pos );
 
-    nwnd_ps = to_pos_point( i_mon.rcWork ),
+    nwnd_ps = get_position( i_mon.rcWork ),
     nwnd_sz = mon_sz;
   } else {
-    POINT wnd_sz = to_sz_point( max_prev_sz );
+    POINT wnd_sz = get_size( max_prev_sz );
 
     if( !max_prev_pos )
       max_prev_pos = ( mon_sz - wnd_sz ) / 2;

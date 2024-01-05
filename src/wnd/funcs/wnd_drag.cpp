@@ -9,7 +9,7 @@ void wnd_drag_on( const HWND hwnd, const POINT m_pos, const bool mouse_over ) {
 
   if( !is_maxd ) {
     GetClientRect( hwnd, &max_prev_sz );
-    max_prev_pos = to_pos_point( max_prev_sz );
+    max_prev_pos = get_position( max_prev_sz );
     ClientToScreen( hwnd, &max_prev_pos );
   }
 
@@ -40,9 +40,9 @@ void wnd_drag( const HWND hwnd, const POINT m_pos ) {
 
 
   POINT m_delta = m_pos - duser_start,
-         wnd_sz = to_sz_point( r_wnd ),
-           m_sz = to_sz_point( i_mon.rcWork ),
-        wnd_pos = to_pos_point( r_wnd ) + m_delta;
+         wnd_sz = get_size( r_wnd ),
+           m_sz = get_size( i_mon.rcWork ),
+        wnd_pos = get_position( r_wnd ) + m_delta;
 
   u32 swp_flags = SWP_NOSIZE | SWP_NOZORDER;
 
@@ -84,15 +84,15 @@ void wnd_drag_resize( const HWND hwnd ) {
     if( !EqualRect( &i_mon.rcWork, &pm_rect ) ) {
       pm_rect = i_mon.rcWork;
       pc_mon = c_mon;
-      monitor_offset = to_pos_point( i_mon.rcWork );
+      monitor_offset = get_position( i_mon.rcWork );
     }
   }
 
   get_monitor_info( pc_mon, i_mon );
   POINT nwnd_sz{},
        nwnd_pos{},
-         mon_sz = to_sz_point( i_mon.rcWork ),
-        pmon_sz = to_sz_point( pm_rect ),
+         mon_sz = get_size( i_mon.rcWork ),
+        pmon_sz = get_size( pm_rect ),
      sm_pos_adj {
        sm_pos.x < 0 ? sm_pos.x + pmon_sz.x : sm_pos.x,
        sm_pos.y - monitor_offset.y
@@ -114,7 +114,7 @@ void wnd_drag_resize( const HWND hwnd ) {
    within_bcorner_range = ( m_in_lxr || m_in_rxr ) && m_in_byr;
 
   if( within_max_range ) { // fullscreen
-    nwnd_pos = to_pos_point( i_mon.rcWork ),
+    nwnd_pos = get_position( i_mon.rcWork ),
     nwnd_sz  = mon_sz;
   } else if( within_lhalf_range || within_rhalf_range ) { // half screen
     nwnd_pos = {

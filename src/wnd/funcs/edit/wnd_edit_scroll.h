@@ -267,7 +267,7 @@ public:
       line_count = Edit_GetLineCount( parent );
       line_first = Edit_GetFirstVisibleLine( parent ) + 1;
 
-      lines_vis = (s32)( to_sz_point( txt_rect ).y / line_sz.cy );
+      lines_vis = (s32)( get_size( txt_rect ).y / line_sz.cy );
       line_last = line_first + lines_vis - 1;
 
       if( line_count <= lines_vis )

@@ -31,7 +31,10 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
       case 0x46: { // CTRL + F
         if( m_base_open[2] )
           return wnd_menu_style_toggle(0);
-
+        /*
+        if( m_base_open[1] )
+          return do find
+        */
         return wnd_menu_dropdown_toggle( m_base_open[0], 0 );
       } break;
       case 0x4C: { // CTRL + L
@@ -50,6 +53,12 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
       case 0x50: { // CTRL + P      
         if( m_base_open[2] )
           return wnd_menu_style_toggle(1);
+      } break;
+      case 0x52: { // CTRL + R
+        /*
+        if( m_base_open[1] )
+          return do replace
+        */
       } break;
       case 0x53: { // CTRL + S
         if( m_base_open[0] ) // save route

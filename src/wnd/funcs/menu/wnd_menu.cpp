@@ -64,12 +64,13 @@ RECT wnd_menu_create_vert( const HDC hdc,
                            const s32 width,
                            const POINT start,
                            const vector<s32> u_pos,
-                           const vector<const char*> txt ) {
+                           const vector<const char*> txt,
+                           const bool sub = false ) {
   HBRUSH brush = CreateSolidBrush( COL_D_GRY );
   HBRUSH bg_brush = CreateSolidBrush( COL_M_GRY );
   RECT menu_rect = {
     start.x,
-    start.y,
+    start.y - 1,
     start.x + width,
     start.y + ( WND_BTN_SZ * txt.size() )
   };
@@ -83,6 +84,8 @@ RECT wnd_menu_create_vert( const HDC hdc,
   vector<s32> underline_dim( txt.size() );
   for( s8 idx = 0; idx < txt.size(); ++idx ) {
     underline_dim[ idx ] = ( WND_BTN_SZ * ( idx + 3 ) ) - 5;
+    if( sub )
+      underline_dim[ idx ] = ( WND_BTN_SZ * ( idx + 5 ) ) - 5;
 
     RECT item_rect {
       ( start.x + 1 ),
@@ -155,12 +158,14 @@ void wnd_menu_draw_dropdown( const HWND hwnd, const s8 idx ) {
     );
   } break;
   case 1: {
-    underline_pos.resize(3);
-    underline_pos[0] = 81,
-    underline_pos[1] = 97;
-    underline_pos[2] = 66;
+    underline_pos.resize(5);
+    underline_pos[0] = 85;
+    underline_pos[1] = 74;
+    underline_pos[2] = 81,
+    underline_pos[3] = 97;
+    underline_pos[4] = 78;
 
-    vector<const char*> txt{ "Macro", "Multi-Cursor", "Plugins (?)" };
+    vector<const char*> txt{ "Find", "Replace", "Macro", "Multi-Cursor", "Scripts" };
     menu_rect = wnd_menu_create_vert( hdc,
       WND_BTN_SZ * 4, { WND_BTN_SZ * 2, WND_BTN_SZ * 2 },
       underline_pos, txt
@@ -194,10 +199,10 @@ void wnd_menu_draw_sub_dropdown( const HWND hwnd ) {
   HDC hdc = GetDC( hwnd );
 
   vector<const char*> txt{ "Clear", "Record", "Playback" };
-  vector<s32> underline_pos{ 170, 164, 158 };
-  RECT menu_rect = wnd_menu_create_vert( hdc,
-    WND_BTN_SZ * 3, { WND_BTN_SZ * 6, WND_BTN_SZ * 2 },
-    underline_pos, txt
+  vector<s32> underline_pos{ 170, 164, 157 };
+  (void)wnd_menu_create_vert( hdc,
+    WND_BTN_SZ * 3, { WND_BTN_SZ * 6 - 1, WND_BTN_SZ * 4 },
+    underline_pos, txt, true
   );
 
   ReleaseDC( hwnd, hdc );
