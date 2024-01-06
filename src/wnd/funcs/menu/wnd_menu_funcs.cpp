@@ -5,26 +5,13 @@
 
 HWND menu_txt;
 
-s32 wnd_menu_dropdown_toggle( bool &toggle, s32 idx ) {
+s32 wnd_menu_dropdown_toggle( bool &toggle, const s32 idx ) {
   toggle = !toggle;
 
   if( toggle )
     wnd_menu_draw_dropdown( h_global, (s8)idx );
-  else {
-    HDC hdc = GetDC( h_global );
-
-    HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
-  
-    RECT wnd_sz = get_wnd_sz( h_global );
-
-    RECT r { 0, 50, 24, wnd_sz.bottom - 25 };
-    FillRect( hdc, &r, dbrush );
-
-    ReleaseDC( h_global, hdc );
-    DeleteObject( dbrush );
-
+  else
     wnd_clear_menus( true );
-  }
 
   return 1;
 }
@@ -45,7 +32,7 @@ s32 wnd_menu_subdropdown_toggle( bool &check, bool &toggle ) {
   return 1;
 }
 
-s32 wnd_menu_new_wnd( bool &toggle ) {
+s32 wnd_menu_new_wnd( const bool toggle ) {
   if( !toggle )
     return 1;
 
@@ -103,15 +90,7 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     );
 
     if( file == INVALID_HANDLE_VALUE ) {
-#ifdef _DEBUG
-      printf( "invalid path : %s\n", file_path );
-#else
-      char *err = new char[ 16 + path_len ];
-      sprintf_s( err, 16 + path_len, "invalid path : %s", file_path );
-      SetWindowTextA( txt_box, err );
-      delete[] err;
-#endif
-
+      SetWindowTextA( txt_box, "invalid path" );
       delete[] file_path;
       break;
     }
@@ -154,20 +133,12 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     file_path = new char[ total_len ];
 
     if( !file_path ) {
-#ifdef _DEBUG
-      printf("failed to allocate file_path memory\n");
-#else
       SetWindowTextA( menu_txt, "memory error" );
-#endif
       break;
     }
 
     if( !GetWindowTextA( hwnd, file_path, path_len ) ) {
-#ifdef _DEBUG
-      printf("failed to get text: %lu\n", GetLastError() );
-#else
       SetWindowTextA( menu_txt, "error getting path" );
-#endif
       delete[] file_path;
       break;
     }
@@ -179,12 +150,7 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     );
 
     if( file == INVALID_HANDLE_VALUE ) {
-#ifdef _DEBUG
-      printf("error opening file handle : %lu\npath : %s\n", GetLastError(), file_path );
-#else
       SetWindowTextA( menu_txt, "invalid path");
-#endif
-
       delete[] file_path;
       break;
     }
@@ -192,22 +158,14 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     char *txt_box_txt = new char[ txt_box_len ];
 
     if( !txt_box_txt ) {
-#ifdef _DEBUG
-      printf("failed mem allocation for text box text\n" );
-#else
       SetWindowTextA( menu_txt, "memory error");
-#endif
       delete[] file_path;
       CloseHandle( file );
       break;
     }
 
     if( !GetWindowTextA( txt_box, txt_box_txt, txt_box_len ) ) {
-#ifdef _DEBUG
-      printf("failed to get text box text\n" );
-#else
       SetWindowTextA( menu_txt, "error getting text");
-#endif
       delete[] file_path;
       delete[] txt_box_txt;
       CloseHandle( file );
@@ -215,13 +173,9 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     }
 
     ptr bytes_wrote;
-    if( !WriteFile( file, txt_box_txt, txt_box_len - 1, &bytes_wrote, NULL ) ) {
-#ifdef _DEBUG
-      printf( "error writing to file : %lu\n", GetLastError() );
-#else
+    if( !WriteFile( file, txt_box_txt, txt_box_len - 1, &bytes_wrote, NULL ) )
       SetWindowTextA( menu_txt, "failed to write to file" );
-#endif
-    } else {
+    else {
       strcat_s( file_path, total_len, "\r\n\r\n");
       strcat_s( file_path, total_len, txt_box_txt );
 
@@ -248,21 +202,19 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
   toggle = false;
   wnd_clear_menus( true );
 
-  RECT menu_sz = get_wnd_sz( h_global );
-
+  POINT menu_sz = get_size( get_wnd_sz( h_global ) );
+  
   menu_txt = CreateWindowExA( WS_EX_TRANSPARENT,
     "EDIT", 0,
     WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | ES_NOHIDESEL,
-    ( WND_BTN_SZ * 6 ) + 6,
-    WND_BTN_SZ + 4,
-    ( menu_sz.right - menu_sz.left ) - ( ( WND_BTN_SZ * 6 ) + 10 ),
-    WND_BTN_SZ - 9,
+    ( WND_BTN_SZ * 6 ) + 6, WND_BTN_SZ + 4,
+    menu_sz.x - ( WND_BTN_SZ * 6 ) - 10, WND_BTN_SZ - 9,
     h_global, NULL,
     (HINSTANCE)GetWindowLongPtrA( h_global, GWLP_HINSTANCE ), NULL
   );
 
   SetWindowSubclass( menu_txt,
-    ( idx == 0 ) ? openproc : saveproc,
+    !idx ? openproc : saveproc,
     0, 0
   );
 
