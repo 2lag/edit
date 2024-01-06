@@ -39,7 +39,7 @@ s32 wnd_menu_new_wnd( const bool toggle ) {
   m_base_open[0] = false;
   wnd_clear_menus( true );
 
-  ptr buf_len = GetCurrentDirectoryA( 0, NULL ) + (ptr)strlen( "\\edit.exe" ) + 1;
+  ptr buf_len = GetCurrentDirectoryA( 0, 0 ) + (ptr)strlen( "\\edit.exe" ) + 1;
   char *buf = new char[ buf_len ];
   GetCurrentDirectoryA( buf_len, buf );
 
@@ -63,6 +63,18 @@ s32 wnd_menu_new_wnd( const bool toggle ) {
   CloseHandle( pi.hThread );
 
   return 1;
+}
+
+void set_text( const HWND textbox,
+               const char* txt ) {
+  s32 total_sz = static_cast<s32>( strlen( txt ) ) + 4 + GetWindowTextLengthA( textbox ) + 1;
+  char* ret_txt = new char[ total_sz ]{};
+
+  strcat_s( ret_txt, total_sz, txt );
+
+  SetWindowTextA( textbox, ret_txt );
+
+  delete[] ret_txt;
 }
 
 char *file_path = nullptr;
@@ -90,7 +102,7 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     );
 
     if( file == INVALID_HANDLE_VALUE ) {
-      SetWindowTextA( txt_box, "invalid path" );
+      set_text( txt_box, "invalid path" );
       delete[] file_path;
       break;
     }
@@ -102,7 +114,7 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
 
     ptr bytes_read;
     if( ReadFile( file, buf, buf_sz, &bytes_read, nullptr ) && bytes_read == buf_sz )
-      SetWindowTextA( txt_box, static_cast<LPCSTR>( buf ) );
+      set_text( txt_box, static_cast<LPCSTR>( buf ) );
     
     delete[] file_path;
     delete[] static_cast<BYTE*>( buf );
@@ -133,12 +145,12 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     file_path = new char[ total_len ];
 
     if( !file_path ) {
-      SetWindowTextA( menu_txt, "memory error" );
+      set_text( menu_txt, "memory error" );
       break;
     }
 
     if( !GetWindowTextA( hwnd, file_path, path_len ) ) {
-      SetWindowTextA( menu_txt, "error getting path" );
+      set_text( menu_txt, "error getting path" );
       delete[] file_path;
       break;
     }
@@ -150,7 +162,7 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     );
 
     if( file == INVALID_HANDLE_VALUE ) {
-      SetWindowTextA( menu_txt, "invalid path");
+      set_text( menu_txt, "invalid path");
       delete[] file_path;
       break;
     }
@@ -158,14 +170,14 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     char *txt_box_txt = new char[ txt_box_len ];
 
     if( !txt_box_txt ) {
-      SetWindowTextA( menu_txt, "memory error");
+      set_text( menu_txt, "memory error");
       delete[] file_path;
       CloseHandle( file );
       break;
     }
 
     if( !GetWindowTextA( txt_box, txt_box_txt, txt_box_len ) ) {
-      SetWindowTextA( menu_txt, "error getting text");
+      set_text( menu_txt, "error getting text");
       delete[] file_path;
       delete[] txt_box_txt;
       CloseHandle( file );
@@ -174,12 +186,12 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
 
     ptr bytes_wrote;
     if( !WriteFile( file, txt_box_txt, txt_box_len - 1, &bytes_wrote, NULL ) )
-      SetWindowTextA( menu_txt, "failed to write to file" );
+      set_text( menu_txt, "failed to write to file" );
     else {
       strcat_s( file_path, total_len, "\r\n\r\n");
       strcat_s( file_path, total_len, txt_box_txt );
 
-      SetWindowTextA( txt_box, file_path ); // in case saved in wrong dir bc user ( me... OR YOU...... ) is dumb.
+      set_text( txt_box, file_path ); // in case saved in wrong dir bc user ( me... OR YOU...... ) is dumb.
       DestroyWindow( menu_txt );
     }
 
