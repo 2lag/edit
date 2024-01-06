@@ -8,22 +8,21 @@ LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
 
     switch( wp ) {
     case WM_MOUSEMOVE: {
-      vscroll.cscroll_ishovered( p_mouse );
+      vscroll.get_hovered( p_mouse );
 
       if( vscroll.dragging )
-        vscroll.cscroll_drag( p_mouse, user_resizing );
+        vscroll.drag( p_mouse, user_resizing );
       else if( vscroll.mdragging )
-        vscroll.cscroll_mbutton_scroll( p_mouse );
+        vscroll.mdrag_scroll( p_mouse );
     } break;
     case WM_MBUTTONDOWN: {
-      vscroll.cscroll_mbutton_on( p_mouse );
+      vscroll.mdrag_on( p_mouse );
     } break;
     case WM_MBUTTONUP: {
-      vscroll.cscroll_mbutton_off();
+      vscroll.mdrag_off();
     } break;
     case WM_MOUSEWHEEL: {
-      vscroll.cscroll_hover_scroll( p_mouse );
-      vscroll.cscroll_update();
+      vscroll.hover_scroll( p_mouse );
     } break;
     }
   }

@@ -10,7 +10,7 @@ void wnd_menu_create_bar( const HDC hdc,
   HBRUSH brush = CreateSolidBrush( COL_D_GRY );
   RECT menu_rect = {
     -1, WND_BTN_SZ,
-    WND_BTN_SZ * 2 * txt.size(),
+    WND_BTN_SZ * 2 * static_cast<salt> ( txt.size() ),
     WND_BTN_SZ * 2
   };
   
@@ -64,15 +64,14 @@ RECT wnd_menu_create_vert( const HDC hdc,
                            const s32 width,
                            const POINT start,
                            const vector<s32> u_pos,
-                           const vector<const char*> txt,
-                           const bool sub = false ) {
+                           const vector<const char*> txt ) {
   HBRUSH brush = CreateSolidBrush( COL_D_GRY );
   HBRUSH bg_brush = CreateSolidBrush( COL_M_GRY );
   RECT menu_rect = {
     start.x,
     start.y - 1,
     start.x + width,
-    start.y + ( WND_BTN_SZ * txt.size() )
+    start.y + ( WND_BTN_SZ * static_cast<salt>( txt.size() ) )
   };
 
   SetBkMode( hdc, TRANSPARENT );
@@ -200,7 +199,7 @@ void wnd_menu_draw_sub_dropdown( const HWND hwnd ) {
   vector<s32> underline_pos{ 170, 164, 157 };
   (void)wnd_menu_create_vert( hdc,
     WND_BTN_SZ * 3, { WND_BTN_SZ * 6 - 1, WND_BTN_SZ * 4 },
-    underline_pos, txt, true
+    underline_pos, txt
   );
 
   ReleaseDC( hwnd, hdc );

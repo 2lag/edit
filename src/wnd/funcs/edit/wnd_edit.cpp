@@ -30,7 +30,7 @@ void wnd_clear_menus( const s32 exclude, const bool overryde ) {
     m_base_open[ idx ] = false;
   }
 
-  vscroll.cscroll_draw( true, true );
+  vscroll.draw( true, true );
   RECT wnd_sz = get_wnd_sz( h_global );
   wnd_type_line_count( h_global, wnd_sz, true );
   wnd_type_outline( h_global, get_size( wnd_sz ) );
@@ -55,7 +55,7 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     if( !once ) {
       // initial scrollbar spawn
       // will only run when txt_box exists
-      vscroll.cscroll_create( txt_box );
+      vscroll.create( txt_box );
       once = true;
     }
     
