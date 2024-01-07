@@ -78,6 +78,8 @@ void wnd_type_create( const HWND hwnd ) {
 
   SetWindowSubclass( txt_box, editproc, 0, 0 );
 
+  SetFocus( txt_box );
+
   wnd_init_hooks();
 }
 

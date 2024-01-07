@@ -84,11 +84,12 @@ HANDLE wnd_menu_get_file( HWND hwnd, u64 len, bool open ) {
   }
 
   HANDLE file = CreateFileA( file_path,
-    open ? GENERIC_READ : GENERIC_WRITE,
-    open ? NULL : FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+    open ?  GENERIC_READ : GENERIC_WRITE,
+    open ?          NULL : FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
     NULL,
     open ? OPEN_EXISTING : CREATE_ALWAYS,
-    FILE_ATTRIBUTE_NORMAL, NULL
+    FILE_ATTRIBUTE_NORMAL,
+    NULL
   );
 
   if( file == INVALID_HANDLE_VALUE ) {
@@ -200,31 +201,25 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
     DestroyWindow( menu_txt );
 
   toggle = false;
-  wnd_clear_menus( true );
 
-  POINT menu_sz = get_size( get_wnd_sz( h_global ) );
+  RECT wnd_rect = get_wnd_sz( h_global );
+  POINT wnd_sz = get_size( wnd_rect );
   
   menu_txt = CreateWindowExA( WS_EX_TRANSPARENT, "EDIT", 0,
     WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | ES_NOHIDESEL,
-    ( WND_BTN_SZ * 6 ) + 6, WND_BTN_SZ + 4,
-    menu_sz.x - ( WND_BTN_SZ * 6 ) - 10, WND_BTN_SZ - 9,
+    ( WND_BTN_SZ * 6 ) + 6,
+    WND_BTN_SZ + 4,
+    wnd_sz.x - ( WND_BTN_SZ * 6 ) - 10,
+    WND_BTN_SZ - 9,
     h_global, NULL,
     (HINSTANCE)GetWindowLongPtrA( h_global, GWLP_HINSTANCE ), NULL
   );
 
-  SetWindowSubclass( menu_txt,
-    !idx ? openproc : saveproc,
-    0, 0
-  );
+  SetWindowSubclass( menu_txt, !idx ? openproc : saveproc, 0, 0 );
 
   SetFocus( menu_txt );
 
-  wnd_type_line_count( h_global,
-    get_wnd_sz( h_global ),
-    true
-  );
-
-  // refresh text as well so it's not hidden
+  wnd_type_line_count( h_global, wnd_rect, true );
 
   MSG msg;
   while( GetMessageA( &msg, nullptr, 0, 0 ) ) {

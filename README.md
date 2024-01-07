@@ -1,9 +1,8 @@
 finish :
 - organize/optimize, minimize var scopes & const unchanging vars, clean/optimize all files, proper bug handling, etc
-- - wnd_menu_funcs.cpp/h
-- - - wnd_menu_edit_ctrl & general readabilty
 - - wnd_func.cpp/h
 - - source.cpp
+- redraw/reload text when save/open edit control is created
 - globalize window size, prev window size, window pos, prev window pos, ( mouse pos, prev mouse pos ( global & make func to convert to local ) ) ( avoids recomputation/recalling )
 - make sure fps is calculating properly
 - run profiler and optimize more

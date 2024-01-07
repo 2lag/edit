@@ -19,7 +19,6 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   switch( msg ) {
   case WM_CREATE: {
     wnd_type_create( hwnd );
-    SetFocus( txt_box );
   } break;
   case WM_CTLCOLOREDIT: {
     wnd_customize( wp );
@@ -27,7 +26,6 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   } break;
   case WM_DESTROY: {
     wnd_title_cls( true );
-    PostQuitMessage( 0 );
     return 0;
   } break;
   case WM_LBUTTONDBLCLK: {

@@ -57,7 +57,8 @@ void wnd_title_cls( const bool mouse_over ) {
     return;
 
   wnd_unhook();
-  ExitProcess( 0 );
+  
+  PostQuitMessage( 0 );
 }
 
 void wnd_title_max( const bool mouse_over ) {
