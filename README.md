@@ -1,7 +1,7 @@
 finish :
 - organize/optimize, minimize var scopes & const unchanging vars, clean/optimize all files, proper bug handling, etc
 - - wnd_menu_funcs.cpp/h
-- - - openproc, saveproc, wnd_menu_edit_ctrl
+- - - wnd_menu_edit_ctrl & general readabilty
 - - wnd_func.cpp/h
 - - source.cpp
 - globalize window size, prev window size, window pos, prev window pos, ( mouse pos, prev mouse pos ( global & make func to convert to local ) ) ( avoids recomputation/recalling )

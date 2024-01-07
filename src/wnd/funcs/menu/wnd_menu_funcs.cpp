@@ -3,6 +3,8 @@
 
 #include "../util/config.h"
 
+#include "../edit/wnd_edit_line_count.h"
+
 HWND menu_txt;
 
 s32 wnd_menu_dropdown_toggle( bool &toggle, const s32 idx ) {
@@ -65,44 +67,52 @@ s32 wnd_menu_new_wnd( const bool toggle ) {
   return 1;
 }
 
-void set_text( const HWND textbox,
-               const char* txt ) {
-  s32 total_sz = static_cast<s32>( strlen( txt ) ) + 4 + GetWindowTextLengthA( textbox ) + 1;
-  char* ret_txt = new char[ total_sz ]{};
-
-  strcat_s( ret_txt, total_sz, txt );
-
-  SetWindowTextA( textbox, ret_txt );
-
-  delete[] ret_txt;
-}
-
 char *file_path = nullptr;
 
-LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, DWORD_PTR ) {
-  static bool once = false;
-  
-  if( !once ) {
-    SetFocus( hwnd );
-    once = true;
+HANDLE wnd_menu_get_file( HWND hwnd, u64 len, bool open ) {
+  file_path = new char[ len ];
+
+  if( !file_path ) {
+    SetWindowTextA( hwnd, "memory error" );
+    return nullptr;
   }
 
+  if( !GetWindowTextA( hwnd, file_path, len ) ) {
+    SetWindowTextA( hwnd, "error getting path" );
+    delete[] file_path;
+    return nullptr;
+  }
+
+  HANDLE file = CreateFileA( file_path,
+    open ? GENERIC_READ : GENERIC_WRITE,
+    open ? NULL : FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+    NULL,
+    open ? OPEN_EXISTING : CREATE_ALWAYS,
+    FILE_ATTRIBUTE_NORMAL, NULL
+  );
+
+  if( file == INVALID_HANDLE_VALUE ) {
+    SetWindowTextA( menu_txt, "error getting file" );
+    delete[] file_path;
+    return nullptr;
+  }
+
+  return file;
+}
+
+LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, DWORD_PTR ) {
   switch( msg ) {
   case WM_CHAR: {
     if( wp != VK_RETURN )
       break;
 
     s32 path_len = GetWindowTextLengthA( hwnd ) + 1;
-    file_path = new char[ path_len ];
-    GetWindowTextA( hwnd, file_path, path_len );
-
-    HANDLE file = CreateFileA( file_path,
-      GENERIC_READ, 0, NULL, OPEN_EXISTING,
-      FILE_ATTRIBUTE_NORMAL, NULL
+    
+    HANDLE file = wnd_menu_get_file( hwnd,
+      static_cast<u64>( path_len ), true
     );
 
-    if( file == INVALID_HANDLE_VALUE ) {
-      set_text( txt_box, "invalid path" );
+    if( file == nullptr ) {
       delete[] file_path;
       break;
     }
@@ -114,7 +124,7 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
 
     ptr bytes_read;
     if( ReadFile( file, buf, buf_sz, &bytes_read, nullptr ) && bytes_read == buf_sz )
-      set_text( txt_box, static_cast<LPCSTR>( buf ) );
+      SetWindowTextA( txt_box, static_cast<LPCSTR>( buf ) );
     
     delete[] file_path;
     delete[] static_cast<BYTE*>( buf );
@@ -127,13 +137,6 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
 }
 
 LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, DWORD_PTR ) {
-  static bool once = false;
-
-  if( !once ) {
-    SetFocus( hwnd );
-    once = true;
-  }
-
   switch( msg ) {
   case WM_CHAR: {
     if( wp != VK_RETURN )
@@ -142,27 +145,12 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     s32 path_len = GetWindowTextLengthA( hwnd ) + 1;
     s32 txt_box_len = GetWindowTextLengthA( txt_box ) + 1;
     u64 total_len = static_cast<u64>( path_len ) + static_cast<u64>( txt_box_len ) + 4ull; // +4 for "\r\n\r\n"
-    file_path = new char[ total_len ];
-
-    if( !file_path ) {
-      set_text( menu_txt, "memory error" );
-      break;
-    }
-
-    if( !GetWindowTextA( hwnd, file_path, path_len ) ) {
-      set_text( menu_txt, "error getting path" );
-      delete[] file_path;
-      break;
-    }
-
-    HANDLE file = CreateFileA( file_path,
-      GENERIC_WRITE, FILE_SHARE_READ |
-      FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-      NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL
+    
+    HANDLE file = wnd_menu_get_file( hwnd,
+      total_len, false
     );
 
-    if( file == INVALID_HANDLE_VALUE ) {
-      set_text( menu_txt, "invalid path");
+    if( file == nullptr ) {
       delete[] file_path;
       break;
     }
@@ -170,14 +158,14 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     char *txt_box_txt = new char[ txt_box_len ];
 
     if( !txt_box_txt ) {
-      set_text( menu_txt, "memory error");
+      SetWindowTextA( menu_txt, "memory error");
       delete[] file_path;
       CloseHandle( file );
       break;
     }
 
     if( !GetWindowTextA( txt_box, txt_box_txt, txt_box_len ) ) {
-      set_text( menu_txt, "error getting text");
+      SetWindowTextA( menu_txt, "error getting text");
       delete[] file_path;
       delete[] txt_box_txt;
       CloseHandle( file );
@@ -186,12 +174,12 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
 
     ptr bytes_wrote;
     if( !WriteFile( file, txt_box_txt, txt_box_len - 1, &bytes_wrote, NULL ) )
-      set_text( menu_txt, "failed to write to file" );
+      SetWindowTextA( menu_txt, "failed to write to file" );
     else {
       strcat_s( file_path, total_len, "\r\n\r\n");
       strcat_s( file_path, total_len, txt_box_txt );
 
-      set_text( txt_box, file_path ); // in case saved in wrong dir bc user ( me... OR YOU...... ) is dumb.
+      SetWindowTextA( txt_box, file_path ); // in case saved in wrong dir bc user ( me... OR YOU...... ) is dumb.
       DestroyWindow( menu_txt );
     }
 
@@ -216,8 +204,7 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
 
   POINT menu_sz = get_size( get_wnd_sz( h_global ) );
   
-  menu_txt = CreateWindowExA( WS_EX_TRANSPARENT,
-    "EDIT", 0,
+  menu_txt = CreateWindowExA( WS_EX_TRANSPARENT, "EDIT", 0,
     WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | ES_NOHIDESEL,
     ( WND_BTN_SZ * 6 ) + 6, WND_BTN_SZ + 4,
     menu_sz.x - ( WND_BTN_SZ * 6 ) - 10, WND_BTN_SZ - 9,
@@ -229,6 +216,15 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
     !idx ? openproc : saveproc,
     0, 0
   );
+
+  SetFocus( menu_txt );
+
+  wnd_type_line_count( h_global,
+    get_wnd_sz( h_global ),
+    true
+  );
+
+  // refresh text as well so it's not hidden
 
   MSG msg;
   while( GetMessageA( &msg, nullptr, 0, 0 ) ) {
