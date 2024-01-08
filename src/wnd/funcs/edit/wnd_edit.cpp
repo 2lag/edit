@@ -52,8 +52,7 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     DeleteObject( dbrush );
 
     if( !once ) {
-      // initial scrollbar spawn
-      // will only run when txt_box exists
+      // only spawn once when txt_box exists
       vscroll.create( txt_box );
       once = true;
     }

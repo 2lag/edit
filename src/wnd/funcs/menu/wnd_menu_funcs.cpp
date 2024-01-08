@@ -124,8 +124,10 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     LPVOID buf = new BYTE[ buf_sz ];
 
     ptr bytes_read;
-    if( ReadFile( file, buf, buf_sz, &bytes_read, nullptr ) && bytes_read == buf_sz )
-      SetWindowTextA( txt_box, static_cast<LPCSTR>( buf ) );
+    if( !ReadFile( file, buf, buf_sz, &bytes_read, nullptr ) || bytes_read != buf_sz )
+      SetWindowTextA( menu_txt, "file read error" );
+
+    SetWindowTextA( txt_box, static_cast<LPCSTR>( buf ) );
     
     delete[] file_path;
     delete[] static_cast<BYTE*>( buf );
@@ -213,6 +215,11 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
   );
 
   SetWindowSubclass( menu_txt, !idx ? openproc : saveproc, 0, 0 );
+
+  // dumb hack-y shit to avoid text invis
+  SetFocus( txt_box );
+  Edit_SetSel( txt_box, 0, -1 );
+  Edit_SetSel( txt_box, -1, 0 );
 
   SetFocus( menu_txt );
 

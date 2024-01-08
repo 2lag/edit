@@ -38,6 +38,9 @@ public:
 
 public:
   void create( const HWND hwnd ) {
+    while( !hwnd )
+      Sleep( 500 );
+
     parent = hwnd;
     txt_rect = get_wnd_sz( parent );
     bkrect = rect = {
@@ -51,6 +54,8 @@ public:
   }
   void draw( const bool update_info = true,
              const bool redraw = false ) {
+    if( !parent ) return;
+
     HDC hdc = GetDC( parent );
     HBRUSH dbrush = CreateSolidBrush( COL_D_GRY ),
            lbrush = CreateSolidBrush(

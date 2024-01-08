@@ -1,6 +1,5 @@
 finish :
-- refresh text when save/open edit control is created
-- fix ghost scrollbar being drawn when running in release
+- make openproc append the opened file text to current text, inverted to how saveproc appends the path to the beginning
 - globalize prev window size, window pos, prev window pos, ( mouse pos, prev mouse pos ( global & make func to convert to local ) ) ( avoids recomputation/recalling )
 - make sure fps is calculated properly
 - - find a way to debug gdi ( renderdoc or nvidia nsight if accelerated ? )
