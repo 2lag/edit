@@ -2,17 +2,17 @@
 #include "funcs/wnd_includes.h"
 
 LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
-  RECT wnd_sz = get_wnd_sz( hwnd );
   POINT m_pos{};
   GetCursorPos( &m_pos );
   ScreenToClient( hwnd, &m_pos );
 
   vscroll.update();
-  wnd_type_line_count( hwnd, wnd_sz );
-  wnd_type_caret_pos( hwnd, wnd_sz );
+  wnd_type_line_count( hwnd );
+  wnd_type_caret_pos( hwnd );
 
   switch( msg ) {
   case WM_CREATE: {
+    wnd_sz = get_wnd_sz( hwnd );
     wnd_type_create( hwnd );
   } break;
   case WM_CTLCOLOREDIT: {
@@ -23,17 +23,17 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     return 0;
   } break;
   case WM_LBUTTONDBLCLK: {
-    wnd_resize_title( hwnd, wnd_sz, m_pos );
+    wnd_resize_title( hwnd, m_pos );
   } break;
   case WM_LBUTTONDOWN: {
-    wnd_resize_on( hwnd, m_pos, wnd_sz );
-    wnd_drag_on( hwnd, m_pos, wnd_sz );
+    wnd_resize_on( hwnd, m_pos );
+    wnd_drag_on( hwnd, m_pos );
     
     vscroll.drag_on( m_pos );
 
-    wnd_title_cls( wnd_sz, m_pos );
-    wnd_title_max( wnd_sz, m_pos );
-    wnd_title_min( wnd_sz, m_pos );
+    wnd_title_cls( m_pos );
+    wnd_title_max( m_pos );
+    wnd_title_min( m_pos );
   } break;
   case WM_LBUTTONUP: {
     wnd_drag_resize( hwnd );
@@ -48,20 +48,22 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
 
     if( is_maxd ) break;
 
-    wnd_resize_get_cursor( m_pos, wnd_sz );
-    wnd_resize( hwnd, m_pos, wnd_sz );
+    wnd_resize_get_cursor( m_pos );
+    wnd_resize( hwnd, m_pos );
   } break;
   case WM_PAINT: {
     PAINTSTRUCT ps;
     HDC hdc = BeginPaint( hwnd, &ps );
 
-    wnd_title_draw( hdc, wnd_sz );
-    wnd_type_outline( hwnd, get_size( wnd_sz ) );
+    wnd_title_draw( hdc );
+    wnd_type_outline( hwnd );
     wnd_menu_draw( hdc );
 
     EndPaint( hwnd, &ps );
   } break;
   case WM_SIZE: {
+    wnd_sz = get_wnd_sz( hwnd );
+
     MoveWindow( txt_box,
       WND_BTN_SZ,
       WND_BTN_SZ * 2,
@@ -80,8 +82,8 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
       );
     }
 
-    wnd_type_line_count( hwnd, wnd_sz, true );
-    wnd_type_caret_pos( hwnd, wnd_sz, true );
+    wnd_type_line_count( hwnd, true );
+    wnd_type_caret_pos( hwnd, true );
 
     if( !txt_box )
       break;

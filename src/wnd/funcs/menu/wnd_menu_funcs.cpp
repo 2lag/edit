@@ -77,7 +77,7 @@ HANDLE wnd_menu_get_file( HWND hwnd, u64 len, bool open ) {
     return nullptr;
   }
 
-  if( !GetWindowTextA( hwnd, file_path, len ) ) {
+  if( !GetWindowTextA( hwnd, file_path, static_cast<s32>( len ) ) ) {
     SetWindowTextA( hwnd, "error getting path" );
     delete[] file_path;
     return nullptr;
@@ -201,15 +201,12 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
     DestroyWindow( menu_txt );
 
   toggle = false;
-
-  RECT wnd_rect = get_wnd_sz( h_global );
-  POINT wnd_sz = get_size( wnd_rect );
   
   menu_txt = CreateWindowExA( WS_EX_TRANSPARENT, "EDIT", 0,
     WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | ES_NOHIDESEL,
     ( WND_BTN_SZ * 6 ) + 6,
     WND_BTN_SZ + 4,
-    wnd_sz.x - ( WND_BTN_SZ * 6 ) - 10,
+    get_size( wnd_sz ).x - ( WND_BTN_SZ * 6 ) - 10,
     WND_BTN_SZ - 9,
     h_global, NULL,
     (HINSTANCE)GetWindowLongPtrA( h_global, GWLP_HINSTANCE ), NULL
@@ -219,7 +216,7 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
 
   SetFocus( menu_txt );
 
-  wnd_type_line_count( h_global, wnd_rect, true );
+  wnd_type_line_count( h_global, true );
 
   MSG msg;
   while( GetMessageA( &msg, nullptr, 0, 0 ) ) {

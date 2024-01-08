@@ -1,7 +1,6 @@
 #include "wnd_edit_line_count.h"
 
 HDC wnd_edit_line_count_draw_bg( const HWND hwnd,
-                                 const RECT wnd_sz,
                                  const bool ret_hdc = false ) {
   HDC hdc = GetDC( hwnd );
 
@@ -23,13 +22,12 @@ HDC wnd_edit_line_count_draw_bg( const HWND hwnd,
 }
 
 void wnd_type_line_count( const HWND hwnd,
-                          const RECT wnd_sz,
                           const bool force_redraw ) {
   static bool hide_line_count_prev = true;
 
   if( !menu_style_toggle[ LINE_COUNT ] || !txt_box ) {
     if( !hide_line_count_prev || force_redraw ) {
-      wnd_edit_line_count_draw_bg( hwnd, wnd_sz );
+      wnd_edit_line_count_draw_bg( hwnd );
       hide_line_count_prev = true;
     }
     return;
@@ -44,7 +42,7 @@ void wnd_type_line_count( const HWND hwnd,
       vscroll.line_first == vscroll.line_last  - vscroll.lines_vis + 1 )
     vscroll.line_first++;
 
-  HDC hdc = wnd_edit_line_count_draw_bg( hwnd, wnd_sz, true );
+  HDC hdc = wnd_edit_line_count_draw_bg( hwnd, true );
 
   for( s32 curr_line = vscroll.line_first;
            curr_line < vscroll.line_first + vscroll.lines_vis &&

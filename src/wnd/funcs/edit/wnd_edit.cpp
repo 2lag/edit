@@ -31,9 +31,8 @@ void wnd_clear_menus( const s32 exclude, const bool overryde ) {
   }
 
   vscroll.draw( true, true );
-  RECT wnd_sz = get_wnd_sz( h_global );
-  wnd_type_line_count( h_global, wnd_sz, true );
-  wnd_type_outline( h_global, get_size( wnd_sz ) );
+  wnd_type_line_count( h_global, true );
+  wnd_type_outline( h_global );
 }
 
 LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, DWORD_PTR ) {
@@ -83,14 +82,14 @@ void wnd_type_create( const HWND hwnd ) {
   wnd_init_hooks();
 }
 
-void wnd_type_outline( const HWND hwnd, const POINT wnd_sz ) {
+void wnd_type_outline( const HWND hwnd ) {
   HDC hdc = GetDC( hwnd );
   HBRUSH brush = CreateSolidBrush( COL_M_GRY );
   RECT outline_sz {
     WND_BTN_SZ - 1,
     ( WND_BTN_SZ * 2 ) - 1,
-    wnd_sz.x - ( WND_BTN_SZ - 1 ),
-    wnd_sz.y - ( WND_BTN_SZ - 1 )
+    get_size( wnd_sz ).x - ( WND_BTN_SZ - 1 ),
+    get_size( wnd_sz ).y - ( WND_BTN_SZ - 1 )
   };
   FillRect( hdc, &outline_sz, brush );
 

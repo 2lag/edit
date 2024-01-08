@@ -3,7 +3,7 @@
 bool user_dragging = false;
 POINT duser_start{};
 
-void wnd_drag_on( const HWND hwnd, const POINT m_pos, const RECT wnd_sz ) {
+void wnd_drag_on( const HWND hwnd, const POINT m_pos ) {
   RECT item_rect {
     WND_BTN_SZ / 5 + 1,
     WND_BTN_SZ / 5 + 1,
@@ -37,7 +37,7 @@ void wnd_drag( const HWND hwnd, const POINT m_pos ) {
     duser_start = m_pos;
     return;
   }
-
+  
   RECT r_wnd;
   GetWindowRect( hwnd, &r_wnd );
 
@@ -47,19 +47,19 @@ void wnd_drag( const HWND hwnd, const POINT m_pos ) {
 
 
   POINT m_delta = m_pos - duser_start,
-         wnd_sz = get_size( r_wnd ),
+        pwnd_sz = get_size( r_wnd ),
            m_sz = get_size( i_mon.rcWork ),
         wnd_pos = get_position( r_wnd ) + m_delta;
 
   u32 swp_flags = SWP_NOSIZE | SWP_NOZORDER;
 
-  bool is_quarthalfmax = wnd_sz   == m_sz ||
-                         wnd_sz.x == m_sz.x / 2 ||
-                         wnd_sz.y == m_sz.y / 2;
+  bool is_quarthalfmax = pwnd_sz   == m_sz ||
+                         pwnd_sz.x == m_sz.x / 2 ||
+                         pwnd_sz.y == m_sz.y / 2;
 
   if( is_quarthalfmax ) {
     swp_flags = SWP_NOZORDER;
-    f32 wnd_xper = (f32)m_pos.x / (f32)wnd_sz.x;
+    f32 wnd_xper = (f32)m_pos.x / (f32)get_size( wnd_sz ).x;
     salt nwnd_szx = max_prev_sz.right - max_prev_sz.left;
     wnd_pos.x = duser_start.x = (salt)( (f32)nwnd_szx * wnd_xper );
     is_maxd = false;

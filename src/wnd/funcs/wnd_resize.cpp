@@ -7,7 +7,7 @@
 POINT ruser_start{};
 s32 d_side{};
 
-void wnd_resize_get_side( const POINT m_pos, const RECT wnd_sz ) {
+void wnd_resize_get_side( const POINT m_pos ) {
   POINT pwn_sz = get_size( wnd_sz );
   
   bool on_left   = ( m_pos.x <= RESIZE_THRESHOLD ),
@@ -29,7 +29,7 @@ void wnd_resize_get_side( const POINT m_pos, const RECT wnd_sz ) {
     d_side = 0;
 }
 
-void wnd_resize_get_cursor( const POINT m_pos, const RECT wnd_sz ) {
+void wnd_resize_get_cursor( const POINT m_pos ) {
   POINT pwn_sz = get_size( wnd_sz );
   
   bool on_left   = ( m_pos.x <= RESIZE_THRESHOLD ),
@@ -57,8 +57,8 @@ void wnd_resize_get_cursor( const POINT m_pos, const RECT wnd_sz ) {
     SetCursor( cur_def );
 }
 
-void wnd_resize_on( const HWND hwnd, const POINT m_pos, const RECT wnd_sz ) {
-  wnd_resize_get_side( m_pos, wnd_sz );
+void wnd_resize_on( const HWND hwnd, const POINT m_pos ) {
+  wnd_resize_get_side( m_pos );
   if( !d_side )
     return;
 
@@ -76,32 +76,33 @@ void wnd_resize_off() {
 
 void wnd_resize_check_bounds( const HWND hwnd,
                                  LPPOINT wnd_pos,
-                                 LPPOINT wnd_sz,
                              const POINT m_delta ) {
   HMONITOR c_mon = MonitorFromWindow( hwnd, MONITOR_DEFAULTTONEAREST );
   MONITORINFO i_mon;
   get_monitor_info( c_mon, i_mon );
 
+  POINT pwnd_sz = ( get_size( wnd_sz ) += 2 );
+
   if( wnd_pos->x < i_mon.rcWork.left ) {
     wnd_pos->x = i_mon.rcWork.left;
-    wnd_sz->x += m_delta.x;
+    pwnd_sz.x += m_delta.x;
   }
   if( wnd_pos->y < i_mon.rcWork.top ) {
     wnd_pos->y = i_mon.rcWork.top;
-    wnd_sz->y += m_delta.y;
+    pwnd_sz.y += m_delta.y;
   }
 
-  if( wnd_pos->x + wnd_sz->x >= i_mon.rcWork.right )
-    wnd_sz->x = i_mon.rcWork.right - wnd_pos->x;
-  if( wnd_pos->y + wnd_sz->y >= i_mon.rcWork.bottom )
-    wnd_sz->y = i_mon.rcWork.bottom - wnd_pos->y;
+  if( wnd_pos->x + pwnd_sz.x >= i_mon.rcWork.right )
+    pwnd_sz.x = i_mon.rcWork.right - wnd_pos->x;
+  if( wnd_pos->y + pwnd_sz.y >= i_mon.rcWork.bottom )
+    pwnd_sz.y = i_mon.rcWork.bottom - wnd_pos->y;
 
-  if( wnd_sz->x < MIN_WINDOW_SIZE ) {
-    wnd_sz->x = MIN_WINDOW_SIZE;
+  if( pwnd_sz.x < MIN_WINDOW_SIZE ) {
+    pwnd_sz.x = MIN_WINDOW_SIZE;
     wnd_pos->x -= ( m_delta.x > 0 ) ? m_delta.x : 0;
   }
-  if( wnd_sz->y < MIN_WINDOW_SIZE ) {
-    wnd_sz->y = MIN_WINDOW_SIZE;
+  if( pwnd_sz.y < MIN_WINDOW_SIZE ) {
+    pwnd_sz.y = MIN_WINDOW_SIZE;
     wnd_pos->y -= ( m_delta.y > 0 ) ? m_delta.y : 0;
   }
 }
@@ -115,8 +116,7 @@ void wnd_adj_win_pos_sz( POINT& wnd_pos,
 }
 
 void wnd_resize( const HWND hwnd,
-                 const POINT m_pos,
-                 const RECT wnd_sz ) {
+                 const POINT m_pos ) {
   if( !d_side || !user_resizing ) {
     ruser_start = m_pos;
     return;
@@ -124,7 +124,7 @@ void wnd_resize( const HWND hwnd,
 
   POINT m_delta = ( m_pos - ruser_start ),
         wnd_pos = ( get_position( wnd_sz ) -= 1 ),
-        pwnd_sz = ( get_size ( wnd_sz ) += 2 );
+        pwnd_sz = ( get_size( wnd_sz ) += 2 );
   
   ClientToScreen( hwnd, &wnd_pos );
 
@@ -162,7 +162,7 @@ void wnd_resize( const HWND hwnd,
     break;
   }
 
-  wnd_resize_check_bounds( hwnd, &wnd_pos, &pwnd_sz, m_delta );
+  wnd_resize_check_bounds( hwnd, &wnd_pos, m_delta );
 
   SetWindowPos( hwnd, 0,
     wnd_pos.x, wnd_pos.y,
@@ -171,7 +171,7 @@ void wnd_resize( const HWND hwnd,
   );
 }
 
-void wnd_resize_title( const HWND hwnd, const RECT wnd_sz, const POINT m_pos ) {
+void wnd_resize_title( const HWND hwnd, const POINT m_pos ) {
   RECT item_rect {
     WND_BTN_SZ / 5 + 1,
     WND_BTN_SZ / 5 + 1,
@@ -198,13 +198,13 @@ void wnd_resize_title( const HWND hwnd, const RECT wnd_sz, const POINT m_pos ) {
     nwnd_ps = get_position( i_mon.rcWork ),
     nwnd_sz = mon_sz;
   } else {
-    POINT wnd_sz = get_size( max_prev_sz );
+    POINT pwnd_sz = get_size( max_prev_sz );
 
     if( !max_prev_pos )
-      max_prev_pos = ( mon_sz - wnd_sz ) / 2;
+      max_prev_pos = ( mon_sz - pwnd_sz ) / 2;
 
     nwnd_ps = max_prev_pos,
-    nwnd_sz = wnd_sz;
+    nwnd_sz = pwnd_sz;
   }
   is_maxd = !is_maxd;
 

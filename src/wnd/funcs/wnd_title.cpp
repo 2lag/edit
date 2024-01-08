@@ -6,7 +6,7 @@
 using namespace std;
 
 // sin #2 absolved 1.5.24
-void wnd_title_draw( const HDC hdc, const RECT wnd_sz ) {
+void wnd_title_draw( const HDC hdc ) {
   HBRUSH bg_brush = CreateSolidBrush( COL_M_GRY );
   HBRUSH brush = CreateSolidBrush( COL_D_GRY );
   const RECT title_rect = {
@@ -52,7 +52,7 @@ void wnd_title_draw( const HDC hdc, const RECT wnd_sz ) {
   DeleteObject( bg_brush );
 }
 
-void wnd_title_cls( const RECT wnd_sz, const POINT m_pos ) {
+void wnd_title_cls( const POINT m_pos ) {
   RECT item_rect {
     wnd_sz.right - WND_BTN_SZ * 1,
     WND_BTN_SZ / 5 + 1,
@@ -68,7 +68,7 @@ void wnd_title_cls( const RECT wnd_sz, const POINT m_pos ) {
   PostQuitMessage( 0 );
 }
 
-void wnd_title_max( const RECT wnd_sz, const POINT m_pos ) {
+void wnd_title_max( const POINT m_pos ) {
   RECT item_rect {
     wnd_sz.right - WND_BTN_SZ * 2,
     WND_BTN_SZ / 5 + 1,
@@ -109,7 +109,7 @@ void wnd_title_max( const RECT wnd_sz, const POINT m_pos ) {
   );
 }
 
-void wnd_title_min( const RECT wnd_sz, const POINT m_pos ) {
+void wnd_title_min( const POINT m_pos ) {
   RECT item_rect {
     wnd_sz.right - WND_BTN_SZ * 3,
     WND_BTN_SZ / 5 + 1,

@@ -1,8 +1,10 @@
 finish :
 - refresh text when save/open edit control is created
-- globalize window size, prev window size, window pos, prev window pos, ( mouse pos, prev mouse pos ( global & make func to convert to local ) ) ( avoids recomputation/recalling )
+- fix ghost scrollbar being drawn when running in release
+- globalize prev window size, window pos, prev window pos, ( mouse pos, prev mouse pos ( global & make func to convert to local ) ) ( avoids recomputation/recalling )
 - make sure fps is calculated properly
-- - find a way to debug gdi
+- - find a way to debug gdi ( renderdoc or nvidia nsight if accelerated ? )
+- enable better optimization in compiling settings if possible
 - plan functionality for :
 - - - Find
 - - - Replace

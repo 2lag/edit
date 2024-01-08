@@ -25,7 +25,6 @@ void wnd_fps_calc() {
 void wnd_fps_draw( const HWND hwnd ) {
   HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
   char fps_txt[32];
-  RECT wnd_sz;
   SIZE txt_sz;
 
   while( true ) {
@@ -44,8 +43,6 @@ void wnd_fps_draw( const HWND hwnd ) {
     GetTextExtentPoint32A( hdc, fps_txt,
       (s32)strlen( fps_txt ), &txt_sz
     );
-    
-    wnd_sz = get_wnd_sz( hwnd );
 
     const RECT fps_rect {
       wnd_sz.right  - txt_sz.cx - 20,

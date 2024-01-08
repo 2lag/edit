@@ -2,6 +2,8 @@
 #include "wnd/funcs/wnd_fps.h"
 #include "wnd/funcs/util/config.h"
 
+RECT wnd_sz;
+
 HWND h_global;
 
 RECT max_prev_sz;

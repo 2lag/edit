@@ -73,6 +73,8 @@ extern POINT max_prev_pos;
 extern RECT  max_prev_sz;
 extern bool  is_maxd;
 
+extern RECT wnd_sz;
+
 inline void run_debug_console() {
   AllocConsole();
   FILE* new_std;
