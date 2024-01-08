@@ -171,8 +171,15 @@ void wnd_resize( const HWND hwnd,
   );
 }
 
-void wnd_resize_title( const HWND hwnd, const bool mouse_over ) {
-  if( !mouse_over )
+void wnd_resize_title( const HWND hwnd, const RECT wnd_sz, const POINT m_pos ) {
+  RECT item_rect {
+    WND_BTN_SZ / 5 + 1,
+    WND_BTN_SZ / 5 + 1,
+    wnd_sz.right - WND_BTN_SZ * 3,
+    WND_BTN_SZ
+  };
+
+  if( !PtInRect( &item_rect, m_pos ) )
     return;
 
   HMONITOR c_mon = MonitorFromWindow( hwnd, MONITOR_DEFAULTTONEAREST );

@@ -3,8 +3,15 @@
 bool user_dragging = false;
 POINT duser_start{};
 
-void wnd_drag_on( const HWND hwnd, const POINT m_pos, const bool mouse_over ) {
-  if( !mouse_over )
+void wnd_drag_on( const HWND hwnd, const POINT m_pos, const RECT wnd_sz ) {
+  RECT item_rect {
+    WND_BTN_SZ / 5 + 1,
+    WND_BTN_SZ / 5 + 1,
+    wnd_sz.right - WND_BTN_SZ * 3,
+    WND_BTN_SZ
+  };
+
+  if( !PtInRect( &item_rect, m_pos ) )
     return;
 
   if( !is_maxd ) {

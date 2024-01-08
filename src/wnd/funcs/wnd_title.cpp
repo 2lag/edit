@@ -52,8 +52,15 @@ void wnd_title_draw( const HDC hdc, const RECT wnd_sz ) {
   DeleteObject( bg_brush );
 }
 
-void wnd_title_cls( const bool mouse_over ) {
-  if( !mouse_over )
+void wnd_title_cls( const RECT wnd_sz, const POINT m_pos ) {
+  RECT item_rect {
+    wnd_sz.right - WND_BTN_SZ * 1,
+    WND_BTN_SZ / 5 + 1,
+    wnd_sz.right - 5,
+    WND_BTN_SZ
+  };
+
+  if( !PtInRect( &item_rect, m_pos ) )
     return;
 
   wnd_unhook();
@@ -61,8 +68,15 @@ void wnd_title_cls( const bool mouse_over ) {
   PostQuitMessage( 0 );
 }
 
-void wnd_title_max( const bool mouse_over ) {
-  if( !mouse_over )
+void wnd_title_max( const RECT wnd_sz, const POINT m_pos ) {
+  RECT item_rect {
+    wnd_sz.right - WND_BTN_SZ * 2,
+    WND_BTN_SZ / 5 + 1,
+    wnd_sz.right - WND_BTN_SZ * 1,
+    WND_BTN_SZ
+  };
+
+  if( !PtInRect( &item_rect, m_pos ) )
     return;
 
   HMONITOR c_mon = MonitorFromWindow( h_global, MONITOR_DEFAULTTONEAREST );
@@ -95,6 +109,14 @@ void wnd_title_max( const bool mouse_over ) {
   );
 }
 
-void wnd_title_min( const bool mouse_over ) {
-  if( mouse_over ) ShowWindow( h_global, SW_MINIMIZE );
+void wnd_title_min( const RECT wnd_sz, const POINT m_pos ) {
+  RECT item_rect {
+    wnd_sz.right - WND_BTN_SZ * 3,
+    WND_BTN_SZ / 5 + 1,
+    wnd_sz.right - WND_BTN_SZ * 2,
+    WND_BTN_SZ
+  };
+
+  if( PtInRect( &item_rect, m_pos ) )
+    ShowWindow( h_global, SW_MINIMIZE );
 }
