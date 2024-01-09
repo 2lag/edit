@@ -129,8 +129,8 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
 
     SetWindowTextA( txt_box, static_cast<LPCSTR>( buf ) );
     
-    delete[] file_path;
     delete[] static_cast<BYTE*>( buf );
+    delete[] file_path;
     CloseHandle( file );
     DestroyWindow( hwnd );
   } break;
