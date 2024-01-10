@@ -1,7 +1,7 @@
 functionality :
 - Macro
-- - Clear ( clear macro storage )
 - - Record ( record keypresses, ignoring final 4 ( ctrl t, m, r ) ) also, add a toggled notice to it
+- - Clear ( clear macro storage )
 - - Playback ( playback recorded keypresses )
 - Exit ( in File )
 - multi-Cursor
