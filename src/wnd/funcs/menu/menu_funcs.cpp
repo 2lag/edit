@@ -101,6 +101,51 @@ HANDLE wnd_menu_get_file( HWND hwnd, u64 len, bool open ) {
   return file;
 }
 
+LRESULT CALLBACK findproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, DWORD_PTR ) {
+  static char *last_found = nullptr; // To keep track of the last found position
+
+  switch(msg) {
+  case WM_CHAR: {
+    if( wp != VK_RETURN )
+      break;
+
+    s32 search_len = GetWindowTextLengthA( hwnd ) + 1;
+    char *search_text = new char[ search_len ];
+    GetWindowTextA( hwnd, search_text, search_len );
+
+    s32 txt_len = GetWindowTextLengthA( txt_box ) + 1;
+    char *txt = new char[ txt_len ];
+    GetWindowTextA( txt_box, txt, txt_len );
+
+    char *found = strstr( last_found ? last_found + 1 : txt, search_text );
+    if( found ) {
+      int start_pos = found - txt;
+      int end_pos = start_pos + search_len - 1;
+      Edit_SetSel( txt_box, start_pos, end_pos );
+      last_found = found;
+    } else {
+      // dumb hack-y shit to avoid text invis... again
+      SetFocus( txt_box );
+      Edit_SetSel( txt_box, 0, -1 );
+#pragma warning( push )
+#pragma warning( disable : 4245 )
+      Edit_SetSel( txt_box, -1, 0 );
+#pragma warning( pop )
+
+      last_found = nullptr;
+      DestroyWindow( hwnd );
+    }
+
+    delete[] txt;
+    delete[] search_text;
+  } break;
+  case WM_DESTROY: {
+    last_found = nullptr;
+  } break;
+  }
+  return DefSubclassProc( hwnd, msg, wp, lp );
+}
+
 LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, DWORD_PTR ) {
   switch( msg ) {
   case WM_CHAR: {
@@ -125,7 +170,7 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
 
     ptr bytes_read;
     if( !ReadFile( file, buf, buf_sz, &bytes_read, nullptr ) || bytes_read != buf_sz )
-      SetWindowTextA( menu_txt, "file read error" );
+      SetWindowTextA( hwnd, "file read error" );
 
     SetWindowTextA( txt_box, static_cast<LPCSTR>( buf ) );
     
@@ -161,14 +206,14 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     char *txt_box_txt = new char[ txt_box_len ];
 
     if( !txt_box_txt ) {
-      SetWindowTextA( menu_txt, "memory error");
+      SetWindowTextA( hwnd, "memory error");
       delete[] file_path;
       CloseHandle( file );
       break;
     }
 
     if( !GetWindowTextA( txt_box, txt_box_txt, txt_box_len ) ) {
-      SetWindowTextA( menu_txt, "error getting text");
+      SetWindowTextA( hwnd, "error getting text");
       delete[] file_path;
       delete[] txt_box_txt;
       CloseHandle( file );
@@ -177,13 +222,13 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
 
     ptr bytes_wrote;
     if( !WriteFile( file, txt_box_txt, txt_box_len - 1, &bytes_wrote, NULL ) )
-      SetWindowTextA( menu_txt, "failed to write to file" );
+      SetWindowTextA( hwnd, "failed to write to file" );
     else {
       strcat_s( file_path, total_len, "\r\n\r\n");
       strcat_s( file_path, total_len, txt_box_txt );
 
       SetWindowTextA( txt_box, file_path ); // in case saved in wrong dir bc user ( me... OR YOU...... ) is dumb.
-      DestroyWindow( menu_txt );
+      DestroyWindow( hwnd );
     }
 
     delete[] file_path;
@@ -214,7 +259,19 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
     (HINSTANCE)GetWindowLongPtrA( h_global, GWLP_HINSTANCE ), NULL
   );
 
-  SetWindowSubclass( menu_txt, !idx ? openproc : saveproc, 0, 0 );
+  switch( idx ) {
+  case 0: {
+    SetWindowSubclass( menu_txt, openproc, 0, 0 );
+  } break;
+  case 1: {
+    SetWindowSubclass( menu_txt, saveproc, 0, 0 );
+  } break;
+  case 2: {
+    SetWindowSubclass( menu_txt, findproc, 0, 0 );
+  } break;
+  default:
+    return 1;
+  }
 
   // dumb hack-y shit to avoid text invis
   SetFocus( txt_box );
