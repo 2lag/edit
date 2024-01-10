@@ -219,7 +219,10 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
   // dumb hack-y shit to avoid text invis
   SetFocus( txt_box );
   Edit_SetSel( txt_box, 0, -1 );
+#pragma warning( push )
+#pragma warning( disable : 4245 )
   Edit_SetSel( txt_box, -1, 0 );
+#pragma warning( pop )
 
   SetFocus( menu_txt );
 

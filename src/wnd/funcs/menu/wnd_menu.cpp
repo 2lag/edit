@@ -155,14 +155,13 @@ void wnd_menu_draw_dropdown( const HWND hwnd, const s8 idx ) {
     );
   } break;
   case 1: {
-    underline_pos.resize(5);
+    underline_pos.resize(4);
     underline_pos[0] = 85;
     underline_pos[1] = 74;
     underline_pos[2] = 81,
     underline_pos[3] = 97;
-    underline_pos[4] = 78;
 
-    vector<const char*> txt{ "Find", "Replace", "Macro", "Multi-Cursor", "Scripts" };
+    vector<const char*> txt{ "Find", "Replace", "Macro", "Multi-Cursor" };
     menu_rect = wnd_menu_create_vert( hdc,
       WND_BTN_SZ * 4, { WND_BTN_SZ * 2, WND_BTN_SZ * 2 },
       underline_pos, txt
