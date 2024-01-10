@@ -16,4 +16,4 @@ finish :
 - add comments to non-self-explaning code
 - test everything ( make list of stuff from each file's funcs )
 - change file names to be more descriptive ( wnd_title -> titlebar )
-- add ss, make documentation, then make repo public
+- add ss, make documentation, make repo public, then start dev on debian, making 3d app/game with sdl, vsc, and g++
