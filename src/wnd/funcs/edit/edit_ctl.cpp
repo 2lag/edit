@@ -1,8 +1,8 @@
-#include "wnd_edit.h"
-#include "wnd_edit_line_count.h"
+#include "edit_ctl.h"
+#include "line_count.h"
 
-#include "../menu/wnd_menu.h"
-#include "../hooks/wnd_hooks.h"
+#include "../menu/menu.h"
+#include "../hooks/hooks.h"
 
 
 HWND txt_box;

@@ -1,4 +1,4 @@
-#include "wnd_mouse_hook.h"
+#include "mouse_hook.h"
 
 bool user_resizing = false;
 

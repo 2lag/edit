@@ -18,40 +18,40 @@
     <ClCompile Include="src\source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\wnd_func.cpp">
+    <ClCompile Include="src\wnd\wnd_proc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\funcs\wnd_title.cpp">
+    <ClCompile Include="src\wnd\funcs\title.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\funcs\wnd_drag.cpp">
+    <ClCompile Include="src\wnd\funcs\drag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\funcs\wnd_resize.cpp">
+    <ClCompile Include="src\wnd\funcs\resize.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\funcs\wnd_fps.cpp">
+    <ClCompile Include="src\wnd\funcs\fps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\funcs\edit\wnd_edit.cpp">
+    <ClCompile Include="src\wnd\funcs\edit\edit_ctl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\funcs\edit\wnd_edit_caret.cpp">
+    <ClCompile Include="src\wnd\funcs\edit\caret_pos.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\funcs\edit\wnd_edit_line_count.cpp">
+    <ClCompile Include="src\wnd\funcs\edit\line_count.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\funcs\menu\wnd_menu.cpp">
+    <ClCompile Include="src\wnd\funcs\menu\menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\funcs\hooks\wnd_key_hook.cpp">
+    <ClCompile Include="src\wnd\funcs\hooks\key_hook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\funcs\hooks\wnd_mouse_hook.cpp">
+    <ClCompile Include="src\wnd\funcs\hooks\mouse_hook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wnd\funcs\menu\wnd_menu_funcs.cpp">
+    <ClCompile Include="src\wnd\funcs\menu\menu_funcs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\wnd\funcs\util\config.cpp">
@@ -62,31 +62,31 @@
     <ClInclude Include="src\typedef.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\wnd_func.h">
+    <ClInclude Include="src\wnd\wnd_proc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\wnd_title.h">
+    <ClInclude Include="src\wnd\funcs\title.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\wnd\wincludes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\wnd_drag.h">
+    <ClInclude Include="src\wnd\funcs\drag.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\wnd_resize.h">
+    <ClInclude Include="src\wnd\funcs\resize.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\wnd_includes.h">
+    <ClInclude Include="src\wnd\funcs\includes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\wnd_fps.h">
+    <ClInclude Include="src\wnd\funcs\fps.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\edit\wnd_edit.h">
+    <ClInclude Include="src\wnd\funcs\edit\edit_ctl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\edit\wnd_edit_scroll.h">
+    <ClInclude Include="src\wnd\funcs\edit\scroll.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\wnd\funcs\util\util.h">
@@ -95,31 +95,31 @@
     <ClInclude Include="src\wnd\funcs\util\overloads.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\edit\wnd_edit_caret.h">
+    <ClInclude Include="src\wnd\funcs\edit\caret_pos.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\edit\wnd_edit_line_count.h">
+    <ClInclude Include="src\wnd\funcs\edit\line_count.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\menu\wnd_menu.h">
+    <ClInclude Include="src\wnd\funcs\menu\menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\hooks\wnd_mouse_hook.h">
+    <ClInclude Include="src\wnd\funcs\hooks\mouse_hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\hooks\wnd_key_hook.h">
+    <ClInclude Include="src\wnd\funcs\hooks\key_hook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\menu\wnd_menu_funcs.h">
+    <ClInclude Include="src\wnd\funcs\menu\menu_funcs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\wnd\funcs\util\config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\wnd\funcs\hooks\wnd_hooks.h">
+    <ClInclude Include="src\wnd\funcs\hooks\hooks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

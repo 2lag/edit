@@ -60,7 +60,7 @@ enum MENU_STYLE {
   LINE_COUNT = 2
 };
 
-#include "funcs/edit/wnd_edit_scroll.h"
+#include "funcs/edit/scroll.h"
 extern CSCROLL vscroll;
 
 extern HHOOK mouse_hook;

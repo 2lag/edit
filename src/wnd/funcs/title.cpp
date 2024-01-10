@@ -1,6 +1,6 @@
-#include "wnd_title.h"
+#include "title.h"
 
-#include "./hooks/wnd_hooks.h"
+#include "./hooks/hooks.h"
 
 // never. again.
 using namespace std;

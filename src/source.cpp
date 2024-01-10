@@ -1,5 +1,5 @@
-#include "wnd/wnd_func.h"
-#include "wnd/funcs/wnd_fps.h"
+#include "wnd/wnd_proc.h"
+#include "wnd/funcs/fps.h"
 #include "wnd/funcs/util/config.h"
 
 RECT wnd_sz;

@@ -1,5 +1,4 @@
-#pragma warning( disable : 26812 )
-#include "wnd_resize.h"
+#include "resize.h"
 
 #define RESIZE_THRESHOLD 5
 #define MIN_WINDOW_SIZE 256

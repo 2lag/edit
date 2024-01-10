@@ -1,4 +1,4 @@
-#include "wnd_menu.h"
+#include "menu.h"
 
 // i will never use this again
 using namespace std;

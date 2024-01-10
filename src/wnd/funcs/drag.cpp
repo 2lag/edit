@@ -1,4 +1,4 @@
-#include "wnd_drag.h"
+#include "drag.h"
 
 bool user_dragging = false;
 POINT duser_start{};

@@ -1,5 +1,5 @@
-#include "wnd_func.h"
-#include "funcs/wnd_includes.h"
+#include "wnd_proc.h"
+#include "funcs/includes.h"
 
 LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   POINT m_pos{};

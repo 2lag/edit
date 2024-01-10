@@ -1,4 +1,4 @@
-#include "wnd_edit_caret.h"
+#include "caret_pos.h"
 
 RECT caret_rect;
 

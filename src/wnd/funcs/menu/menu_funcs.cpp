@@ -1,9 +1,9 @@
-#include "wnd_menu_funcs.h"
-#include "wnd_menu.h"
+#include "menu_funcs.h"
+#include "menu.h"
 
 #include "../util/config.h"
 
-#include "../edit/wnd_edit_line_count.h"
+#include "../edit/line_count.h"
 
 HWND menu_txt;
 

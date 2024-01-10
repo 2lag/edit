@@ -1,4 +1,4 @@
-#include "wnd_edit_line_count.h"
+#include "line_count.h"
 
 HDC wnd_edit_line_count_draw_bg( const HWND hwnd,
                                  const bool ret_hdc = false ) {

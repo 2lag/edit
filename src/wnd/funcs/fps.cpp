@@ -1,4 +1,4 @@
-#include "wnd_fps.h"
+#include "fps.h"
 
 #define UPDATE_INTERVAL 64
 u64 prev_time = GetTickCount64(), frames{}, fps{};

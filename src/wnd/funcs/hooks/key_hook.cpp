@@ -1,10 +1,10 @@
-#include "wnd_key_hook.h"
+#include "key_hook.h"
 
-#include "../menu/wnd_menu.h"
-#include "../menu/wnd_menu_funcs.h"
+#include "../menu/menu.h"
+#include "../menu/menu_funcs.h"
 
-#include "../edit/wnd_edit_line_count.h"
-#include "../edit/wnd_edit.h"
+#include "../edit/line_count.h"
+#include "../edit/edit_ctl.h"
 
 
 LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {

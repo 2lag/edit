@@ -1,8 +1,8 @@
 #pragma once
 #include "../../wincludes.h"
 
-#include "wnd_key_hook.h"
-#include "wnd_mouse_hook.h"
+#include "key_hook.h"
+#include "mouse_hook.h"
 
 inline void wnd_init_hooks() {
   mouse_hook = SetWindowsHookExA(
