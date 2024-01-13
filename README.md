@@ -2,8 +2,9 @@ functionality :
 - Macro
 - - Record ( record keypresses, ignoring final 4 ( ctrl t, m, r ) ) also, add a toggled notice to it
 - - - if macro toggled, record to vector in the keyboard hook getting every key pressed and saving it
-- - Clear ( clear macro storage )
-- - Playback ( playback recorded keypresses )
+- - Clear ( self explanatory )
+- - Playback ( self explanatory )
+- - - need to figure out a method to make this work properly
 - Exit ( in File )
 - multi-Cursor
 - - TBFD... and FML.
