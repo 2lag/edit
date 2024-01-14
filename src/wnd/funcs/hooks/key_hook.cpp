@@ -16,7 +16,7 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
 
     KBDLLHOOKSTRUCT* p_key = reinterpret_cast<KBDLLHOOKSTRUCT*>( lp );
 
-    if( p_key->vkCode != 0x4D )
+    if( p_key->vkCode != 0x4D ) // M
       m_sub_open = false; // ensures submenu is closed
 
     if( GetAsyncKeyState( VK_CONTROL ) ) {
