@@ -7,7 +7,7 @@ functionality :
 - - - - figure out how to only get keypress when its pressed down once so it ignores holds
 - - Clear - wipe the vector
 - - Playback - execute keys stored in vector
-- - - need to figure out a method to make this work properly
+- - - need to figure out a method to make playback work at all
 - Exit ( in File )
 - multi-Cursor
 - - TBFD... and FML.
