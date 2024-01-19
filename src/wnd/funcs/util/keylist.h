@@ -1,258 +1,275 @@
 #pragma once
 
-enum KEYS {
-  IGNORED   = 0x01,
-  IGNORED   = 0x02,
-  IGNORED   = 0x03,
-  IGNORED   = 0x04,
-  IGNORED   = 0x05,
-  IGNORED   = 0x06,
-  IGNORED   = 0x07,
-  BACKSPACE = 0x08,
-  TAB       = 0x09,
-  IGNORED   = 0x0A,
-  IGNORED   = 0x0B,
-  CLEAR     = 0x0C,
-  RETURN    = 0x0D,
-  IGNORED   = 0x0E,
-  IGNORED   = 0x0F,
-  SHIFT     = 0x10,
-  CONTROL   = 0x11,
-  IGNORED   = 0x12,
-  IGNORED   = 0x13,
-  CAPS_LOCK = 0x14,
-  IGNORED   = 0x15,
-  IGNORED   = 0x16,
-  IGNORED   = 0x17,
-  IGNORED   = 0x18,
-  IGNORED   = 0x19,
-  IGNORED   = 0x1A,
-  ESCAPE    = 0x1B,
-  IGNORED   = 0x1C,
-  IGNORED   = 0x1D,
-  IGNORED   = 0x1E,
-  IGNORED   = 0x1F,
-  SPACE     = 0x20,
-  PAGE_UP   = 0x21,
-  PAGE_DOWN = 0x22,
-  END       = 0x23,
-  HOME      = 0x24,
-  LEFT      = 0x25,
-  UP        = 0x26,
-  RIGHT     = 0x27,
-  DOWN      = 0x28,
-  IGNORED   = 0x29,
-  IGNORED   = 0x2A,
-  IGNORED   = 0x2B,
-  IGNORED   = 0x2C,
-  INSERT    = 0x2D,
-  DELETE    = 0x2E,
-  IGNORED   = 0x2F,
-  NUM_ZERO  = 0x30,
-  NUM_ONE   = 0x31,
-  NUM_TWO   = 0x32,
-  NUM_THREE = 0x33,
-  NUM_FOUR  = 0x34,
-  NUM_FIVE  = 0x35,
-  NUM_SIX   = 0x36,
-  NUM_SEVEN = 0x37,
-  NUM_EIGHT = 0x38,
-  NUM_NINE  = 0x39,
-  IGNORED   = 0x3A,
-  IGNORED   = 0x3B,
-  IGNORED   = 0x3C,
-  IGNORED   = 0x3D,
-  IGNORED   = 0x3E,
-  IGNORED   = 0x3F,
-  IGNORED   = 0x40,
-  KEY_A     = 0x41,
-  KEY_B     = 0x42,
-  KEY_C     = 0x43,
-  KEY_D     = 0x44,
-  KEY_E     = 0x45,
-  KEY_F     = 0x46,
-  KEY_G     = 0x47,
-  KEY_H     = 0x48,
-  KEY_I     = 0x49,
-  KEY_J     = 0x4A,
-  KEY_K     = 0x4B,
-  KEY_L     = 0x4C,
-  KEY_M     = 0x4D,
-  KEY_N     = 0x4E,
-  KEY_O     = 0x4F,
-  KEY_P     = 0x50,
-  KEY_Q     = 0x51,
-  KEY_R     = 0x52,
-  KEY_S     = 0x53,
-  KEY_T     = 0x54,
-  KEY_U     = 0x55,
-  KEY_V     = 0x56,
-  KEY_W     = 0x57,
-  KEY_X     = 0x58,
-  KEY_Y     = 0x59,
-  KEY_Z     = 0x5A,
-  IGNORED   = 0x5B,
-  IGNORED   = 0x5C,
-  IGNORED   = 0x5D,
-  IGNORED   = 0x5E,
-  IGNORED   = 0x5F,
-  NUM_ZERO  = 0x60,
-  NUM_ONE   = 0x61,
-  NUM_TWO   = 0x62,
-  NUM_THREE = 0x63,
-  NUM_FOUR  = 0x64,
-  NUM_FIVE  = 0x65,
-  NUM_SIX   = 0x66,
-  NUM_SEVEN = 0x67,
-  NUM_EIGHT = 0x68,
-  NUM_NINE  = 0x69,
-  MULTIPLY  = 0x6A,
-  ADD       = 0x6B,
-  VERT_LINE = 0x6C,
-  SUBTRACT  = 0x6D,
-  PERIOD    = 0x6E,
-  DIVIDE    = 0x6F,
-  IGNORED   = 0x70,
-  IGNORED   = 0x71,
-  IGNORED   = 0x72,
-  IGNORED   = 0x73,
-  IGNORED   = 0x74,
-  IGNORED   = 0x75,
-  IGNORED   = 0x76,
-  IGNORED   = 0x77,
-  IGNORED   = 0x78,
-  IGNORED   = 0x79,
-  IGNORED   = 0x7A,
-  IGNORED   = 0x7B,
-  IGNORED   = 0x7C,
-  IGNORED   = 0x7D,
-  IGNORED   = 0x7E,
-  IGNORED   = 0x7F,
-  IGNORED   = 0x80,
-  IGNORED   = 0x81,
-  IGNORED   = 0x82,
-  IGNORED   = 0x83,
-  IGNORED   = 0x84,
-  IGNORED   = 0x85,
-  IGNORED   = 0x86,
-  IGNORED   = 0x87,
-  IGNORED   = 0x88,
-  IGNORED   = 0x89,
-  IGNORED   = 0x8A,
-  IGNORED   = 0x8B,
-  IGNORED   = 0x8C,
-  IGNORED   = 0x8D,
-  IGNORED   = 0x8E,
-  IGNORED   = 0x8F,
-  IGNORED   = 0x90,
-  IGNORED   = 0x91,
-  IGNORED   = 0x92,
-  IGNORED   = 0x93,
-  IGNORED   = 0x94,
-  IGNORED   = 0x95,
-  IGNORED   = 0x96,
-  IGNORED   = 0x97,
-  IGNORED   = 0x98,
-  IGNORED   = 0x99,
-  IGNORED   = 0x9A,
-  IGNORED   = 0x9B,
-  IGNORED   = 0x9C,
-  IGNORED   = 0x9D,
-  IGNORED   = 0x9E,
-  IGNORED   = 0x9F,
-  L_SHIFT   = 0xA0,
-  R_SHIFT   = 0xA1,
-  L_CTRL    = 0xA2,
-  R_CTRL    = 0xA3,
-  IGNORED   = 0xA4,
-  IGNORED   = 0xA5,
-  IGNORED   = 0xA6,
-  IGNORED   = 0xA7,
-  IGNORED   = 0xA8,
-  IGNORED   = 0xA9,
-  IGNORED   = 0xAA,
-  IGNORED   = 0xAB,
-  IGNORED   = 0xAC,
-  IGNORED   = 0xAD,
-  IGNORED   = 0xAE,
-  IGNORED   = 0xAF,
-  IGNORED   = 0xB0,
-  IGNORED   = 0xB1,
-  IGNORED   = 0xB2,
-  IGNORED   = 0xB3,
-  IGNORED   = 0xB4,
-  IGNORED   = 0xB5,
-  IGNORED   = 0xB6,
-  IGNORED   = 0xB7,
-  IGNORED   = 0xB8,
-  IGNORED   = 0xB9,
-  COLON     = 0xBA,
-  PLUS      = 0xBB,
-  COMMA     = 0xBC,
-  MINUS     = 0xBD,
-  PERIOD    = 0xBE,
-  QUESTION  = 0xBF,
-  TILDE     = 0xC0,
-  IGNORED   = 0xC1,
-  IGNORED   = 0xC2,
-  IGNORED   = 0xC3,
-  IGNORED   = 0xC4,
-  IGNORED   = 0xC5,
-  IGNORED   = 0xC6,
-  IGNORED   = 0xC7,
-  IGNORED   = 0xC8,
-  IGNORED   = 0xC9,
-  IGNORED   = 0xCA,
-  IGNORED   = 0xCB,
-  IGNORED   = 0xCC,
-  IGNORED   = 0xCD,
-  IGNORED   = 0xCE,
-  IGNORED   = 0xCF,
-  IGNORED   = 0xD0,
-  IGNORED   = 0xD1,
-  IGNORED   = 0xD2,
-  IGNORED   = 0xD3,
-  IGNORED   = 0xD4,
-  IGNORED   = 0xD5,
-  IGNORED   = 0xD6,
-  IGNORED   = 0xD7,
-  IGNORED   = 0xD8,
-  IGNORED   = 0xD9,
-  IGNORED   = 0xDA,
-  L_BRACKET = 0xDB,
-  BACKSLASH = 0xDC,
-  R_BRACKET = 0xDD,
-  QUOTE     = 0xDE,
-  IGNORED   = 0xDF, // THIS MAY BE WRONG ?
-  IGNORED   = 0xE0,
-  IGNORED   = 0xE1, // THIS TOO
-  GT_LT_KEY = 0xE2,
-  IGNORED   = 0xE3,
-  IGNORED   = 0xE4,
-  IGNORED   = 0xE5,
-  IGNORED   = 0xE6, // THIS TOO
-  IGNORED   = 0xE7,
-  IGNORED   = 0xE8,
-  IGNORED   = 0xE9, // THIS TOO
-  IGNORED   = 0xEA, // THIS TOO
-  IGNORED   = 0xEB, // THIS TOO
-  IGNORED   = 0xEC, // THIS TOO
-  IGNORED   = 0xED, // THIS TOO
-  IGNORED   = 0xEE, // THIS TOO
-  IGNORED   = 0xEF, // THIS TOO
-  IGNORED   = 0xF0, // THIS TOO
-  IGNORED   = 0xF1, // THIS TOO
-  IGNORED   = 0xF2, // THIS TOO
-  IGNORED   = 0xF3, // THIS TOO
-  IGNORED   = 0xF4, // THIS TOO
-  IGNORED   = 0xF5, // THIS TOO
-  IGNORED   = 0xF6, // THIS TOO... WTF IS ATTN KEY MAN.
-  IGNORED   = 0xF7, // THIS TOO... man WHAT THE FUCK IS A CRSEL KEY
-  IGNORED   = 0xF8, // EXSEL ??!?!?!!?
-  IGNORED   = 0xF9, // MY BRETHEREN IN CHRIIIIIIIIIIIIST WHAT IS ERASE EOF GODDAMN
-  IGNORED   = 0xFA,
-  IGNORED   = 0xFB,
-  IGNORED   = 0xFC,
-  IGNORED   = 0xFD,
-  IGNORED   = 0XFE // maybe keep clear ? depending on use.
-};
+// sorry :{
+
+const char* get_key( u8 key ) {
+  switch( key ) {
+    case 0x08: {
+      return "BACKSPACE";
+    } break;
+    case 0x09: {
+      return "TAB";
+    } break;
+    case 0x0A: case 0x0B: {
+      return "IGNORED";
+    } break;
+    case 0x0C: {
+      return "CLEAR"; // may not be needed
+    } break;
+    case 0x0D: {
+      return "RETURN";
+    } break;
+    case 0x10: {
+      return "SHIFT";
+    } break;
+    case 0x11: {
+      return "CONTROL";
+    } break;
+    case 0x14: {
+      return "CAPS_LOCK";
+    } break;
+    case 0x1B: {
+      return "ESCAPE";
+    } break;
+    case 0x20: {
+      return "SPACE";
+    } break;
+    case 0x21: {
+      return "PAGE_UP";
+    } break;
+    case 0x22: {
+      return "PAGE_DOWN";
+    } break;
+    case 0x23: {
+      return "END";
+    } break;
+    case 0x24: {
+      return "HOME";
+    } break;
+    case 0x25: {
+      return "LEFT";
+    } break;
+    case 0x26: {
+      return "UP";
+    } break;
+    case 0x27: {
+      return "RIGHT";
+    } break;
+    case 0x28: {
+      return "DOWN";
+    } break;
+    case 0x2D: {
+      return "INSERT";
+    } break;
+    case 0x2E: {
+      return "DEL";
+    } break;
+    case 0x30: {
+      return "NUM_ZERO";
+    } break;
+    case 0x31: {
+      return "NUM_ONE";
+    } break;
+    case 0x32: {
+      return "NUM_TWO";
+    } break;
+    case 0x33: {
+      return "NUM_THREE";
+    } break;
+    case 0x34: {
+      return "NUM_FOUR";
+    } break;
+    case 0x35: {
+      return "NUM_FIVE";
+    } break;
+    case 0x36: {
+      return "NUM_SIX";
+    } break;
+    case 0x37: {
+      return "NUM_SEVEN";
+    } break;
+    case 0x38: {
+      return "NUM_EIGHT";
+    } break;
+    case 0x39: {
+      return "NUM_NINE";
+    } break;
+    case 0x41: {
+      return "KEY_A";
+    } break;
+    case 0x42: {
+      return "KEY_B";
+    } break;
+    case 0x43: {
+      return "KEY_C";
+    } break;
+    case 0x44: {
+      return "KEY_D";
+    } break;
+    case 0x45: {
+      return "KEY_E";
+    } break;
+    case 0x46: {
+      return "KEY_F";
+    } break;
+    case 0x47: {
+      return "KEY_G";
+    } break;
+    case 0x48: {
+      return "KEY_H";
+    } break;
+    case 0x49: {
+      return "KEY_I";
+    } break;
+    case 0x4A: {
+      return "KEY_J";
+    } break;
+    case 0x4B: {
+      return "KEY_K";
+    } break;
+    case 0x4C: {
+      return "KEY_L";
+    } break;
+    case 0x4D: {
+      return "KEY_M";
+    } break;
+    case 0x4E: {
+      return "KEY_N";
+    } break;
+    case 0x4F: {
+      return "KEY_O";
+    } break;
+    case 0x50: {
+      return "KEY_P";
+    } break;
+    case 0x51: {
+      return "KEY_Q";
+    } break;
+    case 0x52: {
+      return "KEY_R";
+    } break;
+    case 0x53: {
+      return "KEY_S";
+    } break;
+    case 0x54: {
+      return "KEY_T";
+    } break;
+    case 0x55: {
+      return "KEY_U";
+    } break;
+    case 0x56: {
+      return "KEY_V";
+    } break;
+    case 0x57: {
+      return "KEY_W";
+    } break;
+    case 0x58: {
+      return "KEY_X";
+    } break;
+    case 0x59: {
+      return "KEY_Y";
+    } break;
+    case 0x5A: {
+      return "KEY_Z";
+    } break;
+    case 0x60: {
+      return "NUM_ZERO";
+    } break;
+    case 0x61: {
+      return "NUM_ONE";
+    } break;
+    case 0x62: {
+      return "NUM_TWO";
+    } break;
+    case 0x63: {
+      return "NUM_THREE";
+    } break;
+    case 0x64: {
+      return "NUM_FOUR";
+    } break;
+    case 0x65: {
+      return "NUM_FIVE";
+    } break;
+    case 0x66: {
+      return "NUM_SIX";
+    } break;
+    case 0x67: {
+      return "NUM_SEVEN";
+    } break;
+    case 0x68: {
+      return "NUM_EIGHT";
+    } break;
+    case 0x69: {
+      return "NUM_NINE";
+    } break;
+    case 0x6A: {
+      return "MULTIPLY";
+    } break;
+    case 0x6B: {
+      return "ADD";
+    } break;
+    case 0x6C: {
+      return "VERT_LINE";
+    } break;
+    case 0x6D: {
+      return "SUBTRACT";
+    } break;
+    case 0x6E: {
+      return "PERIOD";
+    } break;
+    case 0x6F: {
+      return "DIVIDE";
+    } break;
+    case 0xA0: {
+      return "L_SHIFT";
+    } break;
+    case 0xA1: {
+      return "R_SHIFT";
+    } break;
+    case 0xA2: {
+      return "L_CTRL";
+    } break;
+    case 0xA3: {
+      return "R_CTRL";
+    } break;
+    case 0xBA: {
+      return "COLON";
+    } break;
+    case 0xBB: {
+      return "PLUS";
+    } break;
+    case 0xBC: {
+      return "COMMA";
+    } break;
+    case 0xBD: {
+      return "MINUS";
+    } break;
+    case 0xBE: {
+      return "PERIOD";
+    } break;
+    case 0xBF: {
+      return "QUESTION";
+    } break;
+    case 0xC0: {
+      return "TILDE";
+    } break;
+    case 0xDB: {
+      return "L_BRACKET";
+    } break;
+    case 0xDC: {
+      return "BACKSLASH";
+    } break;
+    case 0xDD: {
+      return "R_BRACKET";
+    } break;
+    case 0xDE: {
+      return "QUOTE";
+    } break;
+    case 0xE2: {
+      return "GT_LT_KEY";
+    } break;
+    default: {
+      return "IGNORED";
+    } break;
+  }
+}

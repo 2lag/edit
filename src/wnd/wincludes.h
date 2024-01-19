@@ -54,6 +54,9 @@ extern HWND menu_txt;
 extern bool m_base_open[ OBJ_BASE_COUNT / 2 ];
 extern bool menu_style_toggle[ OBJ_BASE_COUNT / 2 ];
 
+extern bool macro_recording;
+extern std::vector< u8 > macro;
+
 enum MENU_STYLE {
   FPS = 0,
   CARET = 1,

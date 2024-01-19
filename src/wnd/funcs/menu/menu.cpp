@@ -1,5 +1,7 @@
 #include "menu.h"
 
+bool macro_recording = false;
+
 // i will never use this again
 using namespace std;
 
@@ -133,6 +135,7 @@ RECT wnd_menu_create_vert( const HDC hdc,
   return menu_rect;
 }
 
+// remove menu_rect from here ?
 void wnd_menu_draw_dropdown( const HWND hwnd, const s8 idx ) {
   wnd_clear_menus( idx, false );
 
@@ -193,8 +196,11 @@ void wnd_menu_draw_sub_dropdown( const HWND hwnd ) {
 
   HDC hdc = GetDC( hwnd );
 
-  vector<const char*> txt{ "Clear", "Record", "Playback" };
-  vector<s32> underline_pos{ 170, 164, 157 };
+  vector<const char*> txt{ "Clear",
+    macro_recording ? "[X] Record" : "[  ] Record",
+    "Playback"
+  };
+  vector<s32> underline_pos{ 170, 174, 157 };
   (void)wnd_menu_create_vert( hdc,
     WND_BTN_SZ * 3, { WND_BTN_SZ * 6 - 1, WND_BTN_SZ * 3 },
     underline_pos, txt

@@ -6,8 +6,6 @@
 #include "../edit/line_count.h"
 #include "../edit/edit_ctl.h"
 
-#include "../util/keylist.h" // for macro
-
 LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
   static bool m_sub_open = false;
 
@@ -17,7 +15,13 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
 
     KBDLLHOOKSTRUCT* p_key = reinterpret_cast<KBDLLHOOKSTRUCT*>( lp );
 
-    if( p_key->vkCode != 0x4D ) // M
+    if( macro_recording )
+      record_macro( p_key->vkCode );
+
+    if( m_sub_open && (
+          p_key->vkCode != 0x4D  &&
+          p_key->vkCode != 0x50  &&
+          p_key->vkCode != 0x52  )) // M P R
       m_sub_open = false; // ensures submenu is closed
 
     if( GetAsyncKeyState( VK_CONTROL ) ) {
@@ -28,6 +32,9 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
         Edit_SetSel( txt_box, 0, -1 );
 
         return 1;
+      } break;
+      case 0x43: { // CTRL + C
+        // if submenu is open, clear macro
       } break;
       case 0x46: { // CTRL + F
         if( m_base_open[2] )
@@ -54,6 +61,15 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
       case 0x50: { // CTRL + P      
         if( m_base_open[2] )
           return wnd_menu_style_toggle(1);
+        if( m_sub_open ) {
+          wnd_clear_menus();
+          return playback_macro();
+        }
+      } break;
+      case 0x52: { // CTRL + R
+        if( m_sub_open )
+          macro_recording = !macro_recording;
+        wnd_clear_menus();
       } break;
       case 0x53: { // CTRL + S
         if( m_base_open[0] ) // save route

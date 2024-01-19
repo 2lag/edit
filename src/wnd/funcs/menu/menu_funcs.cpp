@@ -2,6 +2,7 @@
 #include "menu.h"
 
 #include "../util/config.h"
+#include "../util/keylist.h"
 
 #include "../edit/line_count.h"
 
@@ -238,6 +239,22 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
   }
 
   return DefSubclassProc( hwnd, msg, wp, lp );
+}
+
+std::vector< u8 > macro;
+void record_macro( u8 key ) {
+#ifdef _DEBUG
+  printf( "key: %s\n", get_key( key ) );
+#endif
+
+  if( macro_recording )
+    macro.push_back( key );
+}
+
+s32 playback_macro() {
+  // figure this out smh
+
+  return 1;
 }
 
 s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
