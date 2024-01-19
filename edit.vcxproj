@@ -211,6 +211,7 @@
     <ClInclude Include="src\wnd\funcs\hooks\mouse_hook.h" />
     <ClInclude Include="src\wnd\funcs\menu\menu_funcs.h" />
     <ClInclude Include="src\wnd\funcs\util\config.h" />
+    <ClInclude Include="src\wnd\funcs\util\keylist.h" />
     <ClInclude Include="src\wnd\funcs\util\overloads.h" />
     <ClInclude Include="src\wnd\funcs\util\util.h" />
     <ClInclude Include="src\wnd\funcs\fps.h" />

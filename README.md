@@ -1,6 +1,7 @@
 functionality :
 - Macro
 - - Record ( record keypresses, ignoring final 4 ( ctrl t, m, r ) ), and maybe the first ctrl to close if needed?
+- - - use keylist to print out proper names
 - - - add a toggled notice to menu option
 - - - if macro toggled, record to vector in the keyboard hook getting every key pressed and saving it ( how to auto-resize ? )
 - - - - figure out how to only get keypress when its pressed down once so it ignores holds

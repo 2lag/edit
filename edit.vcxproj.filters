@@ -122,6 +122,9 @@
     <ClInclude Include="src\wnd\funcs\hooks\hooks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\wnd\funcs\util\keylist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="customme.bin">

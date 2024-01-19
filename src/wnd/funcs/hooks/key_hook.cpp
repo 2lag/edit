@@ -6,6 +6,7 @@
 #include "../edit/line_count.h"
 #include "../edit/edit_ctl.h"
 
+#include "../util/keylist.h" // for macro
 
 LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
   static bool m_sub_open = false;
