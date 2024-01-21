@@ -6,6 +6,8 @@
 #include "../edit/line_count.h"
 #include "../edit/edit_ctl.h"
 
+#include "../util/keylist.h"
+
 LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
   static bool m_sub_open = false;
 
@@ -15,9 +17,9 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
 
     KBDLLHOOKSTRUCT* p_key = reinterpret_cast<KBDLLHOOKSTRUCT*>( lp );
 
-    if( macro_recording )
-      record_macro( p_key->vkCode );
+    record_macro( p_key->vkCode );
 
+    // make sure this is right
     if( m_sub_open && (
           p_key->vkCode != 0x4D  &&
           p_key->vkCode != 0x50  &&
@@ -67,8 +69,20 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
         }
       } break;
       case 0x52: { // CTRL + R
-        if( m_sub_open )
+        if( m_sub_open ) {
           macro_recording = !macro_recording;
+
+          if( !macro_recording ) {
+            // trim final 4 here ( ctrl t m r )
+
+            for( s32 idx = 0; idx < macro.size(); idx++ ) {
+#ifdef _DEBUG
+              printf( "%s\n", get_key( macro.at( idx ) ) );
+#endif
+            }
+          } else
+            macro.clear();
+        }
         wnd_clear_menus();
       } break;
       case 0x53: { // CTRL + S
