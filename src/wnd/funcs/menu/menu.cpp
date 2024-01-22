@@ -146,12 +146,13 @@ void wnd_menu_draw_dropdown( const HWND hwnd, const s8 idx ) {
 
   switch( idx ) { // "Anotha one" - DJ Khaled, 2015 ( sin #1 ) partial fix 1.4.24
   case 0: {
-    underline_pos.resize(3);
+    underline_pos.resize(4);
     underline_pos[0] = 10;
     underline_pos[1] = 7;
     underline_pos[2] = 8;
+    underline_pos[3] = 12;
 
-    vector<const char*> txt{ "New", "Open", "Save" };
+    vector<const char*> txt{ "New", "Open", "Save", "Exit" };
     menu_rect = wnd_menu_create_vert( hdc,
       WND_BTN_SZ * 2 + 1, { -1, WND_BTN_SZ * 2 },
       underline_pos, txt
@@ -196,11 +197,11 @@ void wnd_menu_draw_sub_dropdown( const HWND hwnd ) {
 
   HDC hdc = GetDC( hwnd );
 
-  vector<const char*> txt{ "Clear",
+  vector<const char*> txt{
     macro_recording ? "[X] Record" : "[  ] Record",
     "Playback"
   };
-  vector<s32> underline_pos{ 170, 174, 157 };
+  vector<s32> underline_pos{ 174, 157 };
   (void)wnd_menu_create_vert( hdc,
     WND_BTN_SZ * 3, { WND_BTN_SZ * 6 - 1, WND_BTN_SZ * 3 },
     underline_pos, txt

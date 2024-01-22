@@ -1,12 +1,7 @@
 functionality :
 - Macro
-- - Record
-- - - notes in key_hook
-- - - figure out how to only get keypress when its pressed down once so it ignores holds
-- - Clear - wipe the vector
 - - Playback - execute keys stored in vector
 - - - need to figure out a method to make playback work at all
-- Exit ( in File )
 - multi-Cursor
 - - TBFD... and FML.
 - test current abilities and implement missing support for alternative pointless encoding formats ( utf-16, utf-32, etc. )
@@ -20,4 +15,8 @@ clean up :
 - add comments to non-self-explaning code
 - full, final, in-depth reoptimization ( use valgrind as well )
 - test everything ( make list of stuff from each file's funcs )
-- add ss, make documentation, make repo public, then start dev on debian making 3d app/game with sdl, vsc, and g++
+- add ss, make documentation, make repo public, then start dev on debian making :
+- - 3d app/game with sdl, vsc, and g++ [here](https://www.libsdl.org/)
+- - keyboard program using sine wave generation [here](https://www.youtube.com/watch?v=5xd9BMxoXqo)
+- - custom driver ( access mouse and get input being sent ( if possible ) ) [here]()
+- - operating system [here](https://www.youtube.com/watch?v=9t-SPC7Tczc)

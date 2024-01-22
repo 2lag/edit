@@ -1,5 +1,7 @@
 #include "key_hook.h"
 
+#include "hooks.h"
+
 #include "../menu/menu.h"
 #include "../menu/menu_funcs.h"
 
@@ -10,14 +12,20 @@
 
 LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
   static bool m_sub_open = false;
+  static std::unordered_map<u8, bool> key_down;
 
   if( ncode == HC_ACTION ) {
-    if( wp != WM_KEYDOWN )
-      return CallNextHookEx( 0, ncode, wp, lp );
-
     KBDLLHOOKSTRUCT* p_key = reinterpret_cast<KBDLLHOOKSTRUCT*>( lp );
 
-    record_macro( p_key->vkCode );
+    // records once per keydown ( blocks multiples )
+    if( wp == WM_KEYDOWN && !key_down[ p_key->vkCode ] ) {
+      record_macro( p_key->vkCode );
+      key_down[ p_key->vkCode ] = true;
+    } else if( wp == WM_KEYUP )
+      key_down[ p_key->vkCode ] = false;
+
+    if( wp != WM_KEYDOWN )
+      return CallNextHookEx( 0, ncode, wp, lp );
 
     // make sure this is right
     if( m_sub_open && (
@@ -35,8 +43,9 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
 
         return 1;
       } break;
-      case 0x43: { // CTRL + C
-        // if submenu is open, clear macro
+      case 0x45: { // CTRL + E
+        wnd_unhook();
+        PostQuitMessage( 0 );
       } break;
       case 0x46: { // CTRL + F
         if( m_base_open[2] )
@@ -74,6 +83,8 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
 
           if( !macro_recording ) {
             // trim final 4 here ( ctrl t m r )
+            if( macro.size() >= 4 )
+              macro.erase( macro.end() - 4, macro.end() );
 
             for( s32 idx = 0; idx < macro.size(); idx++ ) {
 #ifdef _DEBUG
