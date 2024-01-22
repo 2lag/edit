@@ -1,7 +1,6 @@
 functionality :
 - Macro
-- - Playback - execute keys stored in vector
-- - - need to figure out a method to make playback work at all
+- - Playback - notes in menu_funcs
 - multi-Cursor
 - - TBFD... and FML.
 - test current abilities and implement missing support for alternative pointless encoding formats ( utf-16, utf-32, etc. )
@@ -11,8 +10,7 @@ clean up :
 - move any mouse functionality to mousehook & same with any keyboard 1-by-1 & recode as needed
 - - will fix previous conception of need for a global mouse position, while also improving performance
 - (void)XXX all functions with ignored return values, add checks for important ret values in all files, append error to local log w/ date & time if error is before text editor is working, or if text editor is not working
-- check for missed comment-notes
-- add comments to non-self-explaning code
+- check all files for missed comment-notes & add comments to non-self-descriptive code
 - full, final, in-depth reoptimization ( use valgrind as well )
 - test everything ( make list of stuff from each file's funcs )
 - add ss, make documentation, make repo public, then start dev on debian making :

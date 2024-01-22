@@ -247,7 +247,9 @@ void record_macro( u8 key ) {
 }
 
 s32 playback_macro() {
-  // figure this out smh
+  for( u64 macro_len = 0; macro_len < macro.size(); macro_len++ ) {
+    // use sendinput to simulate keypresses
+  }
 
   return 1;
 }
