@@ -11,8 +11,8 @@
 #include "../util/keylist.h"
 
 LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
-  static bool m_sub_open = false;
   static std::unordered_map<u8, bool> key_down;
+  static bool m_sub_open = false;
 
   if( ncode == HC_ACTION ) {
     KBDLLHOOKSTRUCT* p_key = reinterpret_cast<KBDLLHOOKSTRUCT*>( lp );

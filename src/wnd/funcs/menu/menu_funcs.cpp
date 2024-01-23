@@ -257,7 +257,7 @@ s32 playback_macro() {
     return 1;
 
 
-  
+
   return 1;
 }
 

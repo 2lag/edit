@@ -1,6 +1,6 @@
 functionality :
 - Macro
-- - Playback - figure out alternative to sendinput and keybd_event
+- - Playback - figure out how to use sendinput properly
 - multi-Cursor - TBD
 - test current abilities and implement missing support for alternative pointless encoding formats ( utf-16, utf-32, etc. )
 
