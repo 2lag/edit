@@ -246,11 +246,18 @@ void record_macro( u8 key ) {
     macro.push_back( key );
 }
 
-s32 playback_macro() {
-  for( u64 macro_len = 0; macro_len < macro.size(); macro_len++ ) {
-    // use sendinput to simulate keypresses
-  }
+bool key_is_ctrl( u8 key ) {
+  return key == VK_CONTROL ||
+         key == VK_LCONTROL ||
+         key == VK_RCONTROL;
+}
 
+s32 playback_macro() {
+  if( !macro.size() )
+    return 1;
+
+
+  
   return 1;
 }
 

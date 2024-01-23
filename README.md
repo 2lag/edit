@@ -1,8 +1,7 @@
 functionality :
 - Macro
-- - Playback - notes in menu_funcs
-- multi-Cursor
-- - TBFD... and FML.
+- - Playback - figure out alternative to sendinput and keybd_event
+- multi-Cursor - TBD
 - test current abilities and implement missing support for alternative pointless encoding formats ( utf-16, utf-32, etc. )
 
 clean up :
