@@ -102,7 +102,7 @@ HANDLE wnd_menu_get_file( HWND hwnd, u64 len, bool open ) {
 }
 
 LRESULT CALLBACK findproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, DWORD_PTR ) {
-  static char *last_found = nullptr; // To keep track of the last found position
+  static s8 *last_found = nullptr; // To keep track of the last found position
 
   switch(msg) {
   case WM_CHAR: {
@@ -110,17 +110,17 @@ LRESULT CALLBACK findproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
       break;
 
     s32 search_len = GetWindowTextLengthA( hwnd ) + 1;
-    char *search_text = new char[ search_len ];
+    s8 *search_text = new s8[ search_len ];
     GetWindowTextA( hwnd, search_text, search_len );
 
     s32 txt_len = GetWindowTextLengthA( txt_box ) + 1;
-    char *txt = new char[ txt_len ];
+    s8 *txt = new s8[ txt_len ];
     GetWindowTextA( txt_box, txt, txt_len );
 
-    char *found = strstr( last_found ? last_found + 1 : txt, search_text );
+    s8 *found = strstr( last_found ? last_found + 1 : txt, search_text );
     if( found ) {
-      int start_pos = found - txt;
-      int end_pos = start_pos + search_len - 1;
+      s8 start_pos = found - txt;
+      s32 end_pos = static_cast<s32>( start_pos ) + search_len - 1;
       Edit_SetSel( txt_box, start_pos, end_pos );
       last_found = found;
     } else {
@@ -203,7 +203,7 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
       break;
     }
 
-    char *txt_box_txt = new char[ txt_box_len ];
+    s8 *txt_box_txt = new s8[ txt_box_len ];
 
     if( !txt_box_txt ) {
       SetWindowTextA( hwnd, "memory error");
@@ -240,24 +240,49 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
   return DefSubclassProc( hwnd, msg, wp, lp );
 }
 
-std::vector< u8 > macro;
-void record_macro( u8 key ) {
+std::vector< u32 > macro;
+void record_macro( u32 key ) {
   if( macro_recording )
     macro.push_back( key );
-}
-
-bool key_is_ctrl( u8 key ) {
-  return key == VK_CONTROL ||
-         key == VK_LCONTROL ||
-         key == VK_RCONTROL;
 }
 
 s32 playback_macro() {
   if( !macro.size() )
     return 1;
+  
+  // reset all keys
+  for( u32 idx = 0; idx < 256; idx++ )
+    keybd_event( idx, 0, KEYEVENTF_KEYUP, 0 );
 
+  u32 size = macro.size() * 2;
+  INPUT *inputs = new INPUT[ size ]; // *2 for keydown and keyup
 
+  for( u64 idx = 0; idx < size; idx += 2 ) {
+    u8 vk_code = macro[ idx / 2 ];
 
+    inputs[ idx ].type = INPUT_KEYBOARD;
+    ZeroMemory( &inputs[ idx ].ki, sizeof( KEYBDINPUT ) );
+    inputs[ idx ].ki.wVk = vk_code;
+
+    inputs[ idx + 1 ].type = INPUT_KEYBOARD;
+    ZeroMemory( &inputs[ idx + 1 ].ki, sizeof( KEYBDINPUT ) );
+    inputs[ idx + 1 ].ki.dwFlags = KEYEVENTF_KEYUP;
+    inputs[ idx + 1 ].ki.wVk = vk_code;
+  }
+
+  u32 sent = SendInput( size, inputs, sizeof( INPUT ) );
+
+  if( sent != size ) {
+#ifdef _DEBUG
+    printf( "sendinput failed : 0x%x\n", HRESULT_FROM_WIN32( GetLastError() ) );
+#endif
+  } else {
+#ifdef _DEBUG
+    printf( "sendinput sent '%u' inputs", sent );
+#endif
+  }
+
+  delete[] inputs;
   return 1;
 }
 

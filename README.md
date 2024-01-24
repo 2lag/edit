@@ -1,6 +1,5 @@
 functionality :
-- Macro
-- - Playback - figure out how to use sendinput properly
+- fix macro playback
 - multi-Cursor - TBD
 - test current abilities and implement missing support for alternative pointless encoding formats ( utf-16, utf-32, etc. )
 

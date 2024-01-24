@@ -8,5 +8,5 @@ s32 wnd_menu_new_wnd( const bool toggle );
 
 s32 wnd_menu_style_toggle( s32 idx );
 
-void record_macro( u8 key );
+void record_macro( u32 key );
 s32 playback_macro();

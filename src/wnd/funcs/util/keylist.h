@@ -2,7 +2,7 @@
 
 // sorry :{
 
-const char* get_key( u8 key ) {
+const char* get_key( u32 key ) {
   switch( key ) {
     case 0x08: {
       return "BACKSPACE";

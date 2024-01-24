@@ -10,8 +10,17 @@
 
 #include "../util/keylist.h"
 
+// makes sure it's properly toggled
+void check_submenu( ptr vk, bool* check ) {
+  if( check && (
+      vk != 0x4D &&
+      vk != 0x50 &&
+      vk != 0x52 )) // M P R
+    *check = false;
+}
+
 LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
-  static std::unordered_map<u8, bool> key_down;
+  static std::unordered_map<ptr, bool> key_down;
   static bool m_sub_open = false;
 
   if( ncode == HC_ACTION ) {
@@ -27,12 +36,7 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
     if( wp != WM_KEYDOWN )
       return CallNextHookEx( 0, ncode, wp, lp );
 
-    // make sure this is right
-    if( m_sub_open && (
-          p_key->vkCode != 0x4D  &&
-          p_key->vkCode != 0x50  &&
-          p_key->vkCode != 0x52  )) // M P R
-      m_sub_open = false; // ensures submenu is closed
+    check_submenu( p_key->vkCode, &m_sub_open );
 
     if( GetAsyncKeyState( VK_CONTROL ) ) {
       p_key->flags |= LLKHF_INJECTED;
