@@ -1,5 +1,7 @@
 functionality :
 - fix macro playback
+- - make ctrl, shift, alt, all work properly
+- - i think first char gets cut off, we'll see next time :D
 - multi-Cursor - TBD
 - test current abilities and implement missing support for alternative pointless encoding formats ( utf-16, utf-32, etc. )
 
