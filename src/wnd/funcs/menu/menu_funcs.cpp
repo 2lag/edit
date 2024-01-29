@@ -278,7 +278,7 @@ s32 playback_macro() {
 #endif
   } else {
 #ifdef _DEBUG
-    printf( "sendinput sent '%u' inputs", sent );
+    printf( "sendinput sent '%u' inputs", sent / 2 );
 #endif
   }
 
