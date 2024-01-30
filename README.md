@@ -1,7 +1,5 @@
 ### functionality :
-- fix macro playback
-- - make ctrl & shift functionality work properly
-- multi-Cursor - TBD
+- multi-Cursor
 
 ### clean up :
 - change function names to not have wnd_ and generally just be more descriptive

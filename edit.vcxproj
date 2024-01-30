@@ -188,6 +188,7 @@
     <ClCompile Include="src\source.cpp" />
     <ClCompile Include="src\wnd\funcs\edit\caret_pos.cpp" />
     <ClCompile Include="src\wnd\funcs\edit\line_count.cpp" />
+    <ClCompile Include="src\wnd\funcs\edit\macro.cpp" />
     <ClCompile Include="src\wnd\funcs\hooks\key_hook.cpp" />
     <ClCompile Include="src\wnd\funcs\hooks\mouse_hook.cpp" />
     <ClCompile Include="src\wnd\funcs\menu\menu_funcs.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="src\typedef.h" />
     <ClInclude Include="src\wnd\funcs\edit\caret_pos.h" />
     <ClInclude Include="src\wnd\funcs\edit\line_count.h" />
+    <ClInclude Include="src\wnd\funcs\edit\macro.h" />
     <ClInclude Include="src\wnd\funcs\edit\scroll.h" />
     <ClInclude Include="src\wnd\funcs\hooks\hooks.h" />
     <ClInclude Include="src\wnd\funcs\hooks\key_hook.h" />

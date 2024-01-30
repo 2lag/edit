@@ -7,6 +7,7 @@
 
 #include "../edit/line_count.h"
 #include "../edit/edit_ctl.h"
+#include "../edit/macro.h"
 
 // makes sure it's properly toggled
 void check_submenu( ptr vk, bool* check ) {
@@ -26,10 +27,18 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
 
     // records once per keydown ( blocks multiples )
     if( wp == WM_KEYDOWN && !key_down[ p_key->vkCode ] ) {
-      record_macro( static_cast<u8>( p_key->vkCode ) );
+      record_macro(
+        static_cast<u8>( p_key->vkCode ),
+        WM_KEYDOWN
+      );
       key_down[ p_key->vkCode ] = true;
-    } else if( wp == WM_KEYUP )
+    } else if( wp == WM_KEYUP ) {
       key_down[ p_key->vkCode ] = false;
+      record_macro(
+        static_cast<u8>( p_key->vkCode ),
+        WM_KEYUP
+      );
+    }
 
     if( wp != WM_KEYDOWN )
       return CallNextHookEx( 0, ncode, wp, lp );

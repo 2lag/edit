@@ -57,6 +57,9 @@
     <ClCompile Include="src\wnd\funcs\util\config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\wnd\funcs\edit\macro.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\typedef.h">
@@ -120,6 +123,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\wnd\funcs\hooks\hooks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wnd\funcs\edit\macro.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
