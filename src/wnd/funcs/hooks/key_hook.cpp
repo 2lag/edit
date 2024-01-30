@@ -101,7 +101,7 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
 
             for( s32 idx = 0; idx < macro.size(); idx++ ) {
 #ifdef _DEBUG
-              printf( "0x%x ", macro.at( idx ) );
+              printf( "0x%x ", macro.at( idx ).first );
 #endif
             }
 #ifdef _DEBUG
