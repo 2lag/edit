@@ -8,8 +8,6 @@
 #include "../edit/line_count.h"
 #include "../edit/edit_ctl.h"
 
-#include "../util/keylist.h"
-
 // makes sure it's properly toggled
 void check_submenu( ptr vk, bool* check ) {
   if( check && (
@@ -28,7 +26,7 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
 
     // records once per keydown ( blocks multiples )
     if( wp == WM_KEYDOWN && !key_down[ p_key->vkCode ] ) {
-      record_macro( p_key->vkCode );
+      record_macro( static_cast<u8>( p_key->vkCode ) );
       key_down[ p_key->vkCode ] = true;
     } else if( wp == WM_KEYUP )
       key_down[ p_key->vkCode ] = false;
@@ -48,8 +46,10 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
         return 1;
       } break;
       case 0x45: { // CTRL + E
-        wnd_unhook();
-        PostQuitMessage( 0 );
+        if( m_base_open[0] ) {
+          wnd_unhook();
+          PostQuitMessage( 0 );
+        }
       } break;
       case 0x46: { // CTRL + F
         if( m_base_open[2] )
@@ -92,11 +92,17 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
 
             for( s32 idx = 0; idx < macro.size(); idx++ ) {
 #ifdef _DEBUG
-              printf( "%s\n", get_key( macro.at( idx ) ) );
+              printf( "0x%x ", macro.at( idx ) );
 #endif
             }
-          } else
+#ifdef _DEBUG
+            printf( "\n" );
+#endif
+          } else {
+            for( u8 idx = 0; idx < sizeof( u8 ); idx++ )
+              keybd_event( idx, 0, KEYEVENTF_KEYUP, 0 );
             macro.clear();
+          }
         }
         wnd_clear_menus();
       } break;

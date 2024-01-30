@@ -119,8 +119,8 @@ LRESULT CALLBACK findproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
 
     s8 *found = strstr( last_found ? last_found + 1 : txt, search_text );
     if( found ) {
-      s8 start_pos = found - txt;
-      s32 end_pos = static_cast<s32>( start_pos ) + search_len - 1;
+      s64 start_pos = found - txt;
+      s64 end_pos = start_pos + static_cast<s64>( search_len ) - 1;
       Edit_SetSel( txt_box, start_pos, end_pos );
       last_found = found;
     } else {
@@ -240,22 +240,50 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
   return DefSubclassProc( hwnd, msg, wp, lp );
 }
 
-std::vector< u32 > macro;
-void record_macro( u32 key ) {
+std::vector< u8 > macro;
+void record_macro( u8 key ) {
   if( macro_recording )
     macro.push_back( key );
+}
+
+void reset_all_keystates() {
+  INPUT *inputs = new INPUT[ 256 ];
+
+  for( u8 idx = 0; idx < sizeof( *inputs ); ++idx ) {
+    inputs[ idx ].type = INPUT_KEYBOARD;
+    ZeroMemory( &inputs[ idx ].ki, sizeof( KEYBDINPUT ) );
+    inputs[ idx ].ki.wVk = idx;
+    inputs[ idx ].ki.dwFlags = KEYEVENTF_KEYUP;
+    inputs[ idx ].ki.time = idx;
+
+#ifdef _DEBUG
+    printf( "%u\n", idx );
+#endif
+  }
+
+  u32 sent = SendInput( 256, inputs, sizeof( INPUT ) );
+
+  delete[] inputs;
+
+  if( sent != 256 ) {
+#ifdef _DEBUG
+     printf( "sendinput failed : 0x%x\n", HRESULT_FROM_WIN32( GetLastError() ) );
+#endif
+  } else {
+#ifdef _DEBUG
+     printf( "reset '%u' keys\n", sent );
+#endif
+  }
 }
 
 s32 playback_macro() {
   if( !macro.size() )
     return 1;
   
-  // reset all keys
-  for( u32 idx = 0; idx < 256; idx++ )
-    keybd_event( idx, 0, KEYEVENTF_KEYUP, 0 );
+  reset_all_keystates();
 
-  u32 size = macro.size() * 2;
-  INPUT *inputs = new INPUT[ size ]; // *2 for keydown and keyup
+  u64 size = macro.size() * 2; // *2 for keydown and keyup
+  INPUT *inputs = new INPUT[ size ];
 
   for( u64 idx = 0; idx < size; idx += 2 ) {
     u8 vk_code = macro[ idx / 2 ];
@@ -263,27 +291,33 @@ s32 playback_macro() {
     inputs[ idx ].type = INPUT_KEYBOARD;
     ZeroMemory( &inputs[ idx ].ki, sizeof( KEYBDINPUT ) );
     inputs[ idx ].ki.wVk = vk_code;
-
+#ifdef _DEBUG
+    printf( "0x%x ", vk_code );
+#endif
     inputs[ idx + 1 ].type = INPUT_KEYBOARD;
     ZeroMemory( &inputs[ idx + 1 ].ki, sizeof( KEYBDINPUT ) );
     inputs[ idx + 1 ].ki.dwFlags = KEYEVENTF_KEYUP;
     inputs[ idx + 1 ].ki.wVk = vk_code;
   }
+#ifdef _DEBUG
+  printf( "\n" );
+#endif
 
-  u32 sent = SendInput( size, inputs, sizeof( INPUT ) );
+  u32 sent = SendInput( static_cast<u32>( size ), inputs, sizeof( INPUT ) );
+
+  delete[] inputs;
 
   if( sent != size ) {
 #ifdef _DEBUG
     printf( "sendinput failed : 0x%x\n", HRESULT_FROM_WIN32( GetLastError() ) );
 #endif
+    return 0;
   } else {
 #ifdef _DEBUG
     printf( "sendinput sent '%u' inputs", sent / 2 );
 #endif
+    return 1;
   }
-
-  delete[] inputs;
-  return 1;
 }
 
 s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
