@@ -5,7 +5,7 @@ u64 prev_time = GetTickCount64(), frames{}, fps{};
 bool hide_fps = false,
      hide_fps_prev = true;
 
-void wnd_fps_calc() {
+void calc_fps() {
   if( hide_fps || !menu_style_toggle[ FPS ] )
     return;
 
@@ -22,7 +22,7 @@ void wnd_fps_calc() {
   prev_time = cur_time;
 }
 
-void wnd_fps_draw( const HWND hwnd ) {
+void draw_fps( const HWND hwnd ) {
   HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
   char fps_txt[32];
   SIZE txt_sz;

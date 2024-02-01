@@ -2,7 +2,7 @@
 
 RECT caret_rect;
 
-void wnd_type_caret_pos( const HWND hwnd,
+void draw_caret_pos( const HWND hwnd,
                          const bool force_redraw ) {
   static bool caret_covered = false;
 

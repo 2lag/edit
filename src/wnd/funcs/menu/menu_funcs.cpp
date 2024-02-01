@@ -283,7 +283,7 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
 
   SetFocus( menu_txt );
 
-  wnd_type_line_count( h_global, true );
+  draw_line_count( h_global, true );
 
   MSG msg;
   while( GetMessageA( &msg, nullptr, 0, 0 ) ) {

@@ -48,12 +48,12 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
 
   ShowWindow( h_global, cmdshow );
   UpdateWindow( h_global );
-
-  std::thread draw_fps(
-    wnd_fps_draw,
+  
+  std::thread fps(
+    draw_fps,
     std::ref( h_global )
   );
-  draw_fps.detach();
+  fps.detach();
 
 #ifdef _DEBUG
   run_debug_console();
@@ -68,7 +68,7 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
       DispatchMessageA( &msg );
     }
 
-    wnd_fps_calc();
+    calc_fps();
 
     if( msg.message == WM_QUIT )
       break;

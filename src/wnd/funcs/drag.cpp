@@ -3,7 +3,7 @@
 bool user_dragging = false;
 POINT duser_start{};
 
-void wnd_drag_on( const HWND hwnd, const POINT m_pos ) {
+void drag_on( const HWND hwnd, const POINT m_pos ) {
   RECT item_rect {
     WND_BTN_SZ / 5 + 1,
     WND_BTN_SZ / 5 + 1,
@@ -25,14 +25,14 @@ void wnd_drag_on( const HWND hwnd, const POINT m_pos ) {
   SetCapture( hwnd );
 } 
 
-void wnd_drag_off() {
+void drag_off() {
   if( user_dragging ) {
     user_dragging = false;
     ReleaseCapture();
   }
 }
 
-void wnd_drag( const HWND hwnd, const POINT m_pos ) {
+void drag( const HWND hwnd, const POINT m_pos ) {
   if( !user_dragging ) {
     duser_start = m_pos;
     return;
@@ -73,7 +73,7 @@ void wnd_drag( const HWND hwnd, const POINT m_pos ) {
   );
 }
 
-void wnd_drag_resize( const HWND hwnd ) {
+void drag_resize( const HWND hwnd ) {
   if( user_resizing )
     return;
 

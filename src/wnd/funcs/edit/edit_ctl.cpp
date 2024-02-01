@@ -31,7 +31,7 @@ void wnd_clear_menus( const s32 exclude, const bool overryde ) {
   }
 
   vscroll.draw( true, true );
-  wnd_type_line_count( h_global, true );
+  draw_line_count( h_global, true );
   wnd_type_outline( h_global );
 }
 

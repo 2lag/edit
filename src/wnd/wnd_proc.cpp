@@ -7,8 +7,8 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   ScreenToClient( hwnd, &m_pos );
 
   vscroll.update();
-  wnd_type_line_count( hwnd );
-  wnd_type_caret_pos( hwnd );
+  draw_line_count( hwnd );
+  draw_caret_pos( hwnd );
 
   switch( msg ) {
   case WM_CREATE: {
@@ -27,7 +27,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   } break;
   case WM_LBUTTONDOWN: {
     wnd_resize_on( hwnd, m_pos );
-    wnd_drag_on( hwnd, m_pos );
+    drag_on( hwnd, m_pos );
     
     vscroll.drag_on( m_pos );
 
@@ -36,15 +36,15 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     wnd_title_min( m_pos );
   } break;
   case WM_LBUTTONUP: {
-    wnd_drag_resize( hwnd );
+    drag_resize( hwnd );
 
-    wnd_drag_off();
+    drag_off();
     wnd_resize_off();
 
     vscroll.drag_off();
   } break;
   case WM_MOUSEMOVE: {
-    wnd_drag( hwnd, m_pos );
+    drag( hwnd, m_pos );
 
     if( is_maxd ) break;
 
@@ -82,8 +82,8 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
       );
     }
 
-    wnd_type_line_count( hwnd, true );
-    wnd_type_caret_pos( hwnd, true );
+    draw_line_count( hwnd, true );
+    draw_caret_pos( hwnd, true );
 
     if( !txt_box )
       break;
