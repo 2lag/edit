@@ -7,39 +7,39 @@
 
 HWND menu_txt;
 
-s32 wnd_menu_dropdown_toggle( bool &toggle, const s32 idx ) {
+s32 menu_dropdown_toggle( bool &toggle, const s32 idx ) {
   toggle = !toggle;
 
   if( toggle )
-    wnd_menu_draw_dropdown( h_global, (s8)idx );
+    draw_menu_dropdown( h_global, (s8)idx );
   else
-    wnd_clear_menus( true );
+    clear_menus( true );
 
   return 1;
 }
 
-s32 wnd_menu_subdropdown_toggle( bool &check, bool &toggle ) {
+s32 menu_subdropdown_toggle( bool &check, bool &toggle ) {
   if( !check )
     return 1;
 
   toggle = !toggle;
 
   if( toggle )
-    wnd_menu_draw_sub_dropdown( h_global );
+    draw_menu_sub_dropdown( h_global );
   else {
     check = false;
-    wnd_clear_menus( true );
+    clear_menus( true );
   }
 
   return 1;
 }
 
-s32 wnd_menu_new_wnd( const bool toggle ) {
+s32 menu_new_wnd( const bool toggle ) {
   if( !toggle )
     return 1;
 
   m_base_open[0] = false;
-  wnd_clear_menus( true );
+  clear_menus( true );
 
   ptr buf_len = GetCurrentDirectoryA( 0, 0 ) + (ptr)strlen( "\\edit.exe" ) + 1;
   char *buf = new char[ buf_len ];
@@ -69,7 +69,7 @@ s32 wnd_menu_new_wnd( const bool toggle ) {
 
 char *file_path = nullptr;
 
-HANDLE wnd_menu_get_file( HWND hwnd, u64 len, bool open ) {
+HANDLE menu_get_file( HWND hwnd, u64 len, bool open ) {
   file_path = new char[ len ];
 
   if( !file_path ) {
@@ -154,7 +154,7 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
 
     s32 path_len = GetWindowTextLengthA( hwnd ) + 1;
     
-    HANDLE file = wnd_menu_get_file( hwnd,
+    HANDLE file = menu_get_file( hwnd,
       static_cast<u64>( path_len ), true
     );
 
@@ -194,7 +194,7 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     s32 txt_box_len = GetWindowTextLengthA( txt_box ) + 1;
     u64 total_len = static_cast<u64>( path_len ) + static_cast<u64>( txt_box_len ) + 4ull; // +4 for "\r\n\r\n"
     
-    HANDLE file = wnd_menu_get_file( hwnd,
+    HANDLE file = menu_get_file( hwnd,
       total_len, false
     );
 
@@ -240,7 +240,7 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
   return DefSubclassProc( hwnd, msg, wp, lp );
 }
 
-s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
+s32 menu_edit_ctrl( bool &toggle, s32 idx ) {
   if( !toggle )
     return 1;
 
@@ -294,8 +294,8 @@ s32 wnd_menu_edit_ctrl( bool &toggle, s32 idx ) {
   return 1;
 }
 
-s32 wnd_menu_style_toggle( s32 idx ) {
-  wnd_clear_menus( true );
+s32 menu_toggle_style( s32 idx ) {
+  clear_menus( true );
 
   toggle_config_idx( idx );
 

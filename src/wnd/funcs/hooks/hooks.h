@@ -4,7 +4,7 @@
 #include "key_hook.h"
 #include "mouse_hook.h"
 
-inline void wnd_init_hooks() {
+inline void init_hooks() {
   mouse_hook = SetWindowsHookExA(
     WH_MOUSE_LL, mouse_hook_proc,
     GetModuleHandleA( NULL ), 0
@@ -16,7 +16,7 @@ inline void wnd_init_hooks() {
   );
 }
 
-inline void wnd_unhook() {
+inline void unhook() {
   UnhookWindowsHookEx( key_hook );
   UnhookWindowsHookEx( mouse_hook );
 }

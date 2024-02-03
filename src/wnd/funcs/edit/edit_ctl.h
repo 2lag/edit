@@ -1,6 +1,6 @@
 #pragma once
 #include "../../wincludes.h"
 
-void wnd_type_create( const HWND hwnd );
-void wnd_type_outline( const HWND hwnd );
-void wnd_customize( const WPARAM wp );
+void create_edit_ctl( const HWND hwnd );
+void draw_outline( const HWND hwnd );
+void set_colors( const WPARAM wp );

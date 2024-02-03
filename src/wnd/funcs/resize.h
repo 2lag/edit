@@ -12,8 +12,8 @@ enum WND_RESIZE_CASES {
   EDGE_LEFT
 };
 
-void wnd_resize_get_cursor( const POINT m_pos );
-void wnd_resize_on( const HWND hwnd, const POINT m_pos );
-void wnd_resize_off();
-void wnd_resize_title( const HWND hwnd, const POINT m_pos );
-void wnd_resize( const HWND hwnd, const POINT m_pos );
+void resize_get_cursor( const POINT m_pos );
+void resize_on( const HWND hwnd, const POINT m_pos );
+void resize_off();
+void resize_title( const HWND hwnd, const POINT m_pos );
+void resize( const HWND hwnd, const POINT m_pos );

@@ -56,37 +56,37 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
       } break;
       case 0x45: { // CTRL + E
         if( m_base_open[0] ) {
-          wnd_unhook();
+          unhook();
           PostQuitMessage( 0 );
         }
       } break;
       case 0x46: { // CTRL + F
         if( m_base_open[2] )
-          return wnd_menu_style_toggle(0);
+          return menu_toggle_style(0);
         
         if( m_base_open[1] )
-          return wnd_menu_edit_ctrl( m_base_open[1], 2 );
+          return menu_edit_ctrl( m_base_open[1], 2 );
         
-        return wnd_menu_dropdown_toggle( m_base_open[0], 0 );
+        return menu_dropdown_toggle( m_base_open[0], 0 );
       } break;
       case 0x4C: { // CTRL + L
         if( m_base_open[2] )
-          return wnd_menu_style_toggle(2);
+          return menu_toggle_style(2);
       } break;
       case 0x4D: { // CTRL + M
-        return wnd_menu_subdropdown_toggle( m_base_open[1], m_sub_open );
+        return menu_subdropdown_toggle( m_base_open[1], m_sub_open );
       } break;
       case 0x4E: { // CTRL + N
-        return wnd_menu_new_wnd( m_base_open[0] );
+        return menu_new_wnd( m_base_open[0] );
       } break;
       case 0x4F: { // CTRL + O
-        return wnd_menu_edit_ctrl( m_base_open[0], 0 );
+        return menu_edit_ctrl( m_base_open[0], 0 );
       } break;
       case 0x50: { // CTRL + P      
         if( m_base_open[2] )
-          return wnd_menu_style_toggle(1);
+          return menu_toggle_style(1);
         if( m_sub_open ) {
-          wnd_clear_menus();
+          clear_menus();
           return playback_macro();
         }
       } break;
@@ -113,20 +113,20 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
             macro.clear();
           }
         }
-        wnd_clear_menus();
+        clear_menus();
       } break;
       case 0x53: { // CTRL + S
         if( m_base_open[0] ) // save route
-          return wnd_menu_edit_ctrl( m_base_open[0], 1 );
+          return menu_edit_ctrl( m_base_open[0], 1 );
 
-        return wnd_menu_dropdown_toggle( m_base_open[2], 2 );
+        return menu_dropdown_toggle( m_base_open[2], 2 );
       } break;
       case 0x54: { // CTRL + T
-        return wnd_menu_dropdown_toggle( m_base_open[1], 1 );
+        return menu_dropdown_toggle( m_base_open[1], 1 );
       } break;
       }
     } else
-      wnd_clear_menus();
+      clear_menus();
   }
 
   return CallNextHookEx( 0, ncode, wp, lp );

@@ -74,7 +74,8 @@ s32 playback_macro() {
   }
 
   u32 sent = SendInput(
-    macro.size(), inputs,
+    static_cast<u32>( macro.size() ),
+    inputs,
     sizeof( INPUT )
   );
   

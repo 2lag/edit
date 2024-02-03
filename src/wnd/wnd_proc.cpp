@@ -13,33 +13,33 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   switch( msg ) {
   case WM_CREATE: {
     wnd_sz = get_wnd_sz( hwnd );
-    wnd_type_create( hwnd );
+    create_edit_ctl( hwnd );
   } break;
   case WM_CTLCOLOREDIT: {
-    wnd_customize( wp );
+    set_colors( wp );
     return (LRESULT)GetStockObject( 0 );
   } break;
   case WM_DESTROY: {
     return 0;
   } break;
   case WM_LBUTTONDBLCLK: {
-    wnd_resize_title( hwnd, m_pos );
+    resize_title( hwnd, m_pos );
   } break;
   case WM_LBUTTONDOWN: {
-    wnd_resize_on( hwnd, m_pos );
+    resize_on( hwnd, m_pos );
     drag_on( hwnd, m_pos );
     
     vscroll.drag_on( m_pos );
 
-    wnd_title_cls( m_pos );
-    wnd_title_max( m_pos );
-    wnd_title_min( m_pos );
+    title_cls( m_pos );
+    title_max( m_pos );
+    title_min( m_pos );
   } break;
   case WM_LBUTTONUP: {
     drag_resize( hwnd );
 
     drag_off();
-    wnd_resize_off();
+    resize_off();
 
     vscroll.drag_off();
   } break;
@@ -48,16 +48,16 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
 
     if( is_maxd ) break;
 
-    wnd_resize_get_cursor( m_pos );
-    wnd_resize( hwnd, m_pos );
+    resize_get_cursor( m_pos );
+    resize( hwnd, m_pos );
   } break;
   case WM_PAINT: {
     PAINTSTRUCT ps;
     HDC hdc = BeginPaint( hwnd, &ps );
 
-    wnd_title_draw( hdc );
-    wnd_type_outline( hwnd );
-    wnd_menu_draw( hdc );
+    draw_title( hdc );
+    draw_outline( hwnd );
+    draw_menu( hdc );
 
     EndPaint( hwnd, &ps );
   } break;

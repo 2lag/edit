@@ -5,7 +5,7 @@ bool macro_recording = false;
 // i will never use this again
 using namespace std;
 
-void wnd_menu_create_bar( const HDC hdc,
+void menu_create_bar( const HDC hdc,
                           const vector<s32> u_pos,
                           const vector<const char*> txt ) {
   HBRUSH bg_brush = CreateSolidBrush( COL_M_GRY );
@@ -54,15 +54,15 @@ void wnd_menu_create_bar( const HDC hdc,
   DeleteObject( bg_brush );
 }
 
-void wnd_menu_draw( const HDC hdc ) {
+void draw_menu( const HDC hdc ) {
   vector<const char*> txt{ "File", "Tools", "Style" };
   vector<s32> underline_pos{ 10, 55, 107 };
-  wnd_menu_create_bar( hdc,
+  menu_create_bar( hdc,
     underline_pos, txt
   );
 }
 
-RECT wnd_menu_create_vert( const HDC hdc,
+RECT menu_create_vert( const HDC hdc,
                            const s32 width,
                            const POINT start,
                            const vector<s32> u_pos,
@@ -136,8 +136,8 @@ RECT wnd_menu_create_vert( const HDC hdc,
 }
 
 // remove menu_rect from here ?
-void wnd_menu_draw_dropdown( const HWND hwnd, const s8 idx ) {
-  wnd_clear_menus( idx, false );
+void draw_menu_dropdown( const HWND hwnd, const s8 idx ) {
+  clear_menus( idx, false );
 
   HDC hdc = GetDC( hwnd );
 
@@ -153,7 +153,7 @@ void wnd_menu_draw_dropdown( const HWND hwnd, const s8 idx ) {
     underline_pos[3] = 12;
 
     vector<const char*> txt{ "New", "Open", "Save", "Exit" };
-    menu_rect = wnd_menu_create_vert( hdc,
+    menu_rect = menu_create_vert( hdc,
       WND_BTN_SZ * 2 + 1, { -1, WND_BTN_SZ * 2 },
       underline_pos, txt
     );
@@ -164,7 +164,7 @@ void wnd_menu_draw_dropdown( const HWND hwnd, const s8 idx ) {
     underline_pos[1] = 81;
 
     vector<const char*> txt{ "Find", "Macro" };
-    menu_rect = wnd_menu_create_vert( hdc,
+    menu_rect = menu_create_vert( hdc,
       WND_BTN_SZ * 4, { WND_BTN_SZ * 2, WND_BTN_SZ * 2 },
       underline_pos, txt
     );    
@@ -180,7 +180,7 @@ void wnd_menu_draw_dropdown( const HWND hwnd, const s8 idx ) {
       menu_style_toggle[ CARET ]      ? "[x] Caret Pos"  : "[  ] Caret Pos",
       menu_style_toggle[ LINE_COUNT ] ? "[x] Line Count" : "[  ] Line Count"
     };
-    menu_rect = wnd_menu_create_vert( hdc,
+    menu_rect = menu_create_vert( hdc,
       WND_BTN_SZ * 4 + 1, { WND_BTN_SZ * 4 , WND_BTN_SZ * 2 },
       underline_pos, txt
     );
@@ -192,7 +192,7 @@ void wnd_menu_draw_dropdown( const HWND hwnd, const s8 idx ) {
   ReleaseDC( hwnd, hdc );
 }
 
-void wnd_menu_draw_sub_dropdown( const HWND hwnd ) {
+void draw_menu_sub_dropdown( const HWND hwnd ) {
 
   HDC hdc = GetDC( hwnd );
 
@@ -201,7 +201,7 @@ void wnd_menu_draw_sub_dropdown( const HWND hwnd ) {
     "Playback"
   };
   vector<s32> underline_pos{ 174, 157 };
-  (void)wnd_menu_create_vert( hdc,
+  (void)menu_create_vert( hdc,
     WND_BTN_SZ * 3, { WND_BTN_SZ * 6 - 1, WND_BTN_SZ * 3 },
     underline_pos, txt
   );

@@ -11,7 +11,7 @@ CSCROLL vscroll;
 HHOOK mouse_hook;
 bool m_base_open[ OBJ_BASE_COUNT / 2 ] = { false };
 
-bool wnd_should_clear_menus() {
+bool should_clear_menus() {
   for( s8 idx = 0; idx < OBJ_BASE_COUNT / 2; ++idx ) {
     if( m_base_open[ idx ] )
       return true;
@@ -19,8 +19,8 @@ bool wnd_should_clear_menus() {
   return false;
 };
 
-void wnd_clear_menus( const s32 exclude, const bool overryde ) {
-  if( !wnd_should_clear_menus() )
+void clear_menus( const s32 exclude, const bool overryde ) {
+  if( !should_clear_menus() )
     return;
 
   for( s8 idx = 0; idx < OBJ_BASE_COUNT / 2; idx++ ) {
@@ -32,7 +32,7 @@ void wnd_clear_menus( const s32 exclude, const bool overryde ) {
 
   vscroll.draw( true, true );
   draw_line_count( h_global, true );
-  wnd_type_outline( h_global );
+  draw_outline( h_global );
 }
 
 LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, DWORD_PTR ) {
@@ -64,7 +64,7 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
   return DefSubclassProc( hwnd, msg, wp, lp );
 }
 
-void wnd_type_create( const HWND hwnd ) {
+void create_edit_ctl( const HWND hwnd ) {
   txt_box = CreateWindowExA( WS_EX_TRANSPARENT,
     "EDIT", 0,
     WS_CHILD | WS_VISIBLE | ES_MULTILINE |
@@ -78,10 +78,10 @@ void wnd_type_create( const HWND hwnd ) {
 
   SetFocus( txt_box );
 
-  wnd_init_hooks();
+  init_hooks();
 }
 
-void wnd_type_outline( const HWND hwnd ) {
+void draw_outline( const HWND hwnd ) {
   HDC hdc = GetDC( hwnd );
   HBRUSH brush = CreateSolidBrush( COL_M_GRY );
   RECT outline_sz {
@@ -103,7 +103,7 @@ void wnd_type_outline( const HWND hwnd ) {
   ReleaseDC( hwnd, hdc );
 }
 
-void wnd_customize( const WPARAM wp ) {
+void set_colors( const WPARAM wp ) {
   HDC hdc = (HDC)wp;
 
   SetBkColor( hdc, COL_D_GRY );
