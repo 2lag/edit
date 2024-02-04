@@ -4,16 +4,16 @@ inline POINT operator+=( POINT &a, const POINT b ) {
   return { a.x += b.x, a.y += b.y };
 }
 
-inline POINT operator+=( POINT a, const s32 b ) {
-  return { a.x += b, a.y += b };
-}
-
 inline POINT operator+( const POINT a, const POINT b ) {
   return { a.x + b.x, a.y + b.y };
 }
 
-inline POINT operator-=( const POINT a, const s32 b ) {
-  return { a.x - b, a.y - b }; // for resize
+inline POINT operator+=( POINT a, const s32 b ) {
+  return { a.x += b, a.y += b };
+}
+
+inline POINT operator-=( POINT a, const s32 b ) {
+  return { a.x -= b, a.y -= b }; // for resize
 }
 
 inline POINT operator-( const POINT a ) {

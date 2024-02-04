@@ -1,15 +1,19 @@
+### fix :
+- remove mousehook and recode as needed
+- - maybe same w/ keyhook?
+
 ### clean up :
-- move any mouse functionality to mousehook & same with any keyboard 1-by-1 & recode as needed
-- - will fix previous conception of need for a global mouse position, while also improving performance
 - (void)XXX all functions with ignored return values, add checks for important ret values in all files
 - check all files for missed comment-notes & add comments to non-self-descriptive code
 
 ### final clean up :
-- full, final, in-depth reoptimization ( use valgrind as well )
+- optimization w valgrind as well as vs debugger
 - test everything ( make list of stuff from each file's funcs )
 - add ss, make documentation, make repo public
 
 ### Possible additions for the future :
+- Swap mouse hook for [raw input](https://learn.microsoft.com/en-us/windows/win32/inputdev/raw-input)
+- Globalize wnd_pos the same way wnd_sz is done
 - Better error logs & overall handling
 - Drag 'n Drop to open files
 - Add support for multiple tabs

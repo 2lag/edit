@@ -13,7 +13,7 @@ enum WND_RESIZE_CASES {
 };
 
 void resize_get_cursor( const POINT m_pos );
-void resize_on( const HWND hwnd, const POINT m_pos );
+void resize_on( const POINT m_pos );
 void resize_off();
-void resize_title( const HWND hwnd, const POINT m_pos );
-void resize( const HWND hwnd, const POINT m_pos );
+void resize_title( const POINT m_pos );
+void resize( const POINT m_pos );

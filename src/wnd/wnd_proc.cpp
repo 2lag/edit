@@ -33,10 +33,10 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     return 0;
   } break;
   case WM_LBUTTONDBLCLK: {
-    resize_title( hwnd, m_pos );
+    resize_title( m_pos );
   } break;
   case WM_LBUTTONDOWN: {
-    resize_on( hwnd, m_pos );
+    resize_on( m_pos );
     drag_on( hwnd, m_pos );
     
     vscroll.drag_on( m_pos );
@@ -59,7 +59,7 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     if( is_maxd ) break;
 
     resize_get_cursor( m_pos );
-    resize( hwnd, m_pos );
+    resize( m_pos );
   } break;
   case WM_PAINT: {
     PAINTSTRUCT ps;
