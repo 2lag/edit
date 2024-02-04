@@ -1,7 +1,6 @@
 ### final clean up :
-- check all files for missed comment-notes & add comments to non-self-descriptive code
-- optimization w valgrind & vs debugger
-- test everything ( make list of stuff from each file's funcs )
+- optimization w vs dbug scan
+- test everything ( make list of feats )
 - add ss, make documentation, make repo public
 
 ### Possible additions for the future :

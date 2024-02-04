@@ -112,7 +112,7 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
         clear_menus();
       } break;
       case 0x53: { // CTRL + S
-        if( m_base_open[0] ) // save route
+        if( m_base_open[0] )
           return menu_edit_ctrl( m_base_open[0], 1 );
 
         return menu_dropdown_toggle( m_base_open[2], 2 );

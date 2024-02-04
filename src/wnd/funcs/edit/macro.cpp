@@ -1,6 +1,8 @@
 #include "macro.h"
 
-std::vector< std::pair< u8, u16 > > macro; // ew for every time i have to see this
+// ew for every time i have to see this
+std::vector< std::pair< u8, u16 > > macro;
+
 void record_macro( u8 key, u16 status ) {
   u16 status_fix = status;
 

@@ -63,11 +63,11 @@ void draw_menu( const HDC hdc ) {
   );
 }
 
-RECT menu_create_vert( const HDC hdc,
-                           const s32 width,
-                           const POINT start,
-                           const vector<s32> u_pos,
-                           const vector<const char*> txt ) {
+void menu_create_vert( const HDC hdc,
+                       const s32 width,
+                       const POINT start,
+                       const vector<s32> u_pos,
+                       const vector<const char*> txt ) {
   HBRUSH brush = CreateSolidBrush( COL_D_GRY );
   HBRUSH bg_brush = CreateSolidBrush( COL_M_GRY );
   RECT menu_rect = {
@@ -133,16 +133,13 @@ RECT menu_create_vert( const HDC hdc,
 
   (void)DeleteObject( bg_brush );
   (void)DeleteObject( brush );
-  return menu_rect;
 }
 
-// remove menu_rect from here ?
 void draw_menu_dropdown( const HWND hwnd, const s8 idx ) {
   clear_menus( idx, false );
 
   HDC hdc = GetDC( hwnd );
 
-  RECT menu_rect{};
   vector<s32> underline_pos;
 
   switch( idx ) { // "Anotha one" - DJ Khaled, 2015 ( sin #1 ) partial fix 1.4.24
@@ -154,7 +151,7 @@ void draw_menu_dropdown( const HWND hwnd, const s8 idx ) {
     underline_pos[3] = 12;
 
     vector<const char*> txt{ "New", "Open", "Save", "Exit" };
-    menu_rect = menu_create_vert( hdc,
+    menu_create_vert( hdc,
       WND_BTN_SZ * 2 + 1, { -1, WND_BTN_SZ * 2 },
       underline_pos, txt
     );
@@ -165,7 +162,7 @@ void draw_menu_dropdown( const HWND hwnd, const s8 idx ) {
     underline_pos[1] = 81;
 
     vector<const char*> txt{ "Find", "Macro" };
-    menu_rect = menu_create_vert( hdc,
+    menu_create_vert( hdc,
       WND_BTN_SZ * 4, { WND_BTN_SZ * 2, WND_BTN_SZ * 2 },
       underline_pos, txt
     );    
@@ -181,7 +178,7 @@ void draw_menu_dropdown( const HWND hwnd, const s8 idx ) {
       menu_style_toggle[ CARET ]      ? "[x] Caret Pos"  : "[  ] Caret Pos",
       menu_style_toggle[ LINE_COUNT ] ? "[x] Line Count" : "[  ] Line Count"
     };
-    menu_rect = menu_create_vert( hdc,
+    menu_create_vert( hdc,
       WND_BTN_SZ * 4 + 1, { WND_BTN_SZ * 4 , WND_BTN_SZ * 2 },
       underline_pos, txt
     );
@@ -202,7 +199,7 @@ void draw_menu_sub_dropdown( const HWND hwnd ) {
     "Playback"
   };
   vector<s32> underline_pos{ 174, 157 };
-  (void)menu_create_vert( hdc,
+  menu_create_vert( hdc,
     WND_BTN_SZ * 3, { WND_BTN_SZ * 6 - 1, WND_BTN_SZ * 3 },
     underline_pos, txt
   );

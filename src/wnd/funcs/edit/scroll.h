@@ -5,6 +5,12 @@ enum SCROLL_DIR {
   WHEEL_UDELTA = 0xFF88
 };
 
+// this was pretty early on
+// and took a long time having done everything from scratch
+// straight from the dome
+
+// please cut me some slack mr god
+
 class CSCROLL {
 public:
   s32 line_count;

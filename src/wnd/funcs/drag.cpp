@@ -132,7 +132,7 @@ void drag_resize( const HWND hwnd ) {
     },
     nwnd_sz = mon_sz;
     nwnd_sz.x /= 2;
-  } else if( within_tcorner_range || within_bcorner_range ) {
+  } else if( within_tcorner_range || within_bcorner_range ) { // quarter screen
     nwnd_pos = {
       within_lcorner_range ?
         i_mon.rcWork.left : i_mon.rcWork.right - mon_sz.x / 2,

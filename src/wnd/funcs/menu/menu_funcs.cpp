@@ -101,7 +101,7 @@ HANDLE menu_get_file( HWND hwnd, u64 len, bool open ) {
 }
 
 LRESULT CALLBACK findproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, DWORD_PTR ) {
-  static s8 *last_found = nullptr; // To keep track of the last found position
+  static s8 *last_found = nullptr; // keeps track of the last found position
 
   switch(msg) {
   case WM_CHAR: {
@@ -123,7 +123,7 @@ LRESULT CALLBACK findproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
       Edit_SetSel( txt_box, start_pos, end_pos );
       last_found = found;
     } else {
-      // dumb hack-y shit to avoid text invis... again
+      // dumb hack-y shit to avoid text invis
       (void)SetFocus( txt_box );
       Edit_SetSel( txt_box, 0, -1 );
 #pragma warning( push )
@@ -191,10 +191,10 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
 
     s32 path_len = GetWindowTextLengthA( hwnd ) + 1;
     s32 txt_box_len = GetWindowTextLengthA( txt_box ) + 1;
-    u64 total_len = static_cast<u64>( path_len ) + static_cast<u64>( txt_box_len ) + 4ull; // +4 for "\r\n\r\n"
+    s32 total_len = path_len + txt_box_len + 4; // +4 for "\r\n\r\n"
     
     HANDLE file = menu_get_file( hwnd,
-      total_len, false
+      static_cast<u64>( total_len ), false
     );
 
     if( file == nullptr ) {
@@ -226,7 +226,8 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
       (void)strcat_s( file_path, total_len, "\r\n\r\n");
       (void)strcat_s( file_path, total_len, txt_box_txt );
 
-      (void)SetWindowTextA( txt_box, file_path ); // in case saved in wrong dir bc user ( me... OR YOU...... ) is dumb.
+      // in case saved in wrong dir bc user ( me... OR YOU...... ) is dumb.
+      (void)SetWindowTextA( txt_box, file_path );
       (void)DestroyWindow( hwnd );
     }
 
@@ -272,7 +273,7 @@ s32 menu_edit_ctrl( bool &toggle, s32 idx ) {
     return 1;
   }
 
-  // dumb hack-y shit to avoid text invis
+  // dumb hack-y shit to avoid text invis... again
   (void)SetFocus( txt_box );
   Edit_SetSel( txt_box, 0, -1 );
 #pragma warning( push )

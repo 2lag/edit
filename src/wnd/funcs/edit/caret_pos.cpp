@@ -2,8 +2,7 @@
 
 RECT caret_rect;
 
-void draw_caret_pos( const HWND hwnd,
-                         const bool force_redraw ) {
+void draw_caret_pos( const HWND hwnd, const bool force_redraw ) {
   static bool caret_covered = false;
 
   if( ( !menu_style_toggle[ CARET ] && caret_covered ) || !txt_box )

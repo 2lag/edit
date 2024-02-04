@@ -92,7 +92,6 @@ void draw_outline( const HWND hwnd ) {
   };
   (void)FillRect( hdc, &outline_sz, brush );
 
-  // maybe swap this with validaterect inside_sz ?
   HBRUSH bg_brush = CreateSolidBrush( COL_D_GRY );
   RECT inside_sz = outline_sz - 1;
   (void)FillRect( hdc, &inside_sz, bg_brush );
