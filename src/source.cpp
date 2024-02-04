@@ -26,7 +26,7 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
     "edit", "edit_class", 0
   };
 
-  RegisterClassExA( &wnd_cls );
+  (void)RegisterClassExA( &wnd_cls );
 
   HMONITOR c_mon = MonitorFromPoint( {}, MONITOR_DEFAULTTOPRIMARY );
   MONITORINFO i_mon;
@@ -46,8 +46,8 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
     0, 0, inst, 0
   );
 
-  ShowWindow( h_global, cmdshow );
-  UpdateWindow( h_global );
+  (void)ShowWindow( h_global, cmdshow );
+  (void)UpdateWindow( h_global );
   
   std::thread fps(
     draw_fps,
@@ -64,8 +64,8 @@ s32 WINAPI WinMain( _In_     HINSTANCE inst    ,
   MSG msg;
   while( true ) {
     while( PeekMessageA( &msg, nullptr, 0, 0, PM_REMOVE ) ) {
-      TranslateMessage( &msg );
-      DispatchMessageA( &msg );
+      (void)TranslateMessage( &msg );
+      (void)DispatchMessageA( &msg );
     }
 
     calc_fps();

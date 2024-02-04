@@ -15,6 +15,6 @@ inline void init_hooks() {
 }
 
 inline void unhook() {
-  UnhookWindowsHookEx( key_hook );
-  UnhookWindowsHookEx( mouse_hook );
+  (void)UnhookWindowsHookEx( key_hook );
+  (void)UnhookWindowsHookEx( mouse_hook );
 }

@@ -2,7 +2,7 @@
 
 inline RECT get_wnd_sz( const HWND hwnd ) {
   RECT r;
-  GetClientRect( hwnd, &r );
+  (void)GetClientRect( hwnd, &r );
   return r;
 }
 

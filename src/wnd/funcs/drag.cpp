@@ -15,20 +15,20 @@ void drag_on( const HWND hwnd, const POINT m_pos ) {
     return;
 
   if( !is_maxd ) {
-    GetClientRect( hwnd, &max_prev_sz );
+    (void)GetClientRect( hwnd, &max_prev_sz );
     max_prev_pos = get_position( max_prev_sz );
-    ClientToScreen( hwnd, &max_prev_pos );
+    (void)ClientToScreen( hwnd, &max_prev_pos );
   }
 
   user_dragging = true;
   duser_start = m_pos;
-  SetCapture( hwnd );
+  (void)SetCapture( hwnd );
 } 
 
 void drag_off() {
   if( user_dragging ) {
     user_dragging = false;
-    ReleaseCapture();
+    (void)ReleaseCapture();
   }
 }
 
@@ -39,7 +39,7 @@ void drag( const HWND hwnd, const POINT m_pos ) {
   }
   
   RECT r_wnd;
-  GetWindowRect( hwnd, &r_wnd );
+  (void)GetWindowRect( hwnd, &r_wnd );
 
   HMONITOR c_mon = MonitorFromWindow( hwnd, MONITOR_DEFAULTTONEAREST );
   MONITORINFO i_mon;
@@ -65,7 +65,8 @@ void drag( const HWND hwnd, const POINT m_pos ) {
     is_maxd = false;
   }
 
-  SetWindowPos( hwnd, 0,
+  (void)SetWindowPos(
+    hwnd, 0,
     wnd_pos.x, wnd_pos.y,
     max_prev_sz.right - max_prev_sz.left,
     max_prev_sz.bottom - max_prev_sz.top,
@@ -78,7 +79,7 @@ void drag_resize( const HWND hwnd ) {
     return;
 
   POINT sm_pos;
-  GetCursorPos( &sm_pos );
+  (void)GetCursorPos( &sm_pos );
 
   HMONITOR c_mon = MonitorFromPoint( sm_pos, MONITOR_DEFAULTTONEAREST );
   MONITORINFO i_mon;
@@ -144,7 +145,8 @@ void drag_resize( const HWND hwnd ) {
 
   is_maxd = true;
 
-  SetWindowPos( hwnd, 0,
+  (void)SetWindowPos(
+    hwnd, 0,
     nwnd_pos.x, nwnd_pos.y,
     nwnd_sz.x , nwnd_sz.y ,
     SWP_NOZORDER

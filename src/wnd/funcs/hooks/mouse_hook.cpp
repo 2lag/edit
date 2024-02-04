@@ -1,6 +1,7 @@
 #include "mouse_hook.h"
 
-bool user_resizing = false;
+// these specifically MUST be in mousehook
+// all due to dumb interaction with Windows edit controls.
 
 LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
   if( ncode == HC_ACTION ) {
@@ -8,12 +9,12 @@ LRESULT CALLBACK mouse_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
 
     switch( wp ) {
     case WM_MOUSEMOVE: {
-      vscroll.get_hovered( p_mouse );
-
-      if( vscroll.dragging )
-        vscroll.drag( p_mouse, user_resizing );
-      else if( vscroll.mdragging )
-        vscroll.mdrag_scroll( p_mouse );
+      vscroll.mdrag_scroll( p_mouse );
+      
+      vscroll.drag(
+        p_mouse->pt,
+        user_resizing
+      );
     } break;
     case WM_MBUTTONDOWN: {
       vscroll.mdrag_on( p_mouse );

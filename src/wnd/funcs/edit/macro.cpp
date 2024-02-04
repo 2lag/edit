@@ -30,7 +30,7 @@ void reset_all_keystates() {
     inputs[ idx ].ki.time = idx;
 
 #ifdef _DEBUG
-    printf( "%u\n", idx );
+    (void)printf( "%u\n", idx );
 #endif
   }
 
@@ -40,9 +40,9 @@ void reset_all_keystates() {
   
 #ifdef _DEBUG
   if( sent != 256 ) {
-     printf( "reset sendinput failed : 0x%x\n", HRESULT_FROM_WIN32( GetLastError() ) );
+     (void)printf( "reset sendinput failed : 0x%x\n", HRESULT_FROM_WIN32( GetLastError() ) );
   } else {
-     printf( "reset '%u' keys\n", sent );
+     (void)printf( "reset '%u' keys\n", sent );
   }
 #endif
 }
@@ -66,9 +66,9 @@ s32 playback_macro() {
     inputs[ idx ].ki.dwFlags = status;
 
 #ifdef _DEBUG
-    printf( "\n0x%x\t%s\n",
-      v_key,
-      !status ? "up" : "down"
+    (void)printf(
+      "\n0x%x\t%s\n",
+      v_key, !status ? "up" : "down"
     );
 #endif
   }
@@ -81,9 +81,9 @@ s32 playback_macro() {
   
 #ifdef _DEBUG
   if( sent != macro.size() ) {
-    printf( "sendinput failed : 0x%x\n", HRESULT_FROM_WIN32( GetLastError() ) );
+    (void)printf( "sendinput failed : 0x%x\n", HRESULT_FROM_WIN32( GetLastError() ) );
   } else {
-    printf( "sendinput sent '%u' inputs", sent );
+    (void)printf( "sendinput sent '%u' inputs", sent );
   }
 #endif
   

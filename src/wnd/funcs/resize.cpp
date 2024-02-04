@@ -45,15 +45,15 @@ void resize_get_cursor( const POINT m_pos ) {
                        cur_def  = LoadCursorA( 0, IDC_ARROW    );
 
   if( on_top )
-    SetCursor( in_hcenter ? cur_ns : ( on_left ? cur_nwse : cur_nesw ) );
+    (void)SetCursor( in_hcenter ? cur_ns : ( on_left ? cur_nwse : cur_nesw ) );
   else if( on_bottom )
-    SetCursor( in_hcenter ? cur_ns : ( on_left ? cur_nesw : cur_nwse ) );
+    (void)SetCursor( in_hcenter ? cur_ns : ( on_left ? cur_nesw : cur_nwse ) );
   else if( on_left )
-    SetCursor( in_vcenter ? cur_we : cur_nesw );
+    (void)SetCursor( in_vcenter ? cur_we : cur_nesw );
   else if( on_right )
-    SetCursor( in_vcenter ? cur_we : cur_nwse );
+    (void)SetCursor( in_vcenter ? cur_we : cur_nwse );
   else
-    SetCursor( cur_def );
+    (void)SetCursor( cur_def );
 }
 
 void resize_on( const POINT m_pos ) {
@@ -63,7 +63,7 @@ void resize_on( const POINT m_pos ) {
 
   user_resizing = true;
   ruser_start = m_pos;
-  SetCapture( h_global );
+  (void)SetCapture( h_global );
 }
 
 void resize_off() {
@@ -71,7 +71,7 @@ void resize_off() {
     return;
 
   user_resizing = false;
-  ReleaseCapture();
+  (void)ReleaseCapture();
 }
 
 void resize_check_bounds( const HWND hwnd,
@@ -125,7 +125,10 @@ void resize( const POINT m_pos ) {
   POINT m_delta = ( m_pos - ruser_start ),
         wnd_pos = ( get_position( wnd_sz ) -= 1 );
   
-  ClientToScreen( h_global, &wnd_pos );
+  (void)ClientToScreen(
+    h_global,
+    &wnd_pos
+  );
 
   // and finally, sin #3
   std::unordered_map<s32, std::pair<POINT, POINT>> adjustments {
@@ -167,7 +170,7 @@ void resize( const POINT m_pos ) {
     m_delta
   );
 
-  SetWindowPos(
+  (void)SetWindowPos(
     h_global, 0,
     wnd_pos.x,
     wnd_pos.y,
@@ -197,9 +200,9 @@ void resize_title( const POINT m_pos ) {
        nwnd_sz{};
 
   if( !is_maxd ) {
-    GetClientRect( h_global, &max_prev_sz );
+    (void)GetClientRect( h_global, &max_prev_sz );
     max_prev_pos = get_position( max_prev_sz );
-    ClientToScreen( h_global, &max_prev_pos );
+    (void)ClientToScreen( h_global, &max_prev_pos );
 
     nwnd_ps = get_position( i_mon.rcWork ),
     nwnd_sz = mon_sz;
@@ -214,7 +217,8 @@ void resize_title( const POINT m_pos ) {
   }
   is_maxd = !is_maxd;
 
-  SetWindowPos( h_global, 0,
+  (void)SetWindowPos(
+    h_global, 0,
     nwnd_ps.x, nwnd_ps.y,
     nwnd_sz.x, nwnd_sz.y,
     SWP_NOZORDER

@@ -33,15 +33,19 @@ void draw_fps( const HWND hwnd ) {
       continue;
     }
 
-    sprintf_s( fps_txt,
+    (void)sprintf_s(
+      fps_txt,
       sizeof( fps_txt ),
       "FPS : %llu\0", fps
     );
     
     HDC hdc = GetDC( hwnd );
 
-    GetTextExtentPoint32A( hdc, fps_txt,
-      (s32)strlen( fps_txt ), &txt_sz
+    (void)GetTextExtentPoint32A(
+      hdc,
+      fps_txt,
+      (s32)strlen( fps_txt ),
+      &txt_sz
     );
 
     const RECT fps_rect {
@@ -57,7 +61,7 @@ void draw_fps( const HWND hwnd ) {
 
     if( hide_fps ) {
       if( !hide_fps_prev ) {
-        FillRect( hdc, &fps_rect, dbrush );
+        (void)FillRect( hdc, &fps_rect, dbrush );
 
         hide_fps_prev = true;
       }
@@ -67,20 +71,20 @@ void draw_fps( const HWND hwnd ) {
     } else
       hide_fps_prev = false;
 
-    FillRect( hdc, &fps_rect, dbrush );
+    (void)FillRect( hdc, &fps_rect, dbrush );
 
-    SetBkColor( hdc, COL_D_GRY );
-    SetTextColor( hdc, COL_M_GRY );
-    TextOutA( hdc,
+    (void)SetBkColor( hdc, COL_D_GRY );
+    (void)SetTextColor( hdc, COL_M_GRY );
+    (void)TextOutA( hdc,
       wnd_sz.right  - txt_sz.cx - 5,
       wnd_sz.bottom - txt_sz.cy - 5,
       fps_txt, (s32)strlen( fps_txt )
     );
 
-    ReleaseDC( hwnd, hdc );
+    (void)ReleaseDC( hwnd, hdc );
 
     Sleep( UPDATE_INTERVAL );
   }
 
-  DeleteObject( dbrush );
+  (void)DeleteObject( dbrush );
 }

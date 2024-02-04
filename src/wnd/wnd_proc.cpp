@@ -11,10 +11,12 @@
 #include "funcs/title.h"
 #include "funcs/drag.h"
 
+bool user_resizing = false;
+
 LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   POINT m_pos{};
-  GetCursorPos( &m_pos );
-  ScreenToClient( hwnd, &m_pos );
+  (void)GetCursorPos( &m_pos );
+  (void)ScreenToClient( hwnd, &m_pos );
 
   vscroll.update();
   draw_line_count( hwnd );
@@ -56,10 +58,12 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   case WM_MOUSEMOVE: {
     drag( hwnd, m_pos );
 
-    if( is_maxd ) break;
+    vscroll.get_hovered( m_pos );
 
-    resize_get_cursor( m_pos );
-    resize( m_pos );
+    if( !is_maxd ) {
+      resize_get_cursor( m_pos );
+      resize( m_pos );
+    }
   } break;
   case WM_PAINT: {
     PAINTSTRUCT ps;
@@ -69,12 +73,13 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     draw_outline( hwnd );
     draw_menu( hdc );
 
-    EndPaint( hwnd, &ps );
+    (void)EndPaint( hwnd, &ps );
   } break;
   case WM_SIZE: {
     wnd_sz = get_wnd_sz( hwnd );
 
-    MoveWindow( txt_box,
+    (void)MoveWindow(
+      txt_box,
       WND_BTN_SZ,
       WND_BTN_SZ * 2,
       wnd_sz.right - WND_BTN_SZ * 2,
@@ -83,7 +88,8 @@ LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
     );
 
     if( menu_txt ) {
-      MoveWindow( menu_txt,
+      (void)MoveWindow(
+        menu_txt,
         ( WND_BTN_SZ * 6 ) + 6,
         WND_BTN_SZ + 4,
         ( wnd_sz.right - wnd_sz.left ) - ( ( WND_BTN_SZ * 6 ) + 10 ),

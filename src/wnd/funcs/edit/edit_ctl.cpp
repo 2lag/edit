@@ -48,8 +48,8 @@ LRESULT CALLBACK editproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
   case WM_ERASEBKGND: {
     HDC hdc = (HDC)wp;
     HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
-    FillRect( hdc, &vscroll.txt_rect, dbrush );
-    DeleteObject( dbrush );
+    (void)FillRect( hdc, &vscroll.txt_rect, dbrush );
+    (void)DeleteObject( dbrush );
 
     if( !once ) {
       // only spawn once when txt_box exists
@@ -74,9 +74,9 @@ void create_edit_ctl( const HWND hwnd ) {
     (HINSTANCE)GetWindowLongPtrA( hwnd, GWLP_HINSTANCE ), 0
   );
 
-  SetWindowSubclass( txt_box, editproc, 0, 0 );
+  (void)SetWindowSubclass( txt_box, editproc, 0, 0 );
 
-  SetFocus( txt_box );
+  (void)SetFocus( txt_box );
 
   init_hooks();
 }
@@ -90,22 +90,22 @@ void draw_outline( const HWND hwnd ) {
     get_size( wnd_sz ).x - ( WND_BTN_SZ - 1 ),
     get_size( wnd_sz ).y - ( WND_BTN_SZ - 1 )
   };
-  FillRect( hdc, &outline_sz, brush );
+  (void)FillRect( hdc, &outline_sz, brush );
 
   // maybe swap this with validaterect inside_sz ?
   HBRUSH bg_brush = CreateSolidBrush( COL_D_GRY );
   RECT inside_sz = outline_sz - 1;
-  FillRect( hdc, &inside_sz, bg_brush );
+  (void)FillRect( hdc, &inside_sz, bg_brush );
   
-  DeleteObject( bg_brush );
-  DeleteObject( brush );
+  (void)DeleteObject( bg_brush );
+  (void)DeleteObject( brush );
 
-  ReleaseDC( hwnd, hdc );
+  (void)ReleaseDC( hwnd, hdc );
 }
 
 void set_colors( const WPARAM wp ) {
   HDC hdc = (HDC)wp;
 
-  SetBkColor( hdc, COL_D_GRY );
-  SetTextColor( hdc, COL_M_GRY );
+  (void)SetBkColor( hdc, COL_D_GRY );
+  (void)SetTextColor( hdc, COL_M_GRY );
 }

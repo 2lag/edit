@@ -29,19 +29,9 @@ enum WND_COL {
   COL_D_RED = RGB(  64,  32,  32 ),
 };
 
-struct WND_OBJ {
-  RECT r;
-  HBRUSH col;
-  bool next = false;
-};
-
 struct VEC3 {
   s32 x, y, w;
 };
-
-inline WND_OBJ wnd_obj_create( const RECT r, const COLORREF col, const bool next ) {
-  return { r, CreateSolidBrush( col ), next };
-}
 
 #include "funcs/util/util.h"
 #include "funcs/util/overloads.h"
@@ -79,20 +69,20 @@ extern bool  is_maxd;
 extern RECT wnd_sz;
 
 inline void run_debug_console() {
-  AllocConsole();
+  (void)AllocConsole();
   FILE* new_std;
-  freopen_s( &new_std, "CONOUT$", "w", stdout );
-  SetConsoleTitleA( "edit debug" );
+  (void)freopen_s( &new_std, "CONOUT$", "w", stdout );
+  (void)SetConsoleTitleA( "edit debug" );
   void *std_handle = GetStdHandle( STD_OUTPUT_HANDLE );
   const SMALL_RECT wnd_debug{ 00, 00, 42, 16 };
-  SetConsoleWindowInfo( std_handle, true, &wnd_debug );
-  SetConsoleScreenBufferSize( std_handle, { 43, 17 } );
-  SetConsoleWindowInfo( std_handle, true, &wnd_debug );
+  (void)SetConsoleWindowInfo( std_handle, true, &wnd_debug );
+  (void)SetConsoleScreenBufferSize( std_handle, { 43, 17 } );
+  (void)SetConsoleWindowInfo( std_handle, true, &wnd_debug );
 }
 
 inline void get_monitor_info( HMONITOR c_mon, MONITORINFO &i_mon ) {
   i_mon.cbSize = sizeof( i_mon );
-  GetMonitorInfoA( c_mon, &i_mon );
+  (void)GetMonitorInfoA( c_mon, &i_mon );
 }
 
 #define hcenter_text( r_container, text_sz ) r_container.left + ( ( r_container.right - r_container.left ) / 2 ) - ( text_sz.cx / 2 )

@@ -93,15 +93,15 @@ LRESULT CALLBACK key_hook_proc( s32 ncode, WPARAM wp, LPARAM lp ) {
           if( !macro_recording ) {
             // trim final 4 here ( ctrl t m r )
             if( macro.size() >= 4 )
-              macro.erase( macro.end() - 4, macro.end() );
+              (void)macro.erase( macro.end() - 4, macro.end() );
 
             for( s32 idx = 0; idx < macro.size(); idx++ ) {
 #ifdef _DEBUG
-              printf( "0x%x ", macro.at( idx ).first );
+              (void)printf( "0x%x ", macro.at( idx ).first );
 #endif
             }
 #ifdef _DEBUG
-            printf( "\n" );
+            (void)printf( "\n" );
 #endif
           } else {
             for( u8 idx = 0; idx < sizeof( u8 ); idx++ )

@@ -16,10 +16,10 @@ void menu_create_bar( const HDC hdc,
     WND_BTN_SZ * 2
   };
   
-  SetBkMode( hdc, TRANSPARENT );
-  SetTextColor( hdc, COL_M_GRY );
+  (void)SetBkMode( hdc, TRANSPARENT );
+  (void)SetTextColor( hdc, COL_M_GRY );
   
-  FillRect( hdc, &menu_rect, bg_brush );
+  (void)FillRect( hdc, &menu_rect, bg_brush );
   
   vector<SIZE> txt_sz( txt.size() );
   for( s8 idx = 0; idx < txt.size(); ++idx ) {
@@ -29,29 +29,30 @@ void menu_create_bar( const HDC hdc,
       ( WND_BTN_SZ * 2 * ( idx + 1 ) ) - 1,
       ( WND_BTN_SZ * 2 ) - 1
     };
-    FillRect( hdc, &item_rect, brush );
+    (void)FillRect( hdc, &item_rect, brush );
 
-    GetTextExtentPoint32A( hdc,
-      txt[ idx ],
+    (void)GetTextExtentPoint32A(
+      hdc, txt[ idx ],
       static_cast<s32>( strlen( txt[ idx ] ) ),
       &txt_sz[ idx ]
     );
 
-    TextOutA( hdc,
+    (void)TextOutA( hdc,
       hcenter_text( item_rect, txt_sz[ idx ] ),
       vcenter_text( item_rect, txt_sz[ idx ] ),
       txt[ idx ], static_cast<s32>( strlen( txt[ idx ] ) )
     );
 
     for( s32 u_idx = 0; u_idx < 10; u_idx++ ) {
-      SetPixel( hdc, u_pos[ idx ] + u_idx,
+      (void)SetPixel(
+        hdc, u_pos[ idx ] + u_idx,
         ( WND_BTN_SZ * 2 ) - 6, COL_M_GRY
       );
     }
   }
 
-  DeleteObject( brush );
-  DeleteObject( bg_brush );
+  (void)DeleteObject( brush );
+  (void)DeleteObject( bg_brush );
 }
 
 void draw_menu( const HDC hdc ) {
@@ -76,10 +77,10 @@ RECT menu_create_vert( const HDC hdc,
     start.y + ( WND_BTN_SZ * static_cast<salt>( txt.size() ) )
   };
 
-  SetBkMode( hdc, TRANSPARENT );
-  SetTextColor( hdc, COL_M_GRY );
+  (void)SetBkMode( hdc, TRANSPARENT );
+  (void)SetTextColor( hdc, COL_M_GRY );
 
-  FillRect( hdc, &menu_rect, bg_brush );
+  (void)FillRect( hdc, &menu_rect, bg_brush );
 
   vector<SIZE> txt_sz( txt.size() );
   vector<s32> underline_dim( txt.size() );
@@ -92,15 +93,15 @@ RECT menu_create_vert( const HDC hdc,
       ( start.x + width - 1 ),
       ( start.y - 1 ) + ( WND_BTN_SZ * ( idx + 1 ) )
     };
-    FillRect( hdc, &item_rect, brush );
+    (void)FillRect( hdc, &item_rect, brush );
 
-    GetTextExtentPoint32A( hdc,
-      txt[ idx ],
+    (void)GetTextExtentPoint32A(
+      hdc, txt[ idx ],
       static_cast<s32>( strlen( txt[ idx ] ) ),
       &txt_sz[ idx ]
     );
 
-    TextOutA( hdc,
+    (void)TextOutA( hdc,
       hcenter_text( item_rect, txt_sz[ idx ] ),
       vcenter_text( item_rect, txt_sz[ idx ] ),
       txt[ idx ], static_cast<s32>( strlen( txt[ idx ] ) )
@@ -108,9 +109,9 @@ RECT menu_create_vert( const HDC hdc,
 
     if( !strncmp( txt[ idx ], "Macro", 5 ) ) {
       SIZE lt_sz{};
-      GetTextExtentPoint32A( hdc, ">", 1, &lt_sz );
+      (void)GetTextExtentPoint32A( hdc, ">", 1, &lt_sz );
 
-      TextOutA( hdc,
+      (void)TextOutA( hdc,
         item_rect.right - 15,
         vcenter_text( item_rect, lt_sz ),
         ">", 1
@@ -120,7 +121,7 @@ RECT menu_create_vert( const HDC hdc,
 
   for( s32 u_idx = 0; u_idx < underline_dim.size(); u_idx++ ) {
     for( s32 uw_idx = 0; uw_idx < 9; uw_idx++ ) {
-      SetPixel( hdc,
+      (void)SetPixel( hdc,
         u_pos[ u_idx ] + uw_idx,
         underline_dim[ u_idx ],
         COL_M_GRY
@@ -128,10 +129,10 @@ RECT menu_create_vert( const HDC hdc,
     }  
   }
 
-  ValidateRect( h_global, &menu_rect );
+  (void)ValidateRect( h_global, &menu_rect );
 
-  DeleteObject( bg_brush );
-  DeleteObject( brush );
+  (void)DeleteObject( bg_brush );
+  (void)DeleteObject( brush );
   return menu_rect;
 }
 
@@ -189,7 +190,7 @@ void draw_menu_dropdown( const HWND hwnd, const s8 idx ) {
     break;
   }
 
-  ReleaseDC( hwnd, hdc );
+  (void)ReleaseDC( hwnd, hdc );
 }
 
 void draw_menu_sub_dropdown( const HWND hwnd ) {
@@ -206,5 +207,5 @@ void draw_menu_sub_dropdown( const HWND hwnd ) {
     underline_pos, txt
   );
 
-  ReleaseDC( hwnd, hdc );
+  (void)ReleaseDC( hwnd, hdc );
 }

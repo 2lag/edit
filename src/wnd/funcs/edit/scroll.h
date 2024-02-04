@@ -62,15 +62,21 @@ public:
              hovered ? COL_L_GRY : COL_M_GRY
            );
 
-    if( redraw ) GetTextExtentPoint32A( hdc, "A", 1, &line_sz );
+    if( redraw ) {
+      (void)GetTextExtentPoint32A(
+        hdc, "A",
+        1, &line_sz
+      );
+    }
+
     set_info( update_info, redraw );
 
-    FillRect( hdc, &bkrect, dbrush );
-    FillRect( hdc, &rect  , lbrush );
+    (void)FillRect( hdc, &bkrect, dbrush );
+    (void)FillRect( hdc, &rect  , lbrush );
     
-    DeleteObject( dbrush );
-    DeleteObject( lbrush );
-    ReleaseDC( parent, hdc );
+    (void)DeleteObject( dbrush );
+    (void)DeleteObject( lbrush );
+    (void)ReleaseDC( parent, hdc );
   }
 public:
   void drag_off() {
@@ -86,13 +92,11 @@ public:
       dragging = true;
     }
   }
-  void drag( const MSLLHOOKSTRUCT* p_mouse,
-             const bool resizing ) {
-    POINT m_pos = p_mouse->pt;
-    ScreenToClient( parent, &m_pos );
+  void drag( const POINT sm_pos, const bool resizing ) {
+    POINT m_pos = sm_pos;
+    (void)ClientToScreen( h_global, &m_pos );
 
-    if( !GetAsyncKeyState( MK_LBUTTON ) ||
-        !dragging || resizing ) {
+    if( !GetAsyncKeyState( MK_LBUTTON ) || !dragging || resizing ) {
       duser_start = m_pos;
       dragging = false;
       return;
@@ -121,7 +125,7 @@ public:
           curr_line++;
       } else if( scroll_dir == -1 && curr_line > 1 ) {
         if( curr_line >= lines_vis ) {
-          SendMessageA( parent, EM_SCROLL, SB_LINEUP, 0 );
+          (void)SendMessageA( parent, EM_SCROLL, SB_LINEUP, 0 );
           curr_line = line_first + lines_vis - 2;
         } else
           curr_line--;
@@ -136,12 +140,10 @@ public:
     draw();
   }
  public:
-  bool is_scrolling( const ptr m_data,
-                     const bool up ) {
+  bool is_scrolling( const ptr m_data, const bool up ) {
     return ( HIWORD( m_data ) == ( up ? WHEEL_UDELTA : WHEEL_DDELTA ) );
   }
-  void scroll_horizontal( const ptr m_data,
-                                s32& char_idx ) {
+  void scroll_horizontal( const ptr m_data, s32& char_idx ) {
     s32 curr_line_start_idx = Edit_LineIndex( parent, -1 );
     s32 line_len = Edit_LineLength( parent, char_idx );
       
@@ -150,17 +152,16 @@ public:
     else if( is_scrolling( m_data, true ) && char_idx < curr_line_start_idx + line_len )
       char_idx++;
   }
-  void scroll_vertical( const ptr m_data,
-                              s32& char_idx ) {
+  void scroll_vertical( const ptr m_data, s32& char_idx ) {
     if ( is_scrolling( m_data, false ) && curr_line != 1 ) {
       if( curr_line >= lines_vis ) {
-        SendMessageA( parent, EM_SCROLL, SB_LINEUP, 0 );
+        (void)SendMessageA( parent, EM_SCROLL, SB_LINEUP, 0 );
         curr_line = line_first + lines_vis - 2;
       } else
         curr_line--;
     } else if ( is_scrolling( m_data, true ) && curr_line < line_count ) {
       if( curr_line == line_last ) {
-        SendMessageA( parent, EM_SCROLL, SB_LINEDOWN, 0 );
+        (void)SendMessageA( parent, EM_SCROLL, SB_LINEDOWN, 0 );
         curr_line = line_first + lines_vis;
       } else
         curr_line++;
@@ -169,7 +170,7 @@ public:
   }
   void hover_scroll( const MSLLHOOKSTRUCT* p_mouse ) {
     POINT cm_pos = p_mouse->pt;
-    ScreenToClient( parent, &cm_pos );
+    (void)ScreenToClient( parent, &cm_pos );
     if( !PtInRect( &txt_rect, cm_pos ) )
       return;
 
@@ -192,7 +193,7 @@ public:
   }
   void mdrag_on( const MSLLHOOKSTRUCT* p_mouse ) {
     POINT m_pos = p_mouse->pt;
-    ScreenToClient( parent, &m_pos );
+    (void)ScreenToClient( parent, &m_pos );
 
     if( PtInRect( &txt_rect, m_pos ) ) {
       mdragging = true;
@@ -226,13 +227,13 @@ public:
     s32 caret_line_offset = static_cast<s32>( HIWORD( Edit_GetSel( parent ) ) ) - Edit_LineIndex( parent, -1 );
     if( delta < 0 && curr_line > 1 ) {
       if( curr_line >= lines_vis ) {
-        SendMessageA( parent, EM_SCROLL, SB_LINEUP, 0 );
+        (void)SendMessageA( parent, EM_SCROLL, SB_LINEUP, 0 );
         curr_line = line_first + lines_vis - 2;
       } else
         curr_line--;
     } else if( delta > 0 && curr_line < line_count ) {
       if( curr_line == line_last ) {
-        SendMessageA( parent, EM_SCROLL, SB_LINEDOWN, 0 );
+        (void)SendMessageA( parent, EM_SCROLL, SB_LINEDOWN, 0 );
         curr_line = line_first + lines_vis;
       } else
         curr_line++;
@@ -243,8 +244,11 @@ public:
     mduser_start = m_pos;
   }
   void mdrag_scroll( const MSLLHOOKSTRUCT* p_mouse ) {
+    if( !mdragging )
+      return;
+
     POINT m_pos = p_mouse->pt;
-    ScreenToClient( parent, &m_pos );
+    (void)ScreenToClient( parent, &m_pos );
 
     POINT md_delta = m_pos - mduser_start;
     s32 char_idx = static_cast<s32>( HIWORD( Edit_GetSel( parent ) ) );
@@ -261,10 +265,7 @@ public:
 
     draw();
   }
-  void get_hovered( const MSLLHOOKSTRUCT* p_mouse ) {
-    POINT m_pos = p_mouse->pt;
-    ScreenToClient( h_global, &m_pos );
-
+  void get_hovered( POINT m_pos ) {
     if( dragging )
       return;
 
@@ -306,7 +307,11 @@ public:
     if( !redraw )
       return;
 
-    RedrawWindow( parent, 0, 0, RDW_ERASE | RDW_INVALIDATE );
+    (void)RedrawWindow(
+      parent, 0, 0,
+      RDW_ERASE | RDW_INVALIDATE
+    );
+
     draw( false, false );
   }
   void update() {

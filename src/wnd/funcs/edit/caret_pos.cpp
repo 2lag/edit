@@ -23,7 +23,7 @@ void draw_caret_pos( const HWND hwnd,
   s32 line_idx_x = curr_caret_idx - curr_line_start_idx;
 
   char caret_pos[128];
-  sprintf_s( caret_pos,
+  (void)sprintf_s( caret_pos,
     sizeof( caret_pos ) / sizeof( wchar_t ),
     "X : %d   Y : %d\0",
     line_idx_x, vscroll.curr_line
@@ -32,7 +32,8 @@ void draw_caret_pos( const HWND hwnd,
   HDC hdc = GetDC( hwnd );
 
   SIZE txt_sz;
-  GetTextExtentPoint32A( hdc, caret_pos,
+  (void)GetTextExtentPoint32A(
+    hdc, caret_pos,
     (s32)strlen( caret_pos ), &txt_sz
   );
 
@@ -48,18 +49,19 @@ void draw_caret_pos( const HWND hwnd,
   };
 
   HBRUSH dbrush = CreateSolidBrush( COL_D_GRY );
-  FillRect( hdc, &caret_rect, dbrush );
+  (void)FillRect( hdc, &caret_rect, dbrush );
 
-  SetBkMode( hdc, TRANSPARENT );
-  SetTextColor( hdc, COL_M_GRY );
+  (void)SetBkMode( hdc, TRANSPARENT );
+  (void)SetTextColor( hdc, COL_M_GRY );
 
   if( menu_style_toggle[ CARET ] ) {
-    TextOutA( hdc, pos.x, pos.y,
+    (void)TextOutA( hdc,
+      pos.x, pos.y,
       caret_pos, (s32)strlen( caret_pos )
     );
   } else
     caret_covered = true;
 
-  ReleaseDC( hwnd, hdc );
-  DeleteObject( dbrush );
+  (void)ReleaseDC( hwnd, hdc );
+  (void)DeleteObject( dbrush );
 }

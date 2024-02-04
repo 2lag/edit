@@ -13,8 +13,8 @@ void draw_title( const HDC hdc ) {
     -1, -1, wnd_sz.right + 1, WND_BTN_SZ
   };
 
-  SetBkMode( hdc, TRANSPARENT );
-  SetTextColor( hdc, COL_M_GRY );
+  (void)SetBkMode( hdc, TRANSPARENT );
+  (void)SetTextColor( hdc, COL_M_GRY );
 
   vector<const char*> txt{ "Edit", "X", "O", "_" };
   vector<SIZE> txt_sz( txt.size() );
@@ -31,25 +31,26 @@ void draw_title( const HDC hdc ) {
 
     RECT inner_item_rect = item_rect - 1;
 
-    FillRect( hdc, &item_rect, bg_brush );
-    FillRect( hdc, &inner_item_rect, brush );
+    (void)FillRect( hdc, &item_rect, bg_brush );
+    (void)FillRect( hdc, &inner_item_rect, brush );
 
 
-    GetTextExtentPoint32A( hdc,
+    (void)GetTextExtentPoint32A(
+      hdc,
       txt[ idx ],
       static_cast<s32>( strlen( txt[ idx ] ) ),
       &txt_sz[ idx ]
     );
 
-    TextOutA( hdc,
+    (void)TextOutA( hdc,
       ( !idx ) ? 6 : hcenter_text( inner_item_rect, txt_sz[ idx ] ),
       ( idx  == 3 ) ? 0 : vcenter_text( inner_item_rect, txt_sz[ idx ] ),
       txt[ idx ], static_cast<s32>( strlen( txt[ idx ] ) )
     );
   }
 
-  DeleteObject( brush );
-  DeleteObject( bg_brush );
+  (void)DeleteObject( brush );
+  (void)DeleteObject( bg_brush );
 }
 
 void title_cls( const POINT m_pos ) {
@@ -87,9 +88,9 @@ void title_max( const POINT m_pos ) {
         nwnd_sz{};
   
   if( !is_maxd ) {
-    GetClientRect( h_global, &max_prev_sz );
+    (void)GetClientRect( h_global, &max_prev_sz );
     max_prev_pos = get_position( max_prev_sz );
-    ClientToScreen( h_global, &max_prev_pos );
+    (void)ClientToScreen( h_global, &max_prev_pos );
 
     nwnd_ps = get_position( i_mon.rcWork ),
     nwnd_sz = get_size( i_mon.rcWork );
@@ -102,7 +103,8 @@ void title_max( const POINT m_pos ) {
   }
   is_maxd = !is_maxd;
 
-  SetWindowPos( h_global, 0,
+  (void)SetWindowPos(
+    h_global, 0,
     nwnd_ps.x, nwnd_ps.y,
     nwnd_sz.x, nwnd_sz.y,
     SWP_NOZORDER
@@ -118,5 +120,5 @@ void title_min( const POINT m_pos ) {
   };
 
   if( PtInRect( &item_rect, m_pos ) )
-    ShowWindow( h_global, SW_MINIMIZE );
+    (void)ShowWindow( h_global, SW_MINIMIZE );
 }

@@ -42,9 +42,9 @@ s32 menu_new_wnd( const bool toggle ) {
 
   ptr buf_len = GetCurrentDirectoryA( 0, 0 ) + (ptr)strlen( "\\edit.exe" ) + 1;
   char *buf = new char[ buf_len ];
-  GetCurrentDirectoryA( buf_len, buf );
+  (void)GetCurrentDirectoryA( buf_len, buf );
 
-  strcat_s( buf, buf_len, "\\edit.exe\0" );
+  (void)strcat_s( buf, buf_len, "\\edit.exe\0" );
 
   STARTUPINFOA si;
   PROCESS_INFORMATION pi;
@@ -52,16 +52,16 @@ s32 menu_new_wnd( const bool toggle ) {
   si.cb = sizeof( si );
   ZeroMemory( &pi, sizeof( pi ) );
 
-  CreateProcessA( buf,
-    NULL, NULL, NULL,
+  (void)CreateProcessA(
+    buf, NULL, NULL, NULL,
     NULL, DETACHED_PROCESS,
     NULL, NULL, &si, &pi
   );
 
   delete[] buf;
 
-  CloseHandle( pi.hProcess );
-  CloseHandle( pi.hThread );
+  (void)CloseHandle( pi.hProcess );
+  (void)CloseHandle( pi.hThread );
 
   return 1;
 }
@@ -72,12 +72,12 @@ HANDLE menu_get_file( HWND hwnd, u64 len, bool open ) {
   file_path = new char[ len ];
 
   if( !file_path ) {
-    SetWindowTextA( hwnd, "memory error" );
+    (void)SetWindowTextA( hwnd, "memory error" );
     return nullptr;
   }
 
   if( !GetWindowTextA( hwnd, file_path, static_cast<s32>( len ) ) ) {
-    SetWindowTextA( hwnd, "error getting path" );
+    (void)SetWindowTextA( hwnd, "error getting path" );
     delete[] file_path;
     return nullptr;
   }
@@ -92,7 +92,7 @@ HANDLE menu_get_file( HWND hwnd, u64 len, bool open ) {
   );
 
   if( file == INVALID_HANDLE_VALUE ) {
-    SetWindowTextA( menu_txt, "error getting file" );
+    (void)SetWindowTextA( menu_txt, "error getting file" );
     delete[] file_path;
     return nullptr;
   }
@@ -110,11 +110,11 @@ LRESULT CALLBACK findproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
 
     s32 search_len = GetWindowTextLengthA( hwnd ) + 1;
     s8 *search_text = new s8[ search_len ];
-    GetWindowTextA( hwnd, search_text, search_len );
+    (void)GetWindowTextA( hwnd, search_text, search_len );
 
     s32 txt_len = GetWindowTextLengthA( txt_box ) + 1;
     s8 *txt = new s8[ txt_len ];
-    GetWindowTextA( txt_box, txt, txt_len );
+    (void)GetWindowTextA( txt_box, txt, txt_len );
 
     s8 *found = strstr( last_found ? last_found + 1 : txt, search_text );
     if( found ) {
@@ -124,7 +124,7 @@ LRESULT CALLBACK findproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
       last_found = found;
     } else {
       // dumb hack-y shit to avoid text invis... again
-      SetFocus( txt_box );
+      (void)SetFocus( txt_box );
       Edit_SetSel( txt_box, 0, -1 );
 #pragma warning( push )
 #pragma warning( disable : 4245 )
@@ -132,7 +132,7 @@ LRESULT CALLBACK findproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
 #pragma warning( pop )
 
       last_found = nullptr;
-      DestroyWindow( hwnd );
+      (void)DestroyWindow( hwnd );
     }
 
     delete[] txt;
@@ -163,20 +163,20 @@ LRESULT CALLBACK openproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     }
 
     LARGE_INTEGER file_sz;
-    GetFileSizeEx( file, &file_sz );
+    (void)GetFileSizeEx( file, &file_sz );
     ptr buf_sz = static_cast<ptr>( file_sz.QuadPart );
     LPVOID buf = new BYTE[ buf_sz ];
 
     ptr bytes_read;
     if( !ReadFile( file, buf, buf_sz, &bytes_read, nullptr ) || bytes_read != buf_sz )
-      SetWindowTextA( hwnd, "file read error" );
+      (void)SetWindowTextA( hwnd, "file read error" );
 
-    SetWindowTextA( txt_box, static_cast<LPCSTR>( buf ) );
+    (void)SetWindowTextA( txt_box, static_cast<LPCSTR>( buf ) );
     
     delete[] static_cast<BYTE*>( buf );
     delete[] file_path;
-    CloseHandle( file );
-    DestroyWindow( hwnd );
+    (void)CloseHandle( file );
+    (void)DestroyWindow( hwnd );
   } break;
   }
 
@@ -205,34 +205,34 @@ LRESULT CALLBACK saveproc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp, UINT_PTR, 
     s8 *txt_box_txt = new s8[ txt_box_len ];
 
     if( !txt_box_txt ) {
-      SetWindowTextA( hwnd, "memory error");
+      (void)SetWindowTextA( hwnd, "memory error");
       delete[] file_path;
-      CloseHandle( file );
+      (void)CloseHandle( file );
       break;
     }
 
     if( !GetWindowTextA( txt_box, txt_box_txt, txt_box_len ) ) {
-      SetWindowTextA( hwnd, "error getting text");
+      (void)SetWindowTextA( hwnd, "error getting text");
       delete[] file_path;
       delete[] txt_box_txt;
-      CloseHandle( file );
+      (void)CloseHandle( file );
       break;
     }
 
     ptr bytes_wrote;
     if( !WriteFile( file, txt_box_txt, txt_box_len - 1, &bytes_wrote, NULL ) )
-      SetWindowTextA( hwnd, "failed to write to file" );
+      (void)SetWindowTextA( hwnd, "failed to write to file" );
     else {
-      strcat_s( file_path, total_len, "\r\n\r\n");
-      strcat_s( file_path, total_len, txt_box_txt );
+      (void)strcat_s( file_path, total_len, "\r\n\r\n");
+      (void)strcat_s( file_path, total_len, txt_box_txt );
 
-      SetWindowTextA( txt_box, file_path ); // in case saved in wrong dir bc user ( me... OR YOU...... ) is dumb.
-      DestroyWindow( hwnd );
+      (void)SetWindowTextA( txt_box, file_path ); // in case saved in wrong dir bc user ( me... OR YOU...... ) is dumb.
+      (void)DestroyWindow( hwnd );
     }
 
     delete[] file_path;
     delete[] txt_box_txt;
-    CloseHandle( file );
+    (void)CloseHandle( file );
   } break;
   }
 
@@ -244,7 +244,7 @@ s32 menu_edit_ctrl( bool &toggle, s32 idx ) {
     return 1;
 
   if( menu_txt )
-    DestroyWindow( menu_txt );
+    (void)DestroyWindow( menu_txt );
 
   toggle = false;
   
@@ -260,34 +260,34 @@ s32 menu_edit_ctrl( bool &toggle, s32 idx ) {
 
   switch( idx ) {
   case 0: {
-    SetWindowSubclass( menu_txt, openproc, 0, 0 );
+    (void)SetWindowSubclass( menu_txt, openproc, 0, 0 );
   } break;
   case 1: {
-    SetWindowSubclass( menu_txt, saveproc, 0, 0 );
+    (void)SetWindowSubclass( menu_txt, saveproc, 0, 0 );
   } break;
   case 2: {
-    SetWindowSubclass( menu_txt, findproc, 0, 0 );
+    (void)SetWindowSubclass( menu_txt, findproc, 0, 0 );
   } break;
   default:
     return 1;
   }
 
   // dumb hack-y shit to avoid text invis
-  SetFocus( txt_box );
+  (void)SetFocus( txt_box );
   Edit_SetSel( txt_box, 0, -1 );
 #pragma warning( push )
 #pragma warning( disable : 4245 )
   Edit_SetSel( txt_box, -1, 0 );
 #pragma warning( pop )
 
-  SetFocus( menu_txt );
+  (void)SetFocus( menu_txt );
 
   draw_line_count( h_global, true );
 
   MSG msg;
   while( GetMessageA( &msg, nullptr, 0, 0 ) ) {
-    TranslateMessage( &msg );
-    DispatchMessageA( &msg );
+    (void)TranslateMessage( &msg );
+    (void)DispatchMessageA( &msg );
   }
 
   return 1;
@@ -296,7 +296,7 @@ s32 menu_edit_ctrl( bool &toggle, s32 idx ) {
 s32 menu_toggle_style( s32 idx ) {
   clear_menus( true );
 
-  toggle_config_idx( idx );
+  (void)toggle_config_idx( idx );
 
   return 1;
 }
