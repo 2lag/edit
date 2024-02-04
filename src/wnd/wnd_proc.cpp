@@ -1,5 +1,15 @@
 #include "wnd_proc.h"
-#include "funcs/includes.h"
+
+#include "funcs/edit/edit_ctl.h"
+
+#include "funcs/edit/line_count.h"
+#include "funcs/edit/caret_pos.h"
+
+#include "funcs/menu/menu.h"
+
+#include "funcs/resize.h"
+#include "funcs/title.h"
+#include "funcs/drag.h"
 
 LRESULT wnd_proc( HWND hwnd, UINT msg, WPARAM wp, LPARAM lp ) {
   POINT m_pos{};

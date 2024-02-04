@@ -1,5 +1,4 @@
 ### clean up :
-- clean up includes by deleting all per cpp file and only readding required ( remove includes.h ... )
 - move any mouse functionality to mousehook & same with any keyboard 1-by-1 & recode as needed
 - - will fix previous conception of need for a global mouse position, while also improving performance
 - (void)XXX all functions with ignored return values, add checks for important ret values in all files

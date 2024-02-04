@@ -1,12 +1,8 @@
-#include "key_hook.h"
-
 #include "hooks.h"
 
 #include "../menu/menu.h"
 #include "../menu/menu_funcs.h"
 
-#include "../edit/line_count.h"
-#include "../edit/edit_ctl.h"
 #include "../edit/macro.h"
 
 // makes sure it's properly toggled

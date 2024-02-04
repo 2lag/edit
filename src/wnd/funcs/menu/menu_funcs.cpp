@@ -1,4 +1,3 @@
-#include "menu_funcs.h"
 #include "menu.h"
 
 #include "../util/config.h"
