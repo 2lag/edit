@@ -1,6 +1,19 @@
 # Edit
 ![image](https://github.com/2lag/edit/assets/96544487/d08660b2-9398-4da5-8c56-b01ae2f3b8ea)  
 
+## Functionality
+ - New
+ - Open
+ - Save
+ - Exit
+ - Find
+ - Macro
+ - - Record
+ - - Playback
+ - FPS
+ - Line Count
+ - Caret Pos
+
 ## Locations
 | File | Contains |
 | ------------- | ------------- |
@@ -9,7 +22,6 @@
 | wincludes.h | Hectic includes, globally required externs, misc. functions/macros |
 | wnd_proc.cpp/h | Main window procedure, handles most of everything |
 | drag.cpp/h | All functionality relating to window dragging |
-| fps.cpp/h | Functions to claculate and draw FPS |
 | resize.cpp/h | All functionality relating to window resizing |
 | title.cpp/h | Drawing & functionality of the custom title bar |
 | caret_pos.cpp/h | Drawing & calculation of caret position |
